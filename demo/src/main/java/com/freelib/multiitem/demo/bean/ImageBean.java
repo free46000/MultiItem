@@ -18,4 +18,9 @@ public class ImageBean {
     public void setImg(int img) {
         this.img = img;
     }
+
+    @Override
+    public String toString() {
+        return img + "";
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.BaseViewHolder;
@@ -24,33 +25,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.layout_recycler)
-public class MultiItemActivity extends AppCompatActivity {
+public class ItemClickActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startMultiItemActivity(Context context) {
-        MultiItemActivity_.intent(context).start();
+    public static void startItemClickActivity(Context context) {
+        ItemClickActivity_.intent(context).start();
     }
 
     @AfterViews
     protected void initViews() {
-        setTitle(R.string.multi_item_title);
+        setTitle(R.string.item_click_title);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //初始化adapter
         BaseItemAdapter adapter = new BaseItemAdapter();
         //为XXBean数据源注册XXManager管理类
-        adapter.register(TextBean.class, new TextViewManager());
         adapter.register(ImageTextBean.class, new ImageAndTextManager());
-        adapter.register(ImageBean.class, new ImageViewManager());
         recyclerView.setAdapter(adapter);
         List<Object> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            list.add(new TextBean("AAA" + i));
-            list.add(new ImageBean(R.drawable.img1));
-            list.add(new ImageTextBean(R.drawable.img2, "BBB" + i));
+            list.add(new ImageTextBean(R.drawable.img2, "AAAAA" + i));
         }
 
         adapter.setDataItems(list);
+
+
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseViewHolder viewHolder) {
+                //通过viewHolder获取需要的数据
+                toastUser(String.format("你点击了第%s位置的数据：%s", viewHolder.getItemPosition()
+                        , viewHolder.getItemData()));
+            }
+        });
+        adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(BaseViewHolder viewHolder) {
+                //通过viewHolder获取需要的数据
+                toastUser(String.format("你长按了第%s位置的数据：%s", viewHolder.getItemPosition()
+                        , viewHolder.getItemData()));
+            }
+        });
+
     }
+
+    private void toastUser(String msg) {
+        Toast.makeText(ItemClickActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 }

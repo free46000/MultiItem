@@ -2,6 +2,7 @@
     <string name="app_name">MultiItem</string>
 
     <string name="main_title">MultiItem演示</string>
-    <string name="multi_item_title">多类型列表</string>
+    <string name="multi_item_title">多类型演示</string>
+    <string name="item_click_title">点击事件演示</string>
 
 </resources>

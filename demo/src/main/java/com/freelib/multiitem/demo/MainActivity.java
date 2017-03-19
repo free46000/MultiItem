@@ -30,14 +30,23 @@ public class MainActivity extends AppCompatActivity {
         adapter.register(TextBean.class, new TextViewManager());
         recyclerView.setAdapter(adapter);
         adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
+        adapter.addDataItem(new TextBean(getString(R.string.item_click_title)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder viewHolder) {
                 //通过viewHolder获取需要的数据
-                System.out.println(viewHolder.getItemData() + "==" + viewHolder.getItemPosition()
-                        + "==" + viewHolder.getViewHolderManager());
-                MultiItemActivity.startMultiItemActivity(MainActivity.this);
+                switch (viewHolder.getAdapterPosition()) {
+                    case 0:
+                        MultiItemActivity.startMultiItemActivity(MainActivity.this);
+                        break;
+                    case 1:
+                        ItemClickActivity.startItemClickActivity(MainActivity.this);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
 
