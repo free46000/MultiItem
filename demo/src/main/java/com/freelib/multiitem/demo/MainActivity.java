@@ -22,12 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     protected void initViews() {
+        setTitle(R.string.main_title);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         BaseItemAdapter adapter = new BaseItemAdapter();
         //为TextBean数据源注册TextViewManager管理类
         adapter.register(TextBean.class, new TextViewManager());
         recyclerView.setAdapter(adapter);
-        adapter.addDataItem(new TextBean("多类型RecyclerView"));
+        adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

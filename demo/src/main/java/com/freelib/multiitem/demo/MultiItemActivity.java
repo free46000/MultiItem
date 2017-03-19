@@ -14,6 +14,7 @@ import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
 import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
+import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -33,9 +34,12 @@ public class MultiItemActivity extends AppCompatActivity {
 
     @AfterViews
     protected void initViews() {
+        setTitle(R.string.multi_item_title);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //初始化adapter
         BaseItemAdapter adapter = new BaseItemAdapter();
-        //为TextBean数据源注册TextViewManager管理类
+        //为XXBean数据源注册XXManager管理类
         adapter.register(TextBean.class, new TextViewManager());
         adapter.register(ImageTextBean.class, new ImageAndTextManager());
         adapter.register(ImageBean.class, new ImageViewManager());
@@ -43,8 +47,8 @@ public class MultiItemActivity extends AppCompatActivity {
         List<Object> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add(new TextBean("AAA" + i));
-            list.add(new ImageBean(R.drawable.ic_launcher));
-            list.add(new ImageTextBean(R.drawable.ic_launcher, "BBB" + i));
+            list.add(new ImageBean(R.drawable.img1));
+            list.add(new ImageTextBean(R.drawable.img2, "BBB" + i));
         }
 
         adapter.setDataItems(list);
@@ -53,6 +57,14 @@ public class MultiItemActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder viewHolder) {
+                //通过viewHolder获取需要的数据
+                System.out.println(viewHolder.getItemData() + "==" + viewHolder.getItemPosition()
+                        + "==" + viewHolder.getViewHolderManager());
+            }
+        });
+        adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(BaseViewHolder viewHolder) {
                 //通过viewHolder获取需要的数据
                 System.out.println(viewHolder.getItemData() + "==" + viewHolder.getItemPosition()
                         + "==" + viewHolder.getViewHolderManager());

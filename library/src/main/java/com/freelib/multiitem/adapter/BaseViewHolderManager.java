@@ -15,6 +15,8 @@ public abstract class BaseViewHolderManager<T> extends ViewHolderManager<T, Base
     public abstract void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T t);
 
     /**
+     * item布局文件id
+     *
      * @return layout资源id
      */
     @LayoutRes
