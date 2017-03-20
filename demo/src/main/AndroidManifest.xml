@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".MultiItemActivity_"/>
         <activity android:name=".ItemClickActivity_"/>
+        <activity android:name=".ChatActivity_"/>
     </application>
 
 </manifest>
