@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.freelib.multiitem.adapter.BaseViewHolder;
-import com.freelib.multiitem.adapter.BaseViewHolderManager;
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 

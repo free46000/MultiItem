@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.freelib.multiitem.adapter;
+package com.freelib.multiitem.adapter.holder;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.freelib.multiitem.adapter.BaseViewHolder;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -57,63 +56,14 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      */
     public void onBindViewHolder(@NonNull V holder, @NonNull T t, @NonNull ViewHolderParams params) {
         // TODO 如果以后有需要不直接在item view上设置Click事件，在MultiViewHolder增加itemHandlerView属性即可
-        holder.itemView.setOnClickListener(params.clickListener);
-        holder.itemView.setOnLongClickListener(params.longClickListener);
+        holder.itemView.setOnClickListener(params.getClickListener());
+        holder.itemView.setOnLongClickListener(params.getLongClickListener());
         onBindViewHolder(holder, t);
     }
 
 
     public final int getPosition(@NonNull final ViewHolder holder) {
         return holder.getAdapterPosition();
-    }
-
-    /**
-     * ViewHolder参数
-     */
-    public static class ViewHolderParams {
-
-        private OnItemClickListener clickListener;
-        private OnItemLongClickListener longClickListener;
-        private int itemCount;
-        private int listViewScrollState;
-
-        ViewHolderParams setClickListener(OnItemClickListener clickListener) {
-            this.clickListener = clickListener;
-            return this;
-        }
-
-        ViewHolderParams setLongClickListener(OnItemLongClickListener longClickListener) {
-            this.longClickListener = longClickListener;
-            return this;
-        }
-
-
-        ViewHolderParams setItemCount(int itemCount) {
-            this.itemCount = itemCount;
-            return this;
-        }
-
-        ViewHolderParams setListViewScrollState(int listViewScrollState) {
-            this.listViewScrollState = listViewScrollState;
-            return this;
-        }
-
-        public OnItemClickListener getClickListener() {
-            return clickListener;
-        }
-
-        public OnItemLongClickListener getLongClickListener() {
-            return longClickListener;
-        }
-
-        public int getItemCount() {
-            return itemCount;
-        }
-
-        public int getListViewScrollState() {
-            return listViewScrollState;
-        }
-
     }
 
     /**

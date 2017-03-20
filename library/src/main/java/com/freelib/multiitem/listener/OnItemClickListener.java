@@ -2,7 +2,7 @@ package com.freelib.multiitem.listener;
 
 import android.view.View;
 
-import com.freelib.multiitem.adapter.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 
 
 /**

@@ -6,15 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.adapter.BaseViewHolder;
 import com.freelib.multiitem.demo.bean.ImageBean;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
 import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
-import com.freelib.multiitem.listener.OnItemClickListener;
-import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

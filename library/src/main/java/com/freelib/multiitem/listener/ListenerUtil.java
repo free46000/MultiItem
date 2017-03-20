@@ -3,7 +3,7 @@ package com.freelib.multiitem.listener;
 import android.util.Log;
 import android.view.View;
 
-import com.freelib.multiitem.adapter.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.common.Const;
 
 /**

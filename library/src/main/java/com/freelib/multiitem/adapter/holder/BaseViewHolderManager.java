@@ -1,4 +1,4 @@
-package com.freelib.multiitem.adapter;
+package com.freelib.multiitem.adapter.holder;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;

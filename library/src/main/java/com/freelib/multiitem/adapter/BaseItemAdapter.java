@@ -4,6 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.ViewHolderManager;
+import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
+import com.freelib.multiitem.adapter.holder.ViewHolderParams;
+import com.freelib.multiitem.adapter.type.ItemTypeManager;
 import com.freelib.multiitem.common.Const;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
@@ -42,9 +47,24 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param manager 数据源管理类
      * @param <T>     数据源
      * @param <V>     ViewHolder
+     * @see #register(Class, ViewHolderManagerGroup)  为相同数据源注册多个ViewHolder的管理类
      */
     public <T, V extends BaseViewHolder> void register(@NonNull Class<T> cls, @NonNull ViewHolderManager<T, V> manager) {
         itemTypeManager.register(cls, manager);
+    }
+
+    /**
+     * 为相同数据源注册多个ViewHolder的管理类{@link ViewHolderManagerGroup}<br>
+     * 主要为相同数据源根据内部属性的值对应多个ViewHolderManager设计，常见的如聊天界面的消息<br>
+     *
+     * @param cls   数据源class
+     * @param group 对应相同数据源的一组数据源管理类
+     * @param <T>   数据源
+     * @param <V>   ViewHolder
+     * @see #register(Class, ViewHolderManager)  为数据源注册ViewHolder的管理类
+     */
+    public <T, V extends BaseViewHolder> void register(@NonNull Class<T> cls, @NonNull ViewHolderManagerGroup group) {
+        itemTypeManager.register(cls, group);
     }
 
     /**
@@ -145,21 +165,22 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolderManager provider = itemTypeManager.getProvider(viewType);
-        return provider.onCreateViewHolder(parent);
+        ViewHolderManager provider = itemTypeManager.getViewHolderManager(viewType);
+        BaseViewHolder viewHolder = provider.onCreateViewHolder(parent);
+        viewHolder.viewHolderManager = provider;
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         Object item = getItem(position);
-        ViewHolderManager provider = itemTypeManager.getProvider(item.getClass());
-        ViewHolderManager.ViewHolderParams params = new ViewHolderManager.ViewHolderParams()
+        ViewHolderManager manager = holder.viewHolderManager;
+        ViewHolderParams params = new ViewHolderParams()
                 .setItemCount(getItemCount()).setClickListener(onItemClickListener)
                 .setLongClickListener(onItemLongClickListener);
-        provider.onBindViewHolder(holder, item, params);
+        manager.onBindViewHolder(holder, item, params);
         //赋值 方便以后使用
         holder.itemView.setTag(Const.VIEW_HOLDER_TAG, holder);
-        holder.viewHolderManager = provider;
         holder.itemData = item;
     }
 

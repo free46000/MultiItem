@@ -1,4 +1,4 @@
-package com.freelib.multiitem.adapter;
+package com.freelib.multiitem.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
