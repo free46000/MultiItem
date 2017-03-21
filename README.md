@@ -4,11 +4,9 @@
 本库的定位并不是大而全，但是会尽量做到简单易用。
 
 ## 效果截图
-![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png)
+![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png )![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)
 
 ## 下一步要做什么
-- 易于构建的maven依赖方式
-- 复杂页面即相同数据源不同展现的最佳实践（详情界面，聊天界面）
 - 任务面板 跨`RecyclerView`的`Item`拖动 支持双击缩小后拖动（仿协同办公软件）
 - 增加`header footer line`等一些可复用视图
 - DataBinding特性支持
@@ -17,12 +15,25 @@
 
 ## 用法
 #### 添加依赖
-配置gradle：
+- 配置gradle：
 
+在`Project root`的`build.gradle`中添加：
 ```
-//近期提供
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
-或者你也可以直接克隆源码
+在`Module`中添加：
+```
+dependencies {
+    compile 'com.github.free46000:MultiItem:0.9.1'
+}
+```
+
+- 或者你也可以直接克隆源码
 
 #### 多种类型列表用法
 这里由于单一和多种类型写法上没有差别，所以就不单独贴出单一类型的列表代码了。
@@ -52,7 +63,6 @@ recyclerView.setAdapter(adapter);
 ``` java
 public class ImageViewManager extends BaseViewHolderManager<ImageBean> {
 
-
     @Override
     public void onBindViewHolder(BaseViewHolder holder, ImageBean data) {
         //在指定viewHolder中获取控件为id的view
@@ -65,10 +75,27 @@ public class ImageViewManager extends BaseViewHolderManager<ImageBean> {
         //返回item布局文件id
         return R.layout.item_image;
     }
-
 }
 ```
 至此本库的多种类型列表用法已经完成，并没有修改或继承`RecyclerView Adapter`类，完全使用默认实现`BaseItemAdapter`即可。
+
+#### 相同数据源对应多个ViewHolder（聊天界面）
+这是一种特殊的需求，需要在运行时通过数据源中的某个属性，判断加载的布局，典型的就是聊天功能，相同消息数据对应左右两种气泡视图，在此处贴出注册时的关键代码，其他和多种类型列表类似：
+``` java
+//初始化adapter
+BaseItemAdapter adapter = new BaseItemAdapter();
+
+//为XXBean数据源注册XXManager管理类组合
+adapter.register(MessageBean.class, new ViewHolderManagerGroup<MessageBean>(new SendMessageManager(), new ReceiveMessageManager()) {
+    @Override
+    public int getViewHolderManagerIndex(MessageBean itemData) {
+        //根据message判断是否本人发送并返回对应ViewHolderManager的index值
+        return itemData.getSender().equals(uid) ? 0 : 1;
+    }
+});
+
+recyclerView.setAdapter(adapter);
+```
 
 #### 设置点击监听
 点击监听：
@@ -105,6 +132,7 @@ ViewHolder管理源码类为`ViewHolderManager`，使用者会首先注册数据
 - 提供了参数类，会在`adapter`调用本类方法的时候传入并做出通用处理
 - 本类的设计使用泛型，是为了在后续回调方法中有更直观的类型体现，这也是强类型和泛型带来的好处，给人在编写代码的时候带来确定感
 - 本类为抽象类需要重写`ViewHolder`的创建与绑定方法，为了方便后续使用，写了一个简单的`BaseViewHolderManager`实现类，请读者根据业务自行决定是否需要使用更灵活的基类，这里贴出需要复写的两个方法，延续了`Adapter`中的命名规则，在使用中减少一些认知成本：
+
 ``` java
 /**
  * 创建ViewHolder
@@ -122,13 +150,64 @@ public abstract V onCreateViewHolder(@NonNull ViewGroup parent);
 public abstract void onBindViewHolder(@NonNull V holder, @NonNull T t);
 ```
 
-#### 类型管理
-类型管理源码类为`ItemTypeManager`，通过数据源`className List`和`viewHolderManager List`两组集合对类型进行管理，并对`Adapter`提供注册和对应关系查找等方法的支持，这里并没有把这个地方设计灵活，如果有一些变化还是希望可以在`ViewHolderManager`做出适配，在这里贴出关键代码，希望有好的方式也可以留言交流：
+#### ViewHolder管理组合(相同数据源对应多个ViewHolderManager)
+组合管理源码类为`ViewHolderManagerGroup`，本实例需要一个`ViewHolderManager`集合，并增加通过数据源指定哪个`ViewHolderManager`的方法，使用者同样会注册数据源和本实例的对应关系，由类型管理类对本类中的`ViewHolderManager`集合进行统一注册管理。下面贴出关键代码：
 ``` java
-if (itemClassNames.contains(className)) {
-    viewHolderManagers.set(itemClassNames.indexOf(className), provider);
-} else {
-    itemClassNames.add(className);
-    viewHolderManagers.add(provider);
+ private ViewHolderManager[] viewHolderManagers;
+
+/**
+ * @param viewHolderManagers 相同数据源对应的所有ViewHolderManager
+ */
+public ViewHolderManagerGroup(ViewHolderManager... viewHolderManagers) {
+    if (viewHolderManagers == null || viewHolderManagers.length == 0) {
+        throw new IllegalArgumentException("viewHolderManagers can not be null");
+    }
+    this.viewHolderManagers = viewHolderManagers;
+}
+
+/**
+ * 根据item数据源中的属性判断应该返回的对应viewHolderManagers的index值
+ *
+ * @param itemData item数据源
+ * @return index值应该是在viewHolderManagers数组有效范围内
+ */
+public abstract int getViewHolderManagerIndex(T itemData);
+```
+
+#### 类型管理
+类型管理源码类为`ItemTypeManager`，通过数据源`className List`和`viewHolderManager List`两组集合对类型进行管理，并对`Adapter`提供注册和对应关系查找等方法的支持，这里并没有把这个地方设计灵活，如果有一些变化还是希望可以在`ViewHolderManager`做出适配。
+
+- 数据源一对一`viewHolderManager`时比较简单，关键代码：
+
+``` java
+ /**
+ * 通过数据源`className List`和`viewHolderManager List`两组集合对类型进行管理
+ *
+ * @param cls     数据源class
+ * @param manager ViewHolderManager
+ * @see com.freelib.multiitem.adapter.BaseItemAdapter#register(Class, ViewHolderManager)
+ */
+public void register(Class<?> cls, ViewHolderManager manager) {
+    register(getClassName(cls), manager);
+}
+```
+
+- 数据源一对多`viewHolderManager`时，关键代码：
+
+``` java
+/**
+ * 通过group获取一组ViewHolderManager循环注册，并生成不同的className作为标识<br>
+ * 其他类似{@link #register(Class, ViewHolderManager)}
+ *
+ * @param cls   数据源class
+ * @param group 多个ViewHolderManager的组合
+ * @see com.freelib.multiitem.adapter.BaseItemAdapter#register(Class, ViewHolderManagerGroup)
+ */
+public void register(Class<?> cls, ViewHolderManagerGroup group) {
+    ViewHolderManager[] managers = group.getViewHolderManagers();
+    for (int i = 0, length = managers.length; i < length; i++) {
+        register(getClassNameFromGroup(cls, group, managers[i]), managers[i]);
+    }
+    itemClassNameGroupMap.put(getClassName(cls), group);
 }
 ```
