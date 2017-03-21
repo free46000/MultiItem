@@ -8,6 +8,11 @@ public class MessageBean {
     private String message;
     private String sender;
 
+    public MessageBean(String message, String sender) {
+        this.message = message;
+        this.sender = sender;
+    }
+
     public String getMessage() {
         return message;
     }

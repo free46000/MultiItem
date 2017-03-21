@@ -63,7 +63,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param <V>   ViewHolder
      * @see #register(Class, ViewHolderManager)  为数据源注册ViewHolder的管理类
      */
-    public <T, V extends BaseViewHolder> void register(@NonNull Class<T> cls, @NonNull ViewHolderManagerGroup group) {
+    public <T, V extends BaseViewHolder> void register(@NonNull Class<T> cls, @NonNull ViewHolderManagerGroup<T> group) {
         itemTypeManager.register(cls, group);
     }
 
@@ -186,7 +186,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        int type = itemTypeManager.getItemType(getItem(position).getClass());
+        int type = itemTypeManager.getItemType(getItem(position));
         if (type < 0)
             throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item view provider，是否注册了？");
         return type;

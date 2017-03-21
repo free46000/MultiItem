@@ -65,6 +65,7 @@ public class ItemTypeManager {
      */
     public int getItemType(@NonNull Object itemData) {
         String key = getClassName(itemData.getClass());
+        //如果含有证明此className注册了组合的对应关系，需要取出实际的className
         if (itemClassNameGroupMap.containsKey(key)) {
             ViewHolderManager manager = itemClassNameGroupMap.get(key).getViewHolderManager(itemData);
             key = getClassNameFromGroup(itemData.getClass(), itemClassNameGroupMap.get(key), manager);

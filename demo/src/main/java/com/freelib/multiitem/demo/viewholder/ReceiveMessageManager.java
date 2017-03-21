@@ -11,7 +11,7 @@ import com.freelib.multiitem.demo.bean.MessageBean;
 /**
  * @author free46000  2017/03/17
  */
-public class MessageViewManager extends BaseViewHolderManager<MessageBean> {
+public class ReceiveMessageManager extends BaseViewHolderManager<MessageBean> {
 
 
     @Override
@@ -22,7 +22,7 @@ public class MessageViewManager extends BaseViewHolderManager<MessageBean> {
 
     @Override
     protected int getItemLayoutId() {
-        return R.layout.item_chat_send;
+        return R.layout.item_chat_receive;
     }
 
 }

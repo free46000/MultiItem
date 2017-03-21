@@ -29,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
         //为TextBean数据源注册TextViewManager管理类
         adapter.register(TextBean.class, new TextViewManager());
         recyclerView.setAdapter(adapter);
-        adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
         adapter.addDataItem(new TextBean(getString(R.string.item_click_title)));
+        adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
+        adapter.addDataItem(new TextBean(getString(R.string.chat_title)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -38,12 +39,13 @@ public class MainActivity extends AppCompatActivity {
                 //通过viewHolder获取需要的数据
                 switch (viewHolder.getAdapterPosition()) {
                     case 0:
-                        MultiItemActivity.startMultiItemActivity(MainActivity.this);
-                        break;
-                    case 1:
                         ItemClickActivity.startItemClickActivity(MainActivity.this);
                         break;
+                    case 1:
+                        MultiItemActivity.startMultiItemActivity(MainActivity.this);
+                        break;
                     default:
+                        ChatActivity.startChatActivity(MainActivity.this);
                         break;
                 }
 
