@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addDataItem(new TextBean(getString(R.string.item_click_title)));
         adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
         adapter.addDataItem(new TextBean(getString(R.string.chat_title)));
+        adapter.addDataItem(new TextBean(getString(R.string.head_foot_title)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -44,8 +45,11 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         MultiItemActivity.startMultiItemActivity(MainActivity.this);
                         break;
-                    default:
+                    case 2:
                         ChatActivity.startChatActivity(MainActivity.this);
+                        break;
+                    case 3:
+                        HeadFootActivity.startHeadFootActivity(MainActivity.this);
                         break;
                 }
 

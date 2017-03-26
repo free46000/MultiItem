@@ -14,19 +14,13 @@ public abstract class BaseViewHolderManager<T> extends ViewHolderManager<T, Base
     @Override
     public abstract void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T t);
 
-    /**
-     * item布局文件id
-     *
-     * @return layout资源id
-     */
-    @LayoutRes
+    @Override
     protected abstract int getItemLayoutId();
 
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent) {
-        View itemView = getItemView(getItemLayoutId(), parent);
-        BaseViewHolder viewHolder = new BaseViewHolder(itemView);
+        BaseViewHolder viewHolder = new BaseViewHolder(getItemView(parent));
         onCreateViewHolder(viewHolder);
         return viewHolder;
     }

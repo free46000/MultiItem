@@ -4,11 +4,14 @@ import android.support.annotation.NonNull;
 
 import com.freelib.multiitem.adapter.holder.ViewHolderManager;
 import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
+import com.freelib.multiitem.item.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.attr.key;
 
 
 /**
@@ -19,19 +22,19 @@ import java.util.Map;
  * @version v1.0
  */
 public class ItemTypeManager {
-    protected Map<String, ViewHolderManagerGroup> itemClassNameGroupMap = new HashMap<>();
-    protected List<String> itemClassNames = new ArrayList<>();
+    protected Map<String, ViewHolderManagerGroup> itemTypeNameGroupMap = new HashMap<>();
+    protected List<String> itemTypeNames = new ArrayList<>();
     protected List<ViewHolderManager> viewHolderManagers = new ArrayList<>();
 
     /**
-     * 通过数据源`className List`和`viewHolderManager List`两组集合对类型进行管理
+     * 通过数据源`typeName List`和`viewHolderManager List`两组集合对类型进行管理
      *
      * @param cls     数据源class
      * @param manager ViewHolderManager
      * @see com.freelib.multiitem.adapter.BaseItemAdapter#register(Class, ViewHolderManager)
      */
     public void register(Class<?> cls, ViewHolderManager manager) {
-        register(getClassName(cls), manager);
+        register(getTypeName(cls), manager);
     }
 
     /**
@@ -47,14 +50,14 @@ public class ItemTypeManager {
         for (int i = 0, length = managers.length; i < length; i++) {
             register(getClassNameFromGroup(cls, group, managers[i]), managers[i]);
         }
-        itemClassNameGroupMap.put(getClassName(cls), group);
+        itemTypeNameGroupMap.put(getTypeName(cls), group);
     }
 
-    private void register(String className, ViewHolderManager manager) {
-        if (itemClassNames.contains(className)) {
-            viewHolderManagers.set(itemClassNames.indexOf(className), manager);
+    private void register(String typeName, ViewHolderManager manager) {
+        if (itemTypeNames.contains(typeName)) {
+            viewHolderManagers.set(itemTypeNames.indexOf(typeName), manager);
         } else {
-            itemClassNames.add(className);
+            itemTypeNames.add(typeName);
             viewHolderManagers.add(manager);
         }
     }
@@ -64,13 +67,26 @@ public class ItemTypeManager {
      * @return -1 如果没找到；
      */
     public int getItemType(@NonNull Object itemData) {
-        String key = getClassName(itemData.getClass());
-        //如果含有证明此className注册了组合的对应关系，需要取出实际的className
-        if (itemClassNameGroupMap.containsKey(key)) {
-            ViewHolderManager manager = itemClassNameGroupMap.get(key).getViewHolderManager(itemData);
-            key = getClassNameFromGroup(itemData.getClass(), itemClassNameGroupMap.get(key), manager);
+        String typeName;
+        //如果是自定义Item类型，则直接从item中获取
+        if (itemData instanceof Item) {
+            typeName = ((Item) itemData).getItemTypeName();
+            int itemType = itemTypeNames.indexOf(typeName);
+            if (itemType < 0) {
+                //自定义Item类型，事先不需要注册，若未查到对应关系，注册即可
+                register(typeName, ((Item) itemData).getViewHolderManager());
+                itemType = itemTypeNames.size() - 1;
+            }
+            return itemType;
         }
-        return itemClassNames.indexOf(key);
+
+        typeName = getTypeName(itemData.getClass());
+        //如果含有证明此className注册了组合的对应关系，需要取出实际的className
+        if (itemTypeNameGroupMap.containsKey(typeName)) {
+            ViewHolderManager manager = itemTypeNameGroupMap.get(typeName).getViewHolderManager(itemData);
+            typeName = getClassNameFromGroup(itemData.getClass(), itemTypeNameGroupMap.get(typeName), manager);
+        }
+        return itemTypeNames.indexOf(typeName);
     }
 
     /**
@@ -94,15 +110,15 @@ public class ItemTypeManager {
         return viewHolderManagers;
     }
 
-    public List<String> getItemClassNames() {
-        return itemClassNames;
+    public List<String> getItemTypeNames() {
+        return itemTypeNames;
     }
 
-    private String getClassName(Class<?> cls) {
+    private String getTypeName(Class<?> cls) {
         return cls.getName();
     }
 
     private String getClassNameFromGroup(Class<?> cls, ViewHolderManagerGroup group, ViewHolderManager manager) {
-        return getClassName(cls) + group.getViewHolderManagerTag(manager);
+        return getTypeName(cls) + group.getViewHolderManagerTag(manager);
     }
 }

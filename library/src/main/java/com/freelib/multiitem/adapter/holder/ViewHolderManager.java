@@ -33,6 +33,9 @@ import com.freelib.multiitem.listener.OnItemLongClickListener;
  * @author free46000
  */
 public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
+    private boolean fullSpan;
+    private int spanSize;
+
     /**
      * 创建ViewHolder
      * {@link android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder}
@@ -69,13 +72,20 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     /**
      * 通过资源id生成item view
      *
-     * @param layoutId layout id
-     * @param parent   onCreateViewHolder中的参数
+     * @param parent onCreateViewHolder中的参数
      * @return 返回item view
      */
-    protected View getItemView(@LayoutRes int layoutId, ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+    protected View getItemView(ViewGroup parent) {
+        return LayoutInflater.from(parent.getContext()).inflate(getItemLayoutId(), parent, false);
     }
+
+    /**
+     * item布局文件id
+     *
+     * @return layout资源id
+     */
+    @LayoutRes
+    protected abstract int getItemLayoutId();
 
     /**
      * 在指定view中获取控件为id的view
@@ -97,4 +107,36 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
         return getView(viewHolder.itemView, id);
     }
 
+    /**
+     * @param fullSpan 是否需要填满父布局（适用于表格布局）
+     */
+    public void setFullSpan(boolean fullSpan) {
+        this.fullSpan = fullSpan;
+    }
+
+    /**
+     * @return 是否填满父布局
+     */
+    public boolean isFullSpan() {
+        return fullSpan;
+    }
+
+    /**
+     * 根据spanCount获取当前所占span大小(适用于表格布局)
+     * 如果被设置过正整数则返回；如果是fullSpan则返回spanCount；其余返回1
+     *
+     * @param spanCount span总数量
+     * @return 当前所占span大小
+     */
+    public int getSpanSize(int spanCount) {
+        return spanSize >= 0 ? spanSize : isFullSpan() ? spanCount : 1;
+
+    }
+
+    /**
+     * @param spanSize 所占span大小
+     */
+    public void setSpanSize(int spanSize) {
+        this.spanSize = spanSize;
+    }
 }

@@ -14,6 +14,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public ViewHolderManager viewHolderManager;
     public Object itemData;
 
+
     public BaseViewHolder(View itemView) {
         super(itemView);
     }
@@ -24,13 +25,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
+     * header和footer的个数也计算在内
      * {@link #getAdapterPosition()}
      */
-    public Object getItemPosition() {
+    public int getItemPosition() {
         return getAdapterPosition();
     }
 
     public ViewHolderManager getViewHolderManager() {
         return viewHolderManager;
     }
+
 }
