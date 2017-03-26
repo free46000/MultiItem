@@ -59,8 +59,10 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      */
     public void onBindViewHolder(@NonNull V holder, @NonNull T t, @NonNull ViewHolderParams params) {
         // TODO 如果以后有需要不直接在item view上设置Click事件，在MultiViewHolder增加itemHandlerView属性即可
-        holder.itemView.setOnClickListener(params.getClickListener());
-        holder.itemView.setOnLongClickListener(params.getLongClickListener());
+        if (isClickable()) {
+            holder.itemView.setOnClickListener(params.getClickListener());
+            holder.itemView.setOnLongClickListener(params.getLongClickListener());
+        }
         onBindViewHolder(holder, t);
     }
 
@@ -138,5 +140,9 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      */
     public void setSpanSize(int spanSize) {
         this.spanSize = spanSize;
+    }
+
+    public boolean isClickable() {
+        return true;
     }
 }

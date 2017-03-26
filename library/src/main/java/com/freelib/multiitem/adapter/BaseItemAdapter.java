@@ -15,6 +15,7 @@ import com.freelib.multiitem.adapter.holder.ViewHolderParams;
 import com.freelib.multiitem.adapter.type.ItemTypeManager;
 import com.freelib.multiitem.common.Const;
 import com.freelib.multiitem.item.ItemUnique;
+import com.freelib.multiitem.item.LoadMoreManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -34,6 +35,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Object> headItems = new ArrayList<>();
     private List<Object> footItems = new ArrayList<>();
     private ItemTypeManager itemTypeManager;
+    private LoadMoreManager loadMoreManager;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -199,6 +201,37 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      */
     public void addHeadItem(Object headItem) {
         headItems.add(headItem);
+    }
+
+    /**
+     * 开启loadMore，使列表支持加载更多<p>
+     * 本方法原理是添加{@link #addFootItem(Object)} 需要注意在最后调用本方法才可以将加载更多视图放在底部
+     *
+     * @param loadMoreManager LoadMoreManager
+     */
+    public void enableLoadMore(LoadMoreManager loadMoreManager) {
+        this.loadMoreManager = loadMoreManager;
+        addFootItem(loadMoreManager);
+    }
+
+    /**
+     * 加载完成
+     *
+     * @see LoadMoreManager#loadCompleted(boolean)
+     */
+    public void setLoadCompleted(boolean isLoadAll) {
+        if (loadMoreManager != null)
+            loadMoreManager.loadCompleted(isLoadAll);
+    }
+
+    /**
+     * 加载失败
+     *
+     * @see LoadMoreManager#loadFailed()
+     */
+    public void setLoadFailed() {
+        if (loadMoreManager != null)
+            loadMoreManager.loadFailed();
     }
 
     /**

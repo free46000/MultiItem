@@ -17,7 +17,6 @@ import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.LoadMoreHolderManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
-import com.freelib.multiitem.listener.OnLoadMoreListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -26,20 +25,18 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.Y;
-
 @EActivity(R.layout.layout_recycler)
-public class HeadFootActivity extends AppCompatActivity {
+public class HeadFootGridActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startHeadFootActivity(Context context) {
-        HeadFootActivity_.intent(context).start();
+    public static void startHeadFootGridActivity(Context context) {
+        HeadFootGridActivity_.intent(context).start();
     }
 
     @AfterViews
     protected void initViews() {
-        setTitle(R.string.head_foot_title);
+        setTitle(R.string.head_foot_grid_title);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //初始化adapter
@@ -58,11 +55,21 @@ public class HeadFootActivity extends AppCompatActivity {
         adapter.addFootItem(new TextBean("通过addFootItem增加的foot2"));
         recyclerView.setAdapter(adapter);
         List<Object> list = new ArrayList<>();
-        list.add(new TextBean("AAA"));
-        list.add(new ImageBean(R.drawable.img1));
-        list.add(new ImageTextBean(R.drawable.img2, "BBB"));
+        for (int i = 0; i < 2; i++) {
+            list.add(new TextBean("AAA" + i));
+            list.add(new ImageBean(R.drawable.img1));
+            list.add(new ImageTextBean(R.drawable.img2, "BBB" + i));
+        }
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseViewHolder viewHolder) {
+                if (viewHolder.getItemPosition() == 0) {
+                    adapter.addDataItem(new TextBean("我是后加的"));
+                } else {
+                    adapter.removeDataItem(adapter.getDataList().size() - 1);
+                }
+            }
+        });
         adapter.setDataItems(list);
     }
 }
-
-

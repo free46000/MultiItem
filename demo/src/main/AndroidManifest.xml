@@ -19,6 +19,8 @@
         <activity android:name=".ItemClickActivity_"/>
         <activity android:name=".ChatActivity_"/>
         <activity android:name=".HeadFootActivity_"/>
+        <activity android:name=".HeadFootGridActivity_"/>
+        <activity android:name=".LoadMoreActivity_"/>
     </application>
 
 </manifest>

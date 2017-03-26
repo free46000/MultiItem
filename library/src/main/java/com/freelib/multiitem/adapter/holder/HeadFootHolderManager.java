@@ -29,7 +29,11 @@ public class HeadFootHolderManager<T> extends ViewHolderManager<T, BaseViewHolde
 
     @Override
     protected View getItemView(ViewGroup parent) {
-        return itemView;
+        if (itemView != null) {
+            return itemView;
+        } else {
+            return super.getItemView(parent);
+        }
     }
 
     @Override
