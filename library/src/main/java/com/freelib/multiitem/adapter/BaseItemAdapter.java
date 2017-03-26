@@ -14,7 +14,7 @@ import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
 import com.freelib.multiitem.adapter.holder.ViewHolderParams;
 import com.freelib.multiitem.adapter.type.ItemTypeManager;
 import com.freelib.multiitem.common.Const;
-import com.freelib.multiitem.item.UniqueItem;
+import com.freelib.multiitem.item.ItemUnique;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -158,10 +158,10 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      *
      * @param footView foot view
      * @see HeadFootHolderManager
-     * @see UniqueItem
+     * @see ItemUnique
      */
     public void addFootView(View footView) {
-        addFootItem(new UniqueItem(new HeadFootHolderManager(footView)));
+        addFootItem(new ItemUnique(new HeadFootHolderManager(footView)));
     }
 
     /**
@@ -183,10 +183,10 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      *
      * @param headView head view
      * @see HeadFootHolderManager
-     * @see UniqueItem
+     * @see ItemUnique
      */
     public void addHeadView(View headView) {
-        addHeadItem(new UniqueItem(new HeadFootHolderManager(headView)));
+        addHeadItem(new ItemUnique(new HeadFootHolderManager(headView)));
     }
 
     /**

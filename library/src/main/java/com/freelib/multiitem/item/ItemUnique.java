@@ -8,10 +8,10 @@ import com.freelib.multiitem.adapter.holder.ViewHolderManager;
  * getItemTypeName时返回toString作为唯一标示，使得本item对应的ViewHolderManager不可复用
  * Created by free46000 on 2017/3/26.
  */
-public class UniqueItem implements Item {
+public class ItemUnique implements Item {
     private ViewHolderManager manager;
 
-    public UniqueItem(ViewHolderManager manager) {
+    public ItemUnique(ViewHolderManager manager) {
         this.manager = manager;
     }
 
