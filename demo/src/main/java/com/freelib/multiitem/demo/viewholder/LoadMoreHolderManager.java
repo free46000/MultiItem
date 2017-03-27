@@ -9,6 +9,7 @@ import com.freelib.multiitem.item.LoadMoreManager;
 import com.freelib.multiitem.listener.OnLoadMoreListener;
 
 /**
+ * 加载更多视图管理类
  * Created by free46000 on 2017/3/26.
  */
 public class LoadMoreHolderManager extends LoadMoreManager {
@@ -24,6 +25,11 @@ public class LoadMoreHolderManager extends LoadMoreManager {
     @Override
     protected int getItemLayoutId() {
         return R.layout.item_load_more;
+    }
+
+    @Override
+    protected void updateLoadInitView() {
+        ((TextView) getView(loadMoreView, R.id.text)).setText("");
     }
 
     @Override

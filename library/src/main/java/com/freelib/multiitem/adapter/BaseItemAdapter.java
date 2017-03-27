@@ -211,6 +211,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      */
     public void enableLoadMore(LoadMoreManager loadMoreManager) {
         this.loadMoreManager = loadMoreManager;
+        loadMoreManager.setAdapter(this);
         addFootItem(loadMoreManager);
     }
 
@@ -263,10 +264,17 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * 清空数据
      */
-    public void clearData() {
+    public void clearAllData() {
         dataItems.clear();
         headItems.clear();
         footItems.clear();
+    }
+
+    /**
+     * 清空Item数据不含head 和 foot
+     */
+    public void clearData() {
+        dataItems.clear();
     }
 
 
