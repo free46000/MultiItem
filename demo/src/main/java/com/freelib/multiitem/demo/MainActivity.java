@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         HeadFootActivity.startHeadFootActivity(MainActivity.this);
                         break;
                     case 4:
-                        HeadFootGridActivity.startHeadFootGridActivity(MainActivity.this);
+                        FullSpanGridActivity.startFullSpanGridActivity(MainActivity.this);
                         break;
                     case 5:
                         LoadMoreActivity.startLoadMoreActivity(MainActivity.this);

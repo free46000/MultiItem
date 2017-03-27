@@ -5,8 +5,8 @@
     <string name="multi_item_title">多类型演示</string>
     <string name="item_click_title">点击事件演示</string>
     <string name="chat_title">聊天界面演示</string>
-    <string name="head_foot_title">头尾界面演示</string>
-    <string name="head_foot_grid_title">头尾界面演示 在表格中并充满宽度</string>
+    <string name="head_foot_title">头尾视图演示</string>
+    <string name="head_foot_grid_title">表格中充满宽度演示(含头尾视图)</string>
     <string name="load_more_title">下拉刷新加载更多界面演示</string>
 
 

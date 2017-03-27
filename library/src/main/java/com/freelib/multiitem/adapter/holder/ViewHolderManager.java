@@ -2,6 +2,8 @@ package com.freelib.multiitem.adapter.holder;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +104,8 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
 
     /**
      * @return 是否填满父布局
+     * @see StaggeredGridLayoutManager.LayoutParams#setFullSpan
+     * @see GridLayoutManager#setSpanSizeLookup
      */
     public boolean isFullSpan() {
         return fullSpan;
@@ -113,9 +117,10 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      *
      * @param spanCount span总数量
      * @return 当前所占span大小
+     * @see GridLayoutManager#setSpanSizeLookup
      */
     public int getSpanSize(int spanCount) {
-        return spanSize >= 0 ? spanSize : isFullSpan() ? spanCount : 1;
+        return spanSize > 0 ? spanSize : (isFullSpan() ? spanCount : 1);
 
     }
 

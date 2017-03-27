@@ -155,8 +155,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     /**
      * 添加foot View，默认为充满父布局
-     * {@link GridLayoutManager#setSpanSizeLookup(GridLayoutManager.SpanSizeLookup)}
-     * {@link android.support.v7.widget.StaggeredGridLayoutManager.LayoutParams#setFullSpan(boolean)}
+     * <p>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
      *
      * @param footView foot view
      * @see HeadFootHolderManager
@@ -180,8 +181,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     /**
      * 添加head View，默认为充满父布局
-     * {@link GridLayoutManager#setSpanSizeLookup(GridLayoutManager.SpanSizeLookup)}
-     * {@link android.support.v7.widget.StaggeredGridLayoutManager.LayoutParams#setFullSpan(boolean)}
+     * <p>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
      *
      * @param headView head view
      * @see HeadFootHolderManager
@@ -315,9 +317,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public void onViewAttachedToWindow(BaseViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-
-        System.out.println("onViewAttachedToWindow:::" + holder.getItemPosition() + "==" + holder.getItemData());
-
+//        System.out.println("onViewAttachedToWindow:::" + holder.getItemPosition() + "==" + holder.getItemData());
         //当StaggeredGridLayoutManager的时候设置充满横屏
         if (holder.getViewHolderManager().isFullSpan() && holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
@@ -328,7 +328,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        System.out.println("onAttachedToRecyclerView:::");
+//        System.out.println("onAttachedToRecyclerView:::" + getItemCount());
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             //GridLayoutManager时设置每行的span
