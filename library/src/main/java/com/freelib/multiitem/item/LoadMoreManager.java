@@ -23,10 +23,19 @@ public abstract class LoadMoreManager extends HeadFootHolderManager implements I
     protected View.OnClickListener loadMoreClickListener = view -> onLoadMore();
     protected boolean isLoadFinish;
 
+    /**
+     * 默认滑动到底部自动加载为true
+     *
+     * @param onLoadMoreListener 加载更多监听
+     */
     public LoadMoreManager(OnLoadMoreListener onLoadMoreListener) {
         this(onLoadMoreListener, true);
     }
 
+    /**
+     * @param onLoadMoreListener 加载更多监听
+     * @param isAutoLoadMore     滑动到底部是否自动加载
+     */
     public LoadMoreManager(OnLoadMoreListener onLoadMoreListener, boolean isAutoLoadMore) {
         this.onLoadMoreListener = onLoadMoreListener;
         this.isAutoLoadMore = isAutoLoadMore;
@@ -65,7 +74,7 @@ public abstract class LoadMoreManager extends HeadFootHolderManager implements I
      * 若head和foot的数量小于当前loadMore的位置则证明没有ItemData数据，即为RecyclerView加载数据前
      *
      * @param holder
-     * @return
+     * @return 是否需要加载更多
      */
     protected boolean isNeeLoadMore(@NonNull BaseViewHolder holder) {
         int headFootCount = adapter.getHeadCount() + adapter.getFootCount();

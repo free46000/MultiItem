@@ -48,14 +48,19 @@ public class HeadFootActivity extends AppCompatActivity {
         adapter.register(TextBean.class, new TextViewManager());
         adapter.register(ImageTextBean.class, new ImageAndTextManager());
         adapter.register(ImageBean.class, new ImageViewManager());
-        TextView headView1 = new TextView(this);
-        headView1.setText("通过addHeadView增加的head1");
-        adapter.addHeadView(headView1);
+        //添加header
+        TextView headView = new TextView(this);
+        headView.setText("通过addHeadView增加的head1");
+        //方式一：方便实际业务使用
+        adapter.addHeadView(headView);
+        //方式二：这种方式和直接addDataItem添加数据源原理一样
         adapter.addHeadItem(new TextBean("通过addHeadItem增加的head2"));
-        TextView footView1 = new TextView(this);
-        footView1.setText("通过addFootView增加的foot1");
-        adapter.addFootView(footView1);
+        //添加footer，方式同添加header
+        TextView footView = new TextView(this);
+        footView.setText("通过addFootView增加的foot1");
+        adapter.addFootView(footView);
         adapter.addFootItem(new TextBean("通过addFootItem增加的foot2"));
+
         recyclerView.setAdapter(adapter);
         List<Object> list = new ArrayList<>();
         list.add(new TextBean("AAA"));

@@ -49,6 +49,7 @@ public class FullSpanGridActivity extends AppCompatActivity {
         //充满宽度详见ViewHolderManager#isFullSpan返回true即可，其实不一定是head或者foot
         TextView headView1 = new TextView(this);
         headView1.setText("通过addHeadView增加的充满宽度的head");
+        //使用HeadFootHolderManager已经实现isFullSpan方法，默认全屏
         adapter.addHeadView(headView1);
         TextView footView1 = new TextView(this);
         footView1.setText("通过addFootView增加充满宽度的foot1");

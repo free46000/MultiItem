@@ -112,8 +112,9 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     }
 
     /**
-     * 根据spanCount获取当前所占span大小(适用于表格布局)
-     * 如果被设置过正整数则返回；如果是fullSpan则返回spanCount；其余返回1
+     * 根据spanCount获取当前所占span大小(适用于表格布局)<br>
+     * 如果被设置过正整数则返回；如果是fullSpan则返回spanCount；其余返回1<br>
+     * GridLayoutManager模式下，调整本方法返回值达到不同Item占用不同宽度的功能
      *
      * @param spanCount span总数量
      * @return 当前所占span大小
@@ -121,7 +122,6 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      */
     public int getSpanSize(int spanCount) {
         return spanSize > 0 ? spanSize : (isFullSpan() ? spanCount : 1);
-
     }
 
     /**

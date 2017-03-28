@@ -207,7 +207,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     /**
      * 开启loadMore，使列表支持加载更多<p>
-     * 本方法原理是添加{@link #addFootItem(Object)} 需要注意在最后调用本方法才可以将加载更多视图放在底部
+     * 本方法原理是添加{@link #addFootItem(Object)} 并且对添加顺序敏感需要注意在最后调用本方法才可以将加载更多视图放在底部
      *
      * @param loadMoreManager LoadMoreManager
      */
