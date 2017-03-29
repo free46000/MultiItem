@@ -18,6 +18,9 @@
         <activity android:name=".MultiItemActivity_"/>
         <activity android:name=".ItemClickActivity_"/>
         <activity android:name=".ChatActivity_"/>
+        <activity android:name=".HeadFootActivity_"/>
+        <activity android:name=".FullSpanGridActivity_"/>
+        <activity android:name=".LoadMoreActivity_"/>
     </application>
 
 </manifest>

@@ -1,15 +1,21 @@
 package com.freelib.multiitem.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.HeadFootHolderManager;
 import com.freelib.multiitem.adapter.holder.ViewHolderManager;
 import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
 import com.freelib.multiitem.adapter.holder.ViewHolderParams;
 import com.freelib.multiitem.adapter.type.ItemTypeManager;
 import com.freelib.multiitem.common.Const;
+import com.freelib.multiitem.item.ItemUnique;
+import com.freelib.multiitem.item.LoadMoreManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -29,6 +35,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Object> headItems = new ArrayList<>();
     private List<Object> footItems = new ArrayList<>();
     private ItemTypeManager itemTypeManager;
+    private LoadMoreManager loadMoreManager;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -92,16 +99,20 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * 添加Item
      */
-    public void addDataItem(Object item) {
-        addDataItem(dataItems.size(), item);
+    public void addDataItem(Object... items) {
+        addDataItem(dataItems.size(), items);
     }
 
     /**
      * 在指定位置添加Item
      */
-    public void addDataItem(int position, Object item) {
-        dataItems.add(position, item);
-        notifyItemRangeInserted(position, 1);
+    public void addDataItem(int position, Object... items) {
+        if (items != null && items.length > 0) {
+            for (Object item : items) {
+                dataItems.add(position, item);
+            }
+            notifyItemRangeInserted(position + getHeadCount(), items.length);
+        }
     }
 
     /**
@@ -116,9 +127,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         toPosition = fromPosition < toPosition ? toPosition - 1 : toPosition;
         dataItems.add(toPosition, dataItems.remove(fromPosition));
 
-
-        notifyItemMoved(fromPosition, toPosition);
+        notifyItemMoved(fromPosition + getHeadCount(), toPosition + getHeadCount());
     }
+
 
     /**
      * 移除Item 包括数据源和界面的移除
@@ -126,8 +137,104 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param position 需要被移除Item的position
      */
     public void removeDataItem(int position) {
-        dataItems.remove(position);
-        notifyItemRemoved(position);
+        removeDataItem(position, 1);
+    }
+
+    /**
+     * 改变Item 包括数据源和界面的移除
+     *
+     * @param position 需要被移除第一个Item的position
+     * @param position 需要被移除Item的个数
+     */
+    public void removeDataItem(int position, int itemCount) {
+        for (int i = 0; i < itemCount; i++) {
+            dataItems.remove(position);
+        }
+        notifyItemRangeRemoved(position + getHeadCount(), itemCount);
+    }
+
+    /**
+     * 添加foot View，默认为充满父布局
+     * <p>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
+     *
+     * @param footView foot view
+     * @see HeadFootHolderManager
+     * @see ItemUnique
+     */
+    public void addFootView(View footView) {
+        addFootItem(new ItemUnique(new HeadFootHolderManager(footView)));
+    }
+
+    /**
+     * 添加foot Item ,如是表格不居中需要充满父布局请设置对应属性<br>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
+     *
+     * @param footItem foot item
+     * @see HeadFootHolderManager
+     */
+    public void addFootItem(Object footItem) {
+        footItems.add(footItem);
+    }
+
+    /**
+     * 添加head View，默认为充满父布局
+     * <p>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
+     *
+     * @param headView head view
+     * @see HeadFootHolderManager
+     * @see ItemUnique
+     */
+    public void addHeadView(View headView) {
+        addHeadItem(new ItemUnique(new HeadFootHolderManager(headView)));
+    }
+
+    /**
+     * 添加head Item ,如是表格不居中需要充满父布局请设置对应属性<br>
+     * {@link ViewHolderManager#isFullSpan()}
+     * {@link ViewHolderManager#getSpanSize(int)}
+     *
+     * @param headItem head item
+     * @see HeadFootHolderManager
+     */
+    public void addHeadItem(Object headItem) {
+        headItems.add(headItem);
+    }
+
+    /**
+     * 开启loadMore，使列表支持加载更多<p>
+     * 本方法原理是添加{@link #addFootItem(Object)} 并且对添加顺序敏感需要注意在最后调用本方法才可以将加载更多视图放在底部
+     *
+     * @param loadMoreManager LoadMoreManager
+     */
+    public void enableLoadMore(LoadMoreManager loadMoreManager) {
+        this.loadMoreManager = loadMoreManager;
+        loadMoreManager.setAdapter(this);
+        addFootItem(loadMoreManager);
+    }
+
+    /**
+     * 加载完成
+     *
+     * @see LoadMoreManager#loadCompleted(boolean)
+     */
+    public void setLoadCompleted(boolean isLoadAll) {
+        if (loadMoreManager != null)
+            loadMoreManager.loadCompleted(isLoadAll);
+    }
+
+    /**
+     * 加载失败
+     *
+     * @see LoadMoreManager#loadFailed()
+     */
+    public void setLoadFailed() {
+        if (loadMoreManager != null)
+            loadMoreManager.loadFailed();
     }
 
     /**
@@ -146,20 +253,30 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (position < headItems.size()) {
             return headItems.get(position);
         }
-        int footPosition = position - getHeadCount() - dataItems.size();
-        if (footPosition >= 0) {
-            return footItems.get(footPosition);
+
+        position -= headItems.size();
+        if (position < dataItems.size()) {
+            return dataItems.get(position);
         }
-        return dataItems.get(position - headItems.size());
+
+        position -= dataItems.size();
+        return footItems.get(position);
     }
 
     /**
      * 清空数据
      */
-    public void clearData() {
+    public void clearAllData() {
         dataItems.clear();
         headItems.clear();
         footItems.clear();
+    }
+
+    /**
+     * 清空Item数据不含head 和 foot
+     */
+    public void clearData() {
+        dataItems.clear();
     }
 
 
@@ -195,6 +312,37 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemCount() {
         return dataItems.size() + getHeadCount() + getFootCount();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(BaseViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+//        System.out.println("onViewAttachedToWindow:::" + holder.getItemPosition() + "==" + holder.getItemData());
+        //当StaggeredGridLayoutManager的时候设置充满横屏
+        if (holder.getViewHolderManager().isFullSpan() && holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            params.setFullSpan(true);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+//        System.out.println("onAttachedToRecyclerView:::" + getItemCount());
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            //GridLayoutManager时设置每行的span
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                ViewHolderManager holderManager;
+
+                @Override
+                public int getSpanSize(int position) {
+                    holderManager = itemTypeManager.getViewHolderManager(getItemViewType(position));
+                    return holderManager.getSpanSize(gridManager.getSpanCount());
+                }
+            });
+        }
     }
 
     /**

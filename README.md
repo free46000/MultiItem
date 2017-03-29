@@ -77,7 +77,6 @@ public class ImageViewManager extends BaseViewHolderManager<ImageBean> {
     }
 }
 ```
-至此本库的多种类型列表用法已经完成，并没有修改或继承`RecyclerView Adapter`类，完全使用默认实现`BaseItemAdapter`即可。
 
 #### 相同数据源对应多个ViewHolder（聊天界面）
 这是一种特殊的需求，需要在运行时通过数据源中的某个属性，判断加载的布局，典型的就是聊天功能，相同消息数据对应左右两种气泡视图，在此处贴出注册时的关键代码，其他和多种类型列表类似：
@@ -120,6 +119,8 @@ adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
     }
 });
 ```
+
+至此本库的多种类型列表用法已经完成，并没有修改或继承`RecyclerView Adapter`类，完全使用默认实现`BaseItemAdapter`即可。
 
 ## 详解
 #### 主要流程

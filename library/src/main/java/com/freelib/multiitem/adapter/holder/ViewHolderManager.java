@@ -1,23 +1,9 @@
-/*
- * Copyright 2016 drakeet. https://github.com/drakeet
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.freelib.multiitem.adapter.holder;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +19,9 @@ import com.freelib.multiitem.listener.OnItemLongClickListener;
  * @author free46000
  */
 public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
+    private boolean fullSpan;
+    private int spanSize;
+
     /**
      * 创建ViewHolder
      * {@link android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder}
@@ -56,8 +45,10 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      */
     public void onBindViewHolder(@NonNull V holder, @NonNull T t, @NonNull ViewHolderParams params) {
         // TODO 如果以后有需要不直接在item view上设置Click事件，在MultiViewHolder增加itemHandlerView属性即可
-        holder.itemView.setOnClickListener(params.getClickListener());
-        holder.itemView.setOnLongClickListener(params.getLongClickListener());
+        if (isClickable()) {
+            holder.itemView.setOnClickListener(params.getClickListener());
+            holder.itemView.setOnLongClickListener(params.getLongClickListener());
+        }
         onBindViewHolder(holder, t);
     }
 
@@ -69,13 +60,20 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     /**
      * 通过资源id生成item view
      *
-     * @param layoutId layout id
-     * @param parent   onCreateViewHolder中的参数
+     * @param parent onCreateViewHolder中的参数
      * @return 返回item view
      */
-    protected View getItemView(@LayoutRes int layoutId, ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+    protected View getItemView(ViewGroup parent) {
+        return LayoutInflater.from(parent.getContext()).inflate(getItemLayoutId(), parent, false);
     }
+
+    /**
+     * item布局文件id
+     *
+     * @return layout资源id
+     */
+    @LayoutRes
+    protected abstract int getItemLayoutId();
 
     /**
      * 在指定view中获取控件为id的view
@@ -97,4 +95,43 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
         return getView(viewHolder.itemView, id);
     }
 
+    /**
+     * @param fullSpan 是否需要填满父布局（适用于表格布局）
+     */
+    public void setFullSpan(boolean fullSpan) {
+        this.fullSpan = fullSpan;
+    }
+
+    /**
+     * @return 是否填满父布局
+     * @see StaggeredGridLayoutManager.LayoutParams#setFullSpan
+     * @see GridLayoutManager#setSpanSizeLookup
+     */
+    public boolean isFullSpan() {
+        return fullSpan;
+    }
+
+    /**
+     * 根据spanCount获取当前所占span大小(适用于表格布局)<br>
+     * 如果被设置过正整数则返回；如果是fullSpan则返回spanCount；其余返回1<br>
+     * GridLayoutManager模式下，调整本方法返回值达到不同Item占用不同宽度的功能
+     *
+     * @param spanCount span总数量
+     * @return 当前所占span大小
+     * @see GridLayoutManager#setSpanSizeLookup
+     */
+    public int getSpanSize(int spanCount) {
+        return spanSize > 0 ? spanSize : (isFullSpan() ? spanCount : 1);
+    }
+
+    /**
+     * @param spanSize 所占span大小
+     */
+    public void setSpanSize(int spanSize) {
+        this.spanSize = spanSize;
+    }
+
+    public boolean isClickable() {
+        return true;
+    }
 }
