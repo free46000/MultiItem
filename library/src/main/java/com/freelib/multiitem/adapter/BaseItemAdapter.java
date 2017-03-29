@@ -90,6 +90,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     /**
      * 设置Item list
+     * todo 使用List<? extends Object>替换List<Object>
      */
     public void setDataItems(@NonNull List<Object> dataItems) {
         this.dataItems = dataItems;
@@ -99,20 +100,32 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * 添加Item
      */
-    public void addDataItem(Object... items) {
-        addDataItem(dataItems.size(), items);
+    public void addDataItem(@NonNull Object item) {
+        addDataItem(dataItems.size(), item);
     }
 
     /**
      * 在指定位置添加Item
      */
-    public void addDataItem(int position, Object... items) {
-        if (items != null && items.length > 0) {
-            for (Object item : items) {
-                dataItems.add(position, item);
-            }
-            notifyItemRangeInserted(position + getHeadCount(), items.length);
-        }
+    public void addDataItem(int position, @NonNull Object item) {
+        dataItems.add(position, item);
+        notifyItemInserted(position + getHeadCount());
+    }
+
+    /**
+     * 添加ItemList
+     */
+    public void addDataItems(@NonNull List<Object> items) {
+        addDataItem(dataItems.size(), items);
+    }
+
+    /**
+     * 在指定位置添加ItemList
+     * todo 使用List<? extends Object>替换List<Object>
+     */
+    public void addDataItem(int position, @NonNull List<Object> items) {
+        dataItems.addAll(position, items);
+        notifyItemRangeInserted(position + getHeadCount(), items.size());
     }
 
     /**
@@ -163,7 +176,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @see HeadFootHolderManager
      * @see ItemUnique
      */
-    public void addFootView(View footView) {
+    public void addFootView(@NonNull View footView) {
         addFootItem(new ItemUnique(new HeadFootHolderManager(footView)));
     }
 
@@ -175,7 +188,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param footItem foot item
      * @see HeadFootHolderManager
      */
-    public void addFootItem(Object footItem) {
+    public void addFootItem(@NonNull Object footItem) {
         footItems.add(footItem);
     }
 
@@ -189,7 +202,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @see HeadFootHolderManager
      * @see ItemUnique
      */
-    public void addHeadView(View headView) {
+    public void addHeadView(@NonNull View headView) {
         addHeadItem(new ItemUnique(new HeadFootHolderManager(headView)));
     }
 
@@ -201,7 +214,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param headItem head item
      * @see HeadFootHolderManager
      */
-    public void addHeadItem(Object headItem) {
+    public void addHeadItem(@NonNull Object headItem) {
         headItems.add(headItem);
     }
 
@@ -211,7 +224,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      *
      * @param loadMoreManager LoadMoreManager
      */
-    public void enableLoadMore(LoadMoreManager loadMoreManager) {
+    public void enableLoadMore(@NonNull LoadMoreManager loadMoreManager) {
         this.loadMoreManager = loadMoreManager;
         loadMoreManager.setAdapter(this);
         addFootItem(loadMoreManager);

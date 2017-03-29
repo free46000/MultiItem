@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addDataItem(new TextBean(getString(R.string.head_foot_title)));
         adapter.addDataItem(new TextBean(getString(R.string.head_foot_grid_title)));
         adapter.addDataItem(new TextBean(getString(R.string.load_more_title)));
+        adapter.addDataItem(new TextBean(getString(R.string.panel_title)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 5:
                         LoadMoreActivity.startLoadMoreActivity(MainActivity.this);
+                        break;
+                    case 6:
+                        PanelActivity.startActivity(MainActivity.this);
                         break;
                 }
 

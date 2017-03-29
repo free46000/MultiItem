@@ -1,5 +1,6 @@
 package com.freelib.multiitem.item;
 
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.ViewHolderManager;
 
 /**
@@ -9,9 +10,9 @@ import com.freelib.multiitem.adapter.holder.ViewHolderManager;
  * Created by free46000 on 2017/3/26.
  */
 public class ItemUnique implements Item {
-    private ViewHolderManager manager;
+    private ViewHolderManager<? extends ItemUnique, ? extends BaseViewHolder> manager;
 
-    public ItemUnique(ViewHolderManager manager) {
+    public ItemUnique(ViewHolderManager<? extends ItemUnique, ? extends BaseViewHolder> manager) {
         this.manager = manager;
     }
 

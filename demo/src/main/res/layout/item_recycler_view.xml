@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:padding="20dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/item_group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="7dp"
+        android:paddingTop="8dp"
+        android:textSize="16dp"
+        tools:text="测试标题"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_group_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_group_name"
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"/>
+
+</RelativeLayout>

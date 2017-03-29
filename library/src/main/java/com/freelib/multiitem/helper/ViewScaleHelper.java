@@ -11,7 +11,7 @@ import java.util.List;
  * todo 宽度的处理不合适，包括缩小和恢复时候宽度高度的获取
  * Created by free46000 on 2016/10/10.
  */
-public class PanelScaleHelper {
+public class ViewScaleHelper {
     private List<View> verticalViewList = new ArrayList<>();
     private View mContentView;
     private View horizontalView;
@@ -21,7 +21,7 @@ public class PanelScaleHelper {
     private int verticalWidth;
     private int scale = 2;
 
-    public PanelScaleHelper(Activity mActivity) {
+    public ViewScaleHelper(Activity mActivity) {
         this.mActivity = mActivity;
     }
 
