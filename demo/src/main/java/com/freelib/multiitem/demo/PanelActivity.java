@@ -14,11 +14,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
+import com.freelib.multiitem.demo.bean.ImageBean;
+import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
+import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
+import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 import com.freelib.multiitem.helper.PanelDragHelper;
 import com.freelib.multiitem.helper.ViewScaleHelper;
@@ -50,16 +55,7 @@ public class PanelActivity extends Activity {
 
     @AfterViews
     protected void initView() {
-        contentView.getLayoutParams().width = getScreenWidth(this);
-        contentView.getLayoutParams().height = getScreenHeight(this);
         horizontalRecycler = (RecyclerView) findViewById(R.id.recyclerView);
-        horizontalRecycler.getLayoutParams().width = getScreenWidth(this);
-        horizontalRecycler.getLayoutParams().height = getScreenHeight(this);
-
-//        contentView.setScaleX(0.5f);
-//        contentView.setScaleY(0.5f);
-//        contentView.setPivotX(0f);
-//        contentView.setPivotY(0f);
 
         adapter = new BaseItemAdapter();
         //此处不能复用，所以使用ItemUnique保证唯一，Item可以动态匹配ViewHolderManager所以不用注册
@@ -93,55 +89,6 @@ public class PanelActivity extends Activity {
             }
         });
     }
-
-    /**
-     * 获得屏幕高度
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            wm.getDefaultDisplay().getRealMetrics(outMetrics);
-        } else {
-            wm.getDefaultDisplay().getMetrics(outMetrics);
-        }
-        return outMetrics.widthPixels;
-    }
-
-    /**
-     * 获得屏幕宽度
-     *
-     * @param context
-     * @return
-     */
-    public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            wm.getDefaultDisplay().getRealMetrics(outMetrics);
-        } else {
-            wm.getDefaultDisplay().getMetrics(outMetrics);
-        }
-        return outMetrics.heightPixels - 300;
-    }
-
-    public static int getContentHeight(Activity context) {
-        Rect outRect = new Rect();
-        context.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(outRect);
-        return outRect.height();
-    }
-
-    public static int getContentWidth(Activity context) {
-        Rect outRect = new Rect();
-        context.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(outRect);
-        return outRect.width();
-    }
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -238,8 +185,7 @@ public class PanelActivity extends Activity {
         protected void onCreateViewHolder(@NonNull BaseViewHolder holder) {
             super.onCreateViewHolder(holder);
             View view = holder.itemView;
-            view.getLayoutParams().width = getScreenWidth(PanelActivity.this);
-//            view.getLayoutParams().height = 1704;
+            view.getLayoutParams().width = -1;
 
             scaleHelper.addVerticalView(view);
             final RecyclerView recyclerView = getView(view, R.id.item_group_recycler);
@@ -249,6 +195,7 @@ public class PanelActivity extends Activity {
             final BaseItemAdapter baseItemAdapter = new BaseItemAdapter();
             //为XXBean数据源注册XXManager管理类
             baseItemAdapter.register(TextBean.class, new TextViewManager());
+            baseItemAdapter.register(ImageTextBean.class, new ImageAndTextManager());
             baseItemAdapter.setDataItems(getItemList(length));
             recyclerView.setAdapter(baseItemAdapter);
 
@@ -272,6 +219,8 @@ public class PanelActivity extends Activity {
 
         @Override
         public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull ItemUnique data) {
+            TextView groupTxt = getView(holder.itemView, R.id.item_group_name);
+            groupTxt.setText("待办任务组" + holder.getItemPosition());
         }
 
         @Override
@@ -283,11 +232,10 @@ public class PanelActivity extends Activity {
             List<Object> list = new ArrayList<>();
             for (int i = 0; i < length; i++) {
                 if (i == 1) {
-                    list.add(new TextBean(i + "fsadfsa\nfdsafdsa\nfdsafdsa\nfdsafdasfd\nsafdsa\nfdsfdasf" + i));
+                    list.add(new TextBean(i + "标题\n内容A\n内容B\n内容C" + i));
                 }
-                String text = "fsadfsafdsafdsafdsafdsa\nfdsafdasfdsafdsafdsfdasf" + i;
-                text = i > 9 ? text + "\nsdad" : text;
-                list.add(new TextBean(i + text));
+                String content = String.format("事项：%s\n事项内容：%s%s", i, i, i > 9 ? "\n更多内容" : "");
+                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextBean(content));
             }
             return list;
         }

@@ -5,7 +5,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
-                android:padding="20dp"
+                android:padding="10dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="vertical">
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:paddingLeft="7dp"
+        android:paddingLeft="8dp"
         android:paddingTop="8dp"
         android:textSize="16dp"
         tools:text="测试标题"/>
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_group_name"
-        android:paddingLeft="26dp"
-        android:paddingRight="26dp"/>
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 
 </RelativeLayout>

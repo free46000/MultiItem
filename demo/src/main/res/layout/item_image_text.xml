@@ -21,6 +21,8 @@
         android:layout_gravity="center"
         android:layout_marginLeft="8dp"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/text_medium"/>
+        android:textSize="@dimen/text_medium"
+        tools:text="测试内容"
+        />
 </LinearLayout>
 
