@@ -135,11 +135,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param toPosition   Item新的位置
      */
     public void moveDataItem(int fromPosition, int toPosition) {
-        //考虑到跨position移动的时候处理不能简单的Collections.swap
-        // 当from小于to的时候由于先remove了from的元素，数组位置向前移了一位所以减一
-        toPosition = fromPosition < toPosition ? toPosition - 1 : toPosition;
+        //考虑到跨position(如0->2)移动的时候处理不能Collections.swap
+        // if(from<to) to = to + 1 - 1;//+1是因为add的时候应该是to位置后1位，-1是因为先remove了from所以位置往前挪了1位
         dataItems.add(toPosition, dataItems.remove(fromPosition));
-
         notifyItemMoved(fromPosition + getHeadCount(), toPosition + getHeadCount());
     }
 

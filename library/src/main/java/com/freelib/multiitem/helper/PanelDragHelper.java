@@ -38,6 +38,7 @@ public class PanelDragHelper {
 
     /**
      * 横向滚动的RecyclerView
+     *
      * @param horizontalRecycler
      */
     public PanelDragHelper(RecyclerView horizontalRecycler) {
@@ -151,7 +152,7 @@ public class PanelDragHelper {
         float[] location = getInsideLocation(horizontalRecycler, touchRawX, touchRawY);
         View view = horizontalRecycler.findChildViewUnder(location[0], location[1]);
         int recyclerPos = getPositionByChildView(view);
-//        System.out.println("find_parent_out:" + lastRecyclerPos + "-" + verticalPos + "==" + location[0] + "====" + location[1]);
+//        System.out.println("find_parent_out:lastRecyclerPos:" + lastRecyclerPos + "-recyclerPos:" + recyclerPos + "==location[0]:" + location[0] + "==location[1]:" + location[1]);
         RecyclerView recyclerView = findRecyclerView(view);
 
         //没有找到所属位置或者目标RecyclerView，则不移动
@@ -166,14 +167,14 @@ public class PanelDragHelper {
         View itemView = recyclerView.findChildViewUnder(itemX, itemY);
         int itemPos = getTargetItemPos(itemView, itemY, lastRecyclerPos, recyclerPos);
 
-//        System.out.println("find_parent_out:" + childPos + "==" + lastRecyclerPos + "-" + verticalPos + "==" + "childX:" + childX + "childY:" + childY);
+//        System.out.println("find_parent_out:lastItemPos:" + lastItemPos + "==itemPos:" + itemPos + "==childX:" + itemX + "===childY:" + itemY);
         if (isSelectedRecyclerView(lastRecyclerPos, recyclerPos)) {
             onDragListener.onRecyclerSelected(recyclerView, recyclerPos);
             lastRecyclerPos = recyclerPos;
             lastRecyclerView = recyclerView;
         } else if (isChangeRecyclerView(lastRecyclerPos, recyclerPos)) {
             itemPos = calcItemPositionWhenChangeRecycler(recyclerView, itemView, itemPos, itemX, itemY);
-//            System.out.println("find_parent_inside:" + childPos + "==" + lastRecyclerPos + "-" + verticalPos + "==" + "childX:" + childX + "childY:" + childY);
+//            System.out.println("find_parent_inside:" + itemPos + "==" + lastRecyclerPos + "-" + recyclerPos + "==" + "childX:" + itemX + "childY:" + itemY);
             if (itemPos != NONE) {
                 int[] toPos = onDragListener.onRecyclerChangedPosition(lastRecyclerView, recyclerView,
                         lastItemPos, itemPos, lastRecyclerPos, recyclerPos);
@@ -208,7 +209,7 @@ public class PanelDragHelper {
                 return result;
             }
             scrollToRightPositionWhenItemChanged(recyclerView, itemView, itemPos);
-//            System.out.println("find:" + lastRecyclerPos + "-" + verticalPos + "======" + lastItemPos + "-" + childPos);
+//            System.out.println("find:" + lastRecyclerPos + "-" + recyclerPos + "======" + lastItemPos + "-" + itemPos);
             lastItemPos = itemPos;
         }
         return result;
@@ -375,8 +376,8 @@ public class PanelDragHelper {
         int top = itemView.getTop();
 
         int moveLimit = (int) (top + itemView.getHeight() * onDragListener.getMoveLimit());
-        System.out.println("isNeedRemove-top:" + top + "======height:" + itemView.getHeight()
-                + "======touchY:" + itemY + "moveLimit====" + moveLimit);
+//        System.out.println("isNeedRemove-top:" + top + "==height:" + itemView.getHeight()
+//                + "==touchY:" + itemY + "moveLimit==" + moveLimit + "lastItemPos > itemPos===" + (lastItemPos > itemPos));
 
         if (lastItemPos > itemPos) {
 //            return touchY < moveLimit && top >= 0;
