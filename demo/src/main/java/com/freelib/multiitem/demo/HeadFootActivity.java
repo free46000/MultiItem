@@ -33,7 +33,7 @@ public class HeadFootActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startHeadFootActivity(Context context) {
+    public static void startActivity(Context context) {
         HeadFootActivity_.intent(context).start();
     }
 

@@ -25,7 +25,7 @@ public class MultiItemActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startMultiItemActivity(Context context) {
+    public static void startActivity(Context context) {
         MultiItemActivity_.intent(context).start();
     }
 

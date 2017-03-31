@@ -25,7 +25,7 @@ public class ItemClickActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startItemClickActivity(Context context) {
+    public static void startActivity(Context context) {
         ItemClickActivity_.intent(context).start();
     }
 

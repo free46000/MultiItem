@@ -31,7 +31,7 @@ public class FullSpanGridActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startFullSpanGridActivity(Context context) {
+    public static void startActivity(Context context) {
         FullSpanGridActivity_.intent(context).start();
     }
 

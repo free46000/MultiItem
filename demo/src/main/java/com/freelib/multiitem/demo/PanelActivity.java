@@ -2,32 +2,26 @@ package com.freelib.multiitem.demo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
-import com.freelib.multiitem.demo.bean.ImageBean;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
-import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
-import com.freelib.multiitem.helper.PanelDragHelper;
+import com.freelib.multiitem.helper.ItemDragHelper;
 import com.freelib.multiitem.helper.ViewScaleHelper;
 import com.freelib.multiitem.item.ItemUnique;
+import com.freelib.multiitem.listener.OnItemDragListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 import org.androidannotations.annotations.AfterViews;
@@ -35,6 +29,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // TODO: 之前使用Item的setVISIBLE考虑现在如何实现，思考是否把这个还有拖动时的是否回调一起封装到一个对象中
@@ -46,7 +41,7 @@ public class PanelActivity extends Activity {
     public static final int NONE = -1;
     private RecyclerView horizontalRecycler;
     private BaseItemAdapter adapter;
-    private PanelDragHelper dragHelper;
+    private ItemDragHelper dragHelper;
     private ViewScaleHelper scaleHelper;
 
     public static void startActivity(Context context) {
@@ -59,119 +54,54 @@ public class PanelActivity extends Activity {
 
         adapter = new BaseItemAdapter();
         //此处不能复用，所以使用ItemUnique保证唯一，Item可以动态匹配ViewHolderManager所以不用注册
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(15)));
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(1)));
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(25)));
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(15)));
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(5)));
-        adapter.addDataItem(new ItemUnique(new RecyclerViewManager(5)));
-        horizontalRecycler.setLayoutManager(new Manager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapter.addDataItems(Arrays.asList(new ItemUnique(new RecyclerViewManager(15)),
+                new ItemUnique(new RecyclerViewManager(1)), new ItemUnique(new RecyclerViewManager(25)),
+                new ItemUnique(new RecyclerViewManager(15)), new ItemUnique(new RecyclerViewManager(5))));
+        //设置横向滚动LinearLayoutManager
+        horizontalRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalRecycler.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        horizontalRecycler.setClipToPadding(false);
 
-//        touchHelper = new PanelTouchHelper(horizontalRecycler);
-        dragHelper = new PanelDragHelper(horizontalRecycler);
+        dragHelper = new ItemDragHelper(horizontalRecycler);
         scaleHelper = new ViewScaleHelper(this);
         scaleHelper.setContentView(contentView);
         scaleHelper.setHorizontalView(horizontalRecycler);
-        final GestureDetector doubleTapGesture = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+
+        //监听横向滚动RecyclerView双击事件，并开启关闭缩放模式
+        doubleTapToggleScale();
+    }
+
+    private void doubleTapToggleScale() {
+        GestureDetector doubleTapGesture = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 scaleHelper.toggleScaleModel();
                 return super.onDoubleTap(e);
             }
         });
-        horizontalRecycler.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return doubleTapGesture.onTouchEvent(event);
-            }
-        });
+        horizontalRecycler.setOnTouchListener((v, event) -> doubleTapGesture.onTouchEvent(event));
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //需要把touch事件传给dragHelper，true表示消耗掉事件
+        //需要保证在Activity或者外层的ViewGroup或可以拦截Touch事件的地方回调都可以
         return dragHelper.onTouch(ev) || super.dispatchTouchEvent(ev);
     }
 
-    class OnBaseDragListener extends PanelDragHelper.OnDragListener {
-        private Object currItem;
-
-        public OnBaseDragListener(Object currItem) {
-            this.currItem = currItem;
-        }
-
-        public boolean onRecyclerSelected(RecyclerView recyclerView, int selectedPos) {
-            return true;
-        }
+    class OnBaseDragListener extends OnItemDragListener {
 
         @Override
         public float getScale() {
             return scaleHelper.isInScaleMode() ? scaleHelper.getScale() : super.getScale();
         }
 
-        public boolean onRecyclerChanged(RecyclerView fromView, RecyclerView toView, int itemFromPos,
-                                         int itemToPos, int i, int ii) {
-            BaseItemAdapter adapter = (BaseItemAdapter) fromView.getAdapter();
-            adapter.removeDataItem(itemFromPos);
-            adapter = (BaseItemAdapter) toView.getAdapter();
-            adapter.addDataItem(itemToPos, currItem);
-
-            return true;
-        }
-
-        public boolean onItemSelected(View selectedView, int selectedPos) {
-            return true;
-        }
-
-        public boolean onItemChanged(RecyclerView recyclerView, int fromPos, int toPos, int i) {
-            BaseItemAdapter adapter = (BaseItemAdapter) recyclerView.getAdapter();
-            adapter.moveDataItem(fromPos, toPos);
-            return true;
-        }
-
         public void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos) {
 //            ((MainActivity.ItemText) currItem).setGravity(View.VISIBLE);
+            // TODO: 2017/4/1 这个地方按说不需要 notifyDataSetChanged()
             if (recyclerView != null)
                 recyclerView.getAdapter().notifyDataSetChanged();
-//            for (int i = 0; i < parentRecycler.getChildCount(); i++) {
-//                View childView = parentRecycler.getChildAt(i);
-//                if (childView instanceof RecyclerView) {
-//                    ((RecyclerView) childView).getAdapter().notifyDataSetChanged();
-//                }
-//            }
         }
 
-        public void onDragStart() {
-//            if (currItem instanceof MainActivity.ItemText) {
-//                ((MainActivity.ItemText) currItem).setGravity(View.INVISIBLE);
-//                itemViewHolder.refreshView();
-//            }
-        }
-
-
-    }
-
-    class Manager extends LinearLayoutManager {
-
-        public Manager(Context context) {
-            super(context);
-        }
-
-        public Manager(Context context, int orientation, boolean reverseLayout) {
-            super(context, orientation, reverseLayout);
-        }
-
-        public Manager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-            super(context, attrs, defStyleAttr, defStyleRes);
-        }
-
-        @Override
-        public void setMeasuredDimension(int widthSize, int heightSize) {
-//            widthSize = widthSize * 2;
-            super.setMeasuredDimension(widthSize, heightSize);
-        }
     }
 
     class RecyclerViewManager extends BaseViewHolderManager<ItemUnique> {
@@ -203,9 +133,7 @@ public class PanelActivity extends Activity {
                 @Override
                 protected void onItemLongClick(BaseViewHolder viewHolder) {
                     View itemView = viewHolder.itemView;
-                    int[] locArr = new int[2];
-                    itemView.getLocationOnScreen(locArr);
-                    dragHelper.setOnDragListener(new OnBaseDragListener(viewHolder.getItemData()));
+                    dragHelper.setOnItemDragListener(new OnBaseDragListener());
                     dragHelper.startDrag(viewHolder);
 //                    if (item instanceof MainActivity.ItemText) {
 //                        ((MainActivity.ItemText) item).setGravity(View.INVISIBLE);
@@ -241,5 +169,4 @@ public class PanelActivity extends Activity {
         }
 
     }
-
 }

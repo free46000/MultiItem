@@ -19,7 +19,7 @@ public class ViewScaleHelper {
     private Activity mActivity;
 
     private int verticalWidth;
-    private int scale = 2;
+    private float scale = 0.5f;
 
     public ViewScaleHelper(Activity mActivity) {
         this.mActivity = mActivity;
@@ -41,12 +41,12 @@ public class ViewScaleHelper {
         int width = mContentView.getLayoutParams().width;
         int height = mContentView.getLayoutParams().height;
 
-        mContentView.getLayoutParams().width = width * scale;
-        mContentView.getLayoutParams().height = height * scale;
-        horizontalView.getLayoutParams().height = height * scale;
-        horizontalView.getLayoutParams().width = width * scale;
-        horizontalView.setScaleX((float) 1 / scale);
-        horizontalView.setScaleY((float) 1 / scale);
+        mContentView.getLayoutParams().width = (int) (width / scale);
+        mContentView.getLayoutParams().height = (int) (height / scale);
+        horizontalView.getLayoutParams().height = (int) (height / scale);
+        horizontalView.getLayoutParams().width = (int) (width / scale);
+        horizontalView.setScaleX(scale);
+        horizontalView.setScaleY(scale);
         horizontalView.setPivotX(0f);
         horizontalView.setPivotY(0f);
 

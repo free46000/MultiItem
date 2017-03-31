@@ -20,6 +20,8 @@ import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -108,22 +110,21 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * 在指定位置添加Item
      */
     public void addDataItem(int position, @NonNull Object item) {
-        dataItems.add(position, item);
-        notifyItemInserted(position + getHeadCount());
+        addDataItems(position, Collections.singletonList(item));
     }
 
     /**
      * 添加ItemList
      */
     public void addDataItems(@NonNull List<Object> items) {
-        addDataItem(dataItems.size(), items);
+        addDataItems(dataItems.size(), items);
     }
 
     /**
      * 在指定位置添加ItemList
      * todo 使用List<? extends Object>替换List<Object>
      */
-    public void addDataItem(int position, @NonNull List<Object> items) {
+    public void addDataItems(int position, @NonNull List<Object> items) {
         dataItems.addAll(position, items);
         notifyItemRangeInserted(position + getHeadCount(), items.size());
     }

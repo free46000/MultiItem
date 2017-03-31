@@ -35,7 +35,7 @@ public class LoadMoreActivity extends AppCompatActivity {
     private int pageSize = 20;
     private int failTimes;
 
-    public static void startLoadMoreActivity(Context context) {
+    public static void startActivity(Context context) {
         LoadMoreActivity_.intent(context).start();
     }
 

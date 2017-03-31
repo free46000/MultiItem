@@ -30,7 +30,7 @@ public class ChatActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
-    public static void startChatActivity(Context context) {
+    public static void startActivity(Context context) {
         ChatActivity_.intent(context).start();
     }
 

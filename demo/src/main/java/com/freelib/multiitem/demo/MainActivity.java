@@ -43,22 +43,22 @@ public class MainActivity extends AppCompatActivity {
                 //通过viewHolder获取需要的数据
                 switch (viewHolder.getAdapterPosition()) {
                     case 0:
-                        ItemClickActivity.startItemClickActivity(MainActivity.this);
+                        ItemClickActivity.startActivity(MainActivity.this);
                         break;
                     case 1:
-                        MultiItemActivity.startMultiItemActivity(MainActivity.this);
+                        MultiItemActivity.startActivity(MainActivity.this);
                         break;
                     case 2:
-                        ChatActivity.startChatActivity(MainActivity.this);
+                        ChatActivity.startActivity(MainActivity.this);
                         break;
                     case 3:
-                        HeadFootActivity.startHeadFootActivity(MainActivity.this);
+                        HeadFootActivity.startActivity(MainActivity.this);
                         break;
                     case 4:
-                        FullSpanGridActivity.startFullSpanGridActivity(MainActivity.this);
+                        FullSpanGridActivity.startActivity(MainActivity.this);
                         break;
                     case 5:
-                        LoadMoreActivity.startLoadMoreActivity(MainActivity.this);
+                        LoadMoreActivity.startActivity(MainActivity.this);
                         break;
                     case 6:
                         PanelActivity.startActivity(MainActivity.this);
