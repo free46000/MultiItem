@@ -1,11 +1,10 @@
 package com.freelib.multiitem.demo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO: 2017/4/2 把第0个位置的数据源设置为不可拖动的，并在UI上通过文字体现出来
 // TODO: 之前使用Item的setVISIBLE考虑现在如何实现，思考是否把这个还有拖动时的是否回调一起封装到一个对象中
 @EActivity(R.layout.activity_panel)
-public class PanelActivity extends Activity {
+public class PanelActivity extends AppCompatActivity {
     @ViewById(R.id.panel_content)
     protected View contentView;
 
@@ -62,7 +62,7 @@ public class PanelActivity extends Activity {
         horizontalRecycler.setAdapter(adapter);
 
         dragHelper = new ItemDragHelper(horizontalRecycler);
-        scaleHelper = new ViewScaleHelper(this);
+        scaleHelper = new ViewScaleHelper();
         scaleHelper.setContentView(contentView);
         scaleHelper.setHorizontalView(horizontalRecycler);
 

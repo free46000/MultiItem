@@ -6,24 +6,27 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.height;
+import static android.R.attr.width;
+
 
 /**
- * todo 宽度的处理不合适，包括缩小和恢复时候宽度高度的获取
- * Created by free46000 on 2016/10/10.
+ * 视图缩放控制类
+ * 适用于多Recycler类型的缩放
+ * Created by free46000 on 2017/3/31.
  */
 public class ViewScaleHelper {
+    public static final int VIEW_WIDTH_KEY = -21681;
+    public static final int VIEW_HEIGHT_KEY = -21682;
+
     private List<View> verticalViewList = new ArrayList<>();
-    private View mContentView;
+    private View contentView;
     private View horizontalView;
     private boolean isInScaleMode;
-    private Activity mActivity;
 
     private int verticalWidth;
     private float scale = 0.5f;
 
-    public ViewScaleHelper(Activity mActivity) {
-        this.mActivity = mActivity;
-    }
 
     public synchronized boolean isInScaleMode() {
         return isInScaleMode;
@@ -33,31 +36,9 @@ public class ViewScaleHelper {
         return scale;
     }
 
-    public synchronized void startScaleModel() {
-        if (isInScaleMode) {
-            return;
-        }
-        isInScaleMode = true;
-        int width = mContentView.getLayoutParams().width;
-        int height = mContentView.getLayoutParams().height;
-
-        mContentView.getLayoutParams().width = (int) (width / scale);
-        mContentView.getLayoutParams().height = (int) (height / scale);
-        horizontalView.getLayoutParams().height = (int) (height / scale);
-        horizontalView.getLayoutParams().width = (int) (width / scale);
-        horizontalView.setScaleX(scale);
-        horizontalView.setScaleY(scale);
-        horizontalView.setPivotX(0f);
-        horizontalView.setPivotY(0f);
-
-
-        for (View view : verticalViewList) {
-            verticalWidth = view.getWidth();
-            view.getLayoutParams().width = view.getWidth();
-            view.requestLayout();
-        }
-    }
-
+    /**
+     * 开启或关闭缩放模式
+     */
     public void toggleScaleModel() {
         if (isInScaleMode) {
             stopScaleModel();
@@ -66,18 +47,43 @@ public class ViewScaleHelper {
         }
     }
 
+    /**
+     * 开启缩放
+     */
+    public synchronized void startScaleModel() {
+        if (isInScaleMode) {
+            return;
+        }
+        isInScaleMode = true;
+
+        scaleContentView(contentView);
+        scaleContentView(horizontalView);
+        horizontalView.setScaleX(scale);
+        horizontalView.setScaleY(scale);
+        horizontalView.setPivotX(0f);
+        horizontalView.setPivotY(0f);
+
+
+        for (View view : verticalViewList) {
+            //当父视图setScaleX的时候此时的宽度即为需要被记住的宽度，这样可以保证缩小后的宽度不再次恢复原来的大小
+            verticalWidth = view.getWidth();
+            scaleVerticalView(view, verticalWidth);
+            view.requestLayout();
+        }
+    }
+
+    /**
+     * 关闭缩放
+     */
     public synchronized void stopScaleModel() {
         if (!isInScaleMode) {
             return;
         }
         isInScaleMode = false;
-        mContentView.getLayoutParams().width = -1;
-        mContentView.getLayoutParams().height = -1;
-        horizontalView.getLayoutParams().height = -1;
-        horizontalView.getLayoutParams().width = -1;
+        restoreView(contentView);
+        restoreView(horizontalView);
         for (View view : verticalViewList) {
-            view.getLayoutParams().width = -1;
-//            view.getLayoutParams().height = -2;
+            restoreView(view);
             view.requestLayout();
         }
         horizontalView.setScaleX(1f);
@@ -89,17 +95,60 @@ public class ViewScaleHelper {
         verticalViewList.add(view);
 
         if (isInScaleMode) {
-            view.getLayoutParams().width = verticalWidth;
+            scaleVerticalView(view, verticalWidth);
         }
 
     }
 
+    /**
+     * 缩放垂直视图
+     * 垂直的视图宽度需要记住当前缩小后的宽度，然后设置到layout param，不然会充满屏幕宽度
+     * 高度无需控制，就是需要充满屏幕
+     *
+     * @param width 需要被保持的宽度
+     */
+    private void scaleVerticalView(View view, int width) {
+        recordViewWidth(view);
+        view.getLayoutParams().width = width;
+    }
+
+    /**
+     * 缩放内容视图
+     * 内容视图高宽需要缩放1/scale倍数，后续进行setScaleX and Y的时候才能和原来的视图同等大小
+     *
+     * @param view
+     */
+    private void scaleContentView(View view) {
+        recordViewWidth(view);
+        recordViewHeight(view);
+        view.getLayoutParams().width = (int) (view.getWidth() / scale);
+        view.getLayoutParams().height = (int) (view.getHeight() / scale);
+    }
+
+    private void recordViewWidth(View view) {
+        view.setTag(VIEW_WIDTH_KEY, view.getLayoutParams().width);
+    }
+
+    private void recordViewHeight(View view) {
+        view.setTag(VIEW_HEIGHT_KEY, view.getLayoutParams().height);
+    }
+
+    private void restoreView(View view) {
+        Object tag = null;
+        if ((tag = view.getTag(VIEW_WIDTH_KEY)) != null) {
+            view.getLayoutParams().width = (int) tag;
+        }
+        if ((tag = view.getTag(VIEW_HEIGHT_KEY)) != null) {
+            view.getLayoutParams().height = (int) tag;
+        }
+    }
+
     public View getContentView() {
-        return mContentView;
+        return contentView;
     }
 
     public void setContentView(View contentView) {
-        mContentView = contentView;
+        this.contentView = contentView;
     }
 
     public View getHorizontalView() {

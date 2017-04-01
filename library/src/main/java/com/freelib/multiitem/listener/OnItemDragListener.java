@@ -1,5 +1,6 @@
 package com.freelib.multiitem.listener;
 
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,8 +8,14 @@ import android.view.View;
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.helper.ViewScaleHelper;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
- * todo 注释要详细  完整流程的解读，各项数据计算也要带上
+ * 拖动监听
+ * 包括拖动流程(拖动前 是否拖动) 滚动相关(距离 范围) 悬浮视图 缩放等回调。
+ * 基本都有默认实现，可根据具体业务继承重写方法
+ * <p>
  * Created by free46000 on 2017/4/1.
  */
 public abstract class OnItemDragListener {
@@ -220,7 +227,13 @@ public abstract class OnItemDragListener {
         return scrollDistance;
     }
 
-
+    /**
+     * 计算滚动距离
+     *
+     * @param touchLevel 触摸滑动速度等级
+     * @param maxSpeed   最大速度
+     * @return 滚动距离 touchLevel*maxSpeed
+     */
     protected int calcScrollDistance(float touchLevel, int maxSpeed) {
         touchLevel = touchLevel > 1 ? 1f : touchLevel;
         return (int) (touchLevel * maxSpeed);
@@ -229,11 +242,10 @@ public abstract class OnItemDragListener {
     /**
      * 计算水平滚动指向
      * 可以对touchX的值进行过滤  例:滑动超出view(touchX<0||touchX>viewWidth)
-     * todo 采用@注解方式 取消魔法数字
      *
-     * @return -1:像左滑 0:不滑动 1:像右滑
+     * @return -1:像左滚动 0:不滚动 1:像右滚动
      */
-    public int calcScrollHorizontalDirect(int touchX, int viewWidth) {
+    protected int calcScrollHorizontalDirect(int touchX, int viewWidth) {
         if (touchX < getHorizontalLimit()) {
             return -1;
         } else if (touchX > viewWidth - getHorizontalLimit()) {
@@ -245,11 +257,10 @@ public abstract class OnItemDragListener {
     /**
      * 计算垂直滚动指向
      * 可以对touchY的值进行过滤  例:滑动超出view(touchY<0||touchY>viewHeight)
-     * todo 采用@注解方式 取消魔法数字
      *
      * @return -1:像上滑 0:不滑动 1:像下滑
      */
-    public int calcScrollVerticalDirect(int touchY, int viewHeight) {
+    protected int calcScrollVerticalDirect(int touchY, int viewHeight) {
         if (touchY < getVerticalLimit()) {
             return -1;
         } else if (touchY > viewHeight - getVerticalLimit()) {
