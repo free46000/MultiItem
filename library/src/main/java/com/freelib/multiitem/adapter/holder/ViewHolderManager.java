@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.freelib.multiitem.item.ItemData;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -49,7 +50,20 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
             holder.itemView.setOnClickListener(params.getClickListener());
             holder.itemView.setOnLongClickListener(params.getLongClickListener());
         }
+
+        //如果数据源是ItemData，则执行定制化处理
+        if (t instanceof ItemData) {
+            bindView(holder, (ItemData) t);
+        }
         onBindViewHolder(holder, t);
+    }
+
+    protected void bindView(V holder, ItemData data) {
+        setVisibility(holder.itemView, data.getVisibility());
+    }
+
+    protected void setVisibility(View itemView, int visibility) {
+        itemView.setVisibility(visibility);
     }
 
 

@@ -14,13 +14,12 @@ import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
 import com.freelib.multiitem.adapter.holder.ViewHolderParams;
 import com.freelib.multiitem.adapter.type.ItemTypeManager;
 import com.freelib.multiitem.common.Const;
-import com.freelib.multiitem.item.ItemUnique;
 import com.freelib.multiitem.item.LoadMoreManager;
+import com.freelib.multiitem.item.UniqueItemManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -173,14 +172,14 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      *
      * @param footView foot view
      * @see HeadFootHolderManager
-     * @see ItemUnique
+     * @see UniqueItemManager
      */
     public void addFootView(@NonNull View footView) {
-        addFootItem(new ItemUnique(new HeadFootHolderManager(footView)));
+        addFootItem(new UniqueItemManager(new HeadFootHolderManager(footView)));
     }
 
     /**
-     * 添加foot Item ,如是表格不居中需要充满父布局请设置对应属性<br>
+     * 添加foot ItemManager ,如是表格不居中需要充满父布局请设置对应属性<br>
      * {@link ViewHolderManager#isFullSpan()}
      * {@link ViewHolderManager#getSpanSize(int)}
      *
@@ -199,14 +198,14 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      *
      * @param headView head view
      * @see HeadFootHolderManager
-     * @see ItemUnique
+     * @see UniqueItemManager
      */
     public void addHeadView(@NonNull View headView) {
-        addHeadItem(new ItemUnique(new HeadFootHolderManager(headView)));
+        addHeadItem(new UniqueItemManager(new HeadFootHolderManager(headView)));
     }
 
     /**
-     * 添加head Item ,如是表格不居中需要充满父布局请设置对应属性<br>
+     * 添加head ItemManager ,如是表格不居中需要充满父布局请设置对应属性<br>
      * {@link ViewHolderManager#isFullSpan()}
      * {@link ViewHolderManager#getSpanSize(int)}
      *

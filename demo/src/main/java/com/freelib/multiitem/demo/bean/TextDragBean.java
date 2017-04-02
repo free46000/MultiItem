@@ -1,16 +1,15 @@
 package com.freelib.multiitem.demo.bean;
 
 import com.freelib.multiitem.item.BaseItemData;
-import com.freelib.multiitem.item.ItemData;
 
 /**
- * 文本bean
- * Created by free46000 on 2017/3/19.
+ * 此处可以继承BaseItemData也可以实现ItemData{}
+ * Created by free46000 on 2017/4/3.
  */
-public class TextBean {
+public class TextDragBean extends BaseItemData {
     private String text;
 
-    public TextBean(String text) {
+    public TextDragBean(String text) {
         this.text = text;
     }
 

@@ -14,12 +14,12 @@ import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
-import com.freelib.multiitem.demo.bean.TextBean;
+import com.freelib.multiitem.demo.bean.TextDragBean;
 import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
-import com.freelib.multiitem.demo.viewholder.TextViewManager;
+import com.freelib.multiitem.demo.viewholder.TextViewDragManager;
 import com.freelib.multiitem.helper.ItemDragHelper;
 import com.freelib.multiitem.helper.ViewScaleHelper;
-import com.freelib.multiitem.item.ItemUnique;
+import com.freelib.multiitem.item.UniqueItemManager;
 import com.freelib.multiitem.listener.OnItemDragListener;
 import com.freelib.multiitem.listener.OnItemLongClickListener;
 
@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 // TODO: 2017/4/2 把第0个位置的数据源设置为不可拖动的，并在UI上通过文字体现出来
+// TODO: 2017/4/3 增加拖拽时自动缩放选项
 // TODO: 之前使用Item的setVISIBLE考虑现在如何实现，思考是否把这个还有拖动时的是否回调一起封装到一个对象中
 @EActivity(R.layout.activity_panel)
 public class PanelActivity extends AppCompatActivity {
@@ -54,9 +55,9 @@ public class PanelActivity extends AppCompatActivity {
 
         adapter = new BaseItemAdapter();
         //此处不能复用，所以使用ItemUnique保证唯一，Item可以动态匹配ViewHolderManager所以不用注册
-        adapter.addDataItems(Arrays.asList(new ItemUnique(new RecyclerViewManager(15)),
-                new ItemUnique(new RecyclerViewManager(1)), new ItemUnique(new RecyclerViewManager(25)),
-                new ItemUnique(new RecyclerViewManager(15)), new ItemUnique(new RecyclerViewManager(5))));
+        adapter.addDataItems(Arrays.asList(new UniqueItemManager(new RecyclerViewManager(15)),
+                new UniqueItemManager(new RecyclerViewManager(1)), new UniqueItemManager(new RecyclerViewManager(25)),
+                new UniqueItemManager(new RecyclerViewManager(15)), new UniqueItemManager(new RecyclerViewManager(5))));
         //设置横向滚动LinearLayoutManager
         horizontalRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalRecycler.setAdapter(adapter);
@@ -95,16 +96,15 @@ public class PanelActivity extends AppCompatActivity {
             return scaleHelper.isInScaleMode() ? scaleHelper.getScale() : super.getScale();
         }
 
-        public void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos) {
+        public void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos, Object itemData) {
 //            ((MainActivity.ItemText) currItem).setGravity(View.VISIBLE);
-            // TODO: 2017/4/1 这个地方按说不需要 notifyDataSetChanged()
-            if (recyclerView != null)
-                recyclerView.getAdapter().notifyDataSetChanged();
+//            if (recyclerView != null)
+//                recyclerView.getAdapter().notifyDataSetChanged();
         }
 
     }
 
-    class RecyclerViewManager extends BaseViewHolderManager<ItemUnique> {
+    class RecyclerViewManager extends BaseViewHolderManager<UniqueItemManager> {
         private int length = 25;
 
         public RecyclerViewManager(int length) {
@@ -123,8 +123,8 @@ public class PanelActivity extends AppCompatActivity {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
             final BaseItemAdapter baseItemAdapter = new BaseItemAdapter();
-            //为XXBean数据源注册XXManager管理类
-            baseItemAdapter.register(TextBean.class, new TextViewManager());
+            //为XXBean数据源注册Xager管理类
+            baseItemAdapter.register(TextDragBean.class, new TextViewDragManager());
             baseItemAdapter.register(ImageTextBean.class, new ImageAndTextManager());
             baseItemAdapter.setDataItems(getItemList(length));
             recyclerView.setAdapter(baseItemAdapter);
@@ -132,13 +132,8 @@ public class PanelActivity extends AppCompatActivity {
             baseItemAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 protected void onItemLongClick(BaseViewHolder viewHolder) {
-                    View itemView = viewHolder.itemView;
                     dragHelper.setOnItemDragListener(new OnBaseDragListener());
                     dragHelper.startDrag(viewHolder);
-//                    if (item instanceof MainActivity.ItemText) {
-//                        ((MainActivity.ItemText) item).setGravity(View.INVISIBLE);
-//                        itemViewHolder.refreshView();
-//                    }
                 }
 
 
@@ -146,7 +141,7 @@ public class PanelActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull ItemUnique data) {
+        public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull UniqueItemManager data) {
             TextView groupTxt = getView(holder.itemView, R.id.item_group_name);
             groupTxt.setText("待办任务组" + holder.getItemPosition());
         }
@@ -160,10 +155,10 @@ public class PanelActivity extends AppCompatActivity {
             List<Object> list = new ArrayList<>();
             for (int i = 0; i < length; i++) {
                 if (i == 1) {
-                    list.add(new TextBean(i + "标题\n内容A\n内容B\n内容C" + i));
+                    list.add(new TextDragBean(i + "标题\n内容A\n内容B\n内容C" + i));
                 }
                 String content = String.format("事项：%s\n事项内容：%s%s", i, i, i > 9 ? "\n更多内容" : "");
-                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextBean(content));
+                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextDragBean(content));
             }
             return list;
         }

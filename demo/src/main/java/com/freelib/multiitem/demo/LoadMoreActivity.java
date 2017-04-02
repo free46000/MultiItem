@@ -8,20 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.demo.bean.ImageBean;
-import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
-import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
-import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.LoadMoreHolderManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity(R.layout.layout_recycler_refresh)
 public class LoadMoreActivity extends AppCompatActivity {

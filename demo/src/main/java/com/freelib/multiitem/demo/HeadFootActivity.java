@@ -1,23 +1,18 @@
 package com.freelib.multiitem.demo;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.demo.bean.ImageBean;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
 import com.freelib.multiitem.demo.viewholder.ImageViewManager;
-import com.freelib.multiitem.demo.viewholder.LoadMoreHolderManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
-import com.freelib.multiitem.listener.OnItemClickListener;
-import com.freelib.multiitem.listener.OnLoadMoreListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -25,8 +20,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.View.Y;
 
 @EActivity(R.layout.layout_recycler)
 public class HeadFootActivity extends AppCompatActivity {

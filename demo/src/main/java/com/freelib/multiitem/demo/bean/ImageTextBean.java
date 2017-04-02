@@ -1,10 +1,13 @@
 package com.freelib.multiitem.demo.bean;
 
+import com.freelib.multiitem.item.BaseItemData;
+
 /**
+ * 注意：在正常业务中不需要继承BaseItemData，此处也可以实现ItemData接口，只是为了Drag功能
+ * <p>
  * Created by free46000 on 2017/3/19.
  */
-
-public class ImageTextBean {
+public class ImageTextBean extends BaseItemData {
     private int img;
     private String text;
 

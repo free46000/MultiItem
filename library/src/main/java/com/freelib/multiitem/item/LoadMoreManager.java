@@ -15,7 +15,7 @@ import com.freelib.multiitem.listener.OnLoadMoreListener;
  * <p>
  * Created by free46000 on 2017/3/26.
  */
-public abstract class LoadMoreManager extends HeadFootHolderManager implements Item {
+public abstract class LoadMoreManager extends HeadFootHolderManager implements ItemManager {
     protected BaseItemAdapter adapter;
     protected OnLoadMoreListener onLoadMoreListener;
     protected boolean isAutoLoadMore;

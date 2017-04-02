@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
+import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.helper.ViewScaleHelper;
+import com.freelib.multiitem.item.ItemData;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,10 +18,11 @@ import java.lang.annotation.RetentionPolicy;
  * 包括拖动流程(拖动前 是否拖动) 滚动相关(距离 范围) 悬浮视图 缩放等回调。
  * 基本都有默认实现，可根据具体业务继承重写方法
  * <p>
+ * todo 支持带有header和footer的列表，move add remove的时候需要减去head数量，移动之前需要判断是否为head foot则不允许拖动
  * Created by free46000 on 2017/4/1.
  */
 public abstract class OnItemDragListener {
-    protected Object currItemData;
+    protected ItemData currItemData;
 
     protected int horizontalScrollMaxSpeed = 15;
     protected int verticalScrollMaxSpeed = 10;
@@ -31,7 +34,18 @@ public abstract class OnItemDragListener {
      * todo 是否考虑此处参数中返回开始和结束对应的所有数据，
      * todo 并且考虑是否把参数抽成参数对象，其他方法也存在此问题
      */
-    public abstract void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos);
+    public abstract void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos, Object itemData);
+
+    /**
+     * 拖拽结束时回调
+     * todo 是否考虑此处参数中返回开始和结束对应的所有数据，
+     * todo 并且考虑是否把参数抽成参数对象，其他方法也存在此问题
+     */
+    public void onDragFinish(RecyclerView recyclerView, int itemRecyclerPos, int itemPos) {
+        currItemData.setVisibility(View.VISIBLE);
+        recyclerView.findViewHolderForAdapterPosition(itemPos).itemView.setVisibility(View.VISIBLE);
+        onDragFinish(recyclerView, itemPos, itemRecyclerPos, currItemData);
+    }
 
     /**
      * 拖拽开始时回调
@@ -42,10 +56,20 @@ public abstract class OnItemDragListener {
     /**
      * 每次拖动时候都要设置Item数据源，方便Recycler切换时候添加到新的Recycler
      *
-     * @param currItemData 当前拖动的Item数据源
+     * @param viewHolder 当前拖动的Item view holder
      */
-    public void setItemData(@NonNull Object currItemData) {
-        this.currItemData = currItemData;
+    public void setItemViewHolder(@NonNull BaseViewHolder viewHolder) {
+        Object itemData = viewHolder.getItemData();
+        if (itemData instanceof ItemData) {
+            this.currItemData = (ItemData) itemData;
+            currItemData.setVisibility(View.INVISIBLE);
+            viewHolder.itemView.setVisibility(View.INVISIBLE);
+        } else {
+            //用到了Visibility相关方法控制被拖动item的隐藏和展现
+            // 可以在继承的时候重写此方法去除此限制，但是必须自己实现被拖动item的隐藏和展现
+            throw new IllegalArgumentException("数据源必须实现ItemData接口");
+        }
+
     }
 
     /**

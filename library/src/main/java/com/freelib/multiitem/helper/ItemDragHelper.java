@@ -50,7 +50,7 @@ public class ItemDragHelper {
      * @param viewHolder 选中的Item的ViewHolder
      */
     public void startDrag(BaseViewHolder viewHolder) {
-        startDrag(viewHolder.itemView, viewHolder.getItemPosition(), viewHolder.getItemData());
+        startDrag(viewHolder.itemView, viewHolder.getItemPosition(), viewHolder);
     }
 
     /**
@@ -59,24 +59,29 @@ public class ItemDragHelper {
      * @param itemView     选中的Item的View
      * @param itemPosition 选中的Item的position
      */
-    private void startDrag(View itemView, int itemPosition, Object itemData) {
-        dragListener.setItemData(itemData);
+    private void startDrag(View itemView, int itemPosition, BaseViewHolder viewHolder) {
+        dragListener.setItemViewHolder(viewHolder);
         if (!dragListener.onItemSelected(itemView, itemPosition)) {
             return;
         }
 
         isDrag = true;
 
+        initParams();
         lastItemPos = itemPosition;
         dragListener.onDragStart();
         floatViewHelper.createView(itemView, lastTouchRawX, lastTouchRawY, dragListener.getScale());
         dragListener.onDrawFloatView(floatViewHelper.getFloatView());
-        lastRecyclerPos = NONE;
+
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) itemView.getLayoutParams();
         itemViewHeight = itemView.getHeight() + params.topMargin + params.bottomMargin;
     }
 
+    private void initParams() {
+        lastRecyclerPos = NONE;
+        lastRecyclerView = null;
+    }
 
     /**
      * 设置拖拽回调Listener
@@ -130,7 +135,7 @@ public class ItemDragHelper {
 
     private void stopDrag() {
         if (isDrag) {
-            dragListener.onDragFinish(lastRecyclerView, lastItemPos, lastRecyclerPos);
+            dragListener.onDragFinish(lastRecyclerView, lastRecyclerPos, lastItemPos);
             floatViewHelper.removeView();
         }
 

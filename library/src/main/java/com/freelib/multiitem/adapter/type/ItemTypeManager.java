@@ -4,14 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.freelib.multiitem.adapter.holder.ViewHolderManager;
 import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
-import com.freelib.multiitem.item.Item;
+import com.freelib.multiitem.item.ItemManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.attr.key;
 
 
 /**
@@ -69,12 +67,12 @@ public class ItemTypeManager {
     public int getItemType(@NonNull Object itemData) {
         String typeName;
         //如果是自定义Item类型，则直接从item中获取
-        if (itemData instanceof Item) {
-            typeName = ((Item) itemData).getItemTypeName();
+        if (itemData instanceof ItemManager) {
+            typeName = ((ItemManager) itemData).getItemTypeName();
             int itemType = itemTypeNames.indexOf(typeName);
             if (itemType < 0) {
                 //自定义Item类型，事先不需要注册，若未查到对应关系，注册即可
-                register(typeName, ((Item) itemData).getViewHolderManager());
+                register(typeName, ((ItemManager) itemData).getViewHolderManager());
                 itemType = itemTypeNames.size() - 1;
             }
             return itemType;
