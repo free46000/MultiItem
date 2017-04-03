@@ -1,8 +1,5 @@
 package com.freelib.multiitem.demo.bean;
 
-import com.freelib.multiitem.item.BaseItemData;
-import com.freelib.multiitem.item.ItemData;
-
 /**
  * 文本bean
  * Created by free46000 on 2017/3/19.

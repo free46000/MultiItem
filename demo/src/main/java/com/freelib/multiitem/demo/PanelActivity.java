@@ -9,6 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
@@ -31,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO: 2017/4/2 把第0个位置的数据源设置为不可拖动的，并在UI上通过文字体现出来
-// TODO: 2017/4/3 增加拖拽时自动缩放选项
-// TODO: 之前使用Item的setVISIBLE考虑现在如何实现，思考是否把这个还有拖动时的是否回调一起封装到一个对象中
 @EActivity(R.layout.activity_panel)
 public class PanelActivity extends AppCompatActivity {
     @ViewById(R.id.panel_content)
@@ -96,12 +94,13 @@ public class PanelActivity extends AppCompatActivity {
             return scaleHelper.isInScaleMode() ? scaleHelper.getScale() : super.getScale();
         }
 
-        public void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos, Object itemData) {
-//            ((MainActivity.ItemText) currItem).setGravity(View.VISIBLE);
-//            if (recyclerView != null)
-//                recyclerView.getAdapter().notifyDataSetChanged();
+        @Override
+        public void onDragFinish(RecyclerView recyclerView, int itemRecyclerPos, int itemPos) {
+            super.onDragFinish(recyclerView, itemRecyclerPos, itemPos);
+            String text = String.format("拖动起始第%s个列表的第%s项 结束第%s个列表的第%s项 \n\n拖动数据:%s", originalRecyclerPosition,
+                    originalItemPosition, itemRecyclerPos, itemPos, dragItemData);
+            Toast.makeText(PanelActivity.this, text, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     class RecyclerViewManager extends BaseViewHolderManager<UniqueItemManager> {
@@ -153,15 +152,42 @@ public class PanelActivity extends AppCompatActivity {
 
         private List<Object> getItemList(int length) {
             List<Object> list = new ArrayList<>();
+            TextDragBean textDragBean;
             for (int i = 0; i < length; i++) {
                 if (i == 1) {
-                    list.add(new TextDragBean(i + "标题\n内容A\n内容B\n内容C" + i));
+                    list.add(new TextDragBean("无限制可以自由拖动\n内容A\n内容B\n内容C"));
                 }
-                String content = String.format("事项：%s\n事项内容：%s%s", i, i, i > 9 ? "\n更多内容" : "");
-                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextDragBean(content));
+
+                //长度大于10的列表的第0个位置不可以被拖动和移动，其他TextDragBean和ImageTextBean的只被禁止不能切换recyclerView
+                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, "事项：\n无限制自由拖动\n更多内容" + i)
+                        : new TextDragBean(getText(i, length), isCanDragMove(i, length), false, isCanDragMove(i, length)));
             }
             return list;
         }
+
+        private String getText(int index, int length) {
+            String text = "事项：\n不可被切换Recycler" + index;
+            if (!isCanDragMove(index, length)) {
+                text += "\n不可以被拖动\n不可以被移动";
+            }
+            return text;
+        }
+
+        //长度大于10的列表的第0个位置不可以被拖动和移动
+        private boolean isCanDragMove(int index, int length) {
+            return index != 0 || length < 10;
+        }
+//        private List<Object> getItemList(int length) {
+//            List<Object> list = new ArrayList<>();
+//            for (int i = 0; i < length; i++) {
+//                if (i == 1) {
+//                    list.add(new TextDragBean(i + "标题\n内容A\n内容B\n内容C" + i));
+//                }
+//                String content = String.format("事项：%s\n事项内容：%s%s", i, i, i > 9 ? "\n更多内容" : "");
+//                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextDragBean(content));
+//            }
+//            return list;
+//        }
 
     }
 }

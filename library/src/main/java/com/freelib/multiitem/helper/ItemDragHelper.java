@@ -18,7 +18,6 @@ import com.freelib.multiitem.listener.OnItemDragListener;
  * 面板拖动辅助类 -跨RecyclerView拖动
  * <p>
  * todo 注释要详细  完整流程的解读，各项数据计算最好带上 在readme中添加uml流程图（plantuml）
- * todo 通过#OnDragListener的切换回调boolean值处理是否可以替换的场景（有的Item是不允许被拖动的）
  */
 public class ItemDragHelper {
     public static final int NONE = -1;
@@ -50,16 +49,8 @@ public class ItemDragHelper {
      * @param viewHolder 选中的Item的ViewHolder
      */
     public void startDrag(BaseViewHolder viewHolder) {
-        startDrag(viewHolder.itemView, viewHolder.getItemPosition(), viewHolder);
-    }
-
-    /**
-     * 开始拖拽
-     *
-     * @param itemView     选中的Item的View
-     * @param itemPosition 选中的Item的position
-     */
-    private void startDrag(View itemView, int itemPosition, BaseViewHolder viewHolder) {
+        View itemView = viewHolder.itemView;
+        int itemPosition = viewHolder.getItemPosition();
         dragListener.setItemViewHolder(viewHolder);
         if (!dragListener.onItemSelected(itemView, itemPosition)) {
             return;
@@ -221,7 +212,7 @@ public class ItemDragHelper {
 
     /**
      * 当item位置变换，滚动recycler到正确的位置
-     * // TODO: 2017/2/21 0021 这个试试为何要这样做
+     * TODO: 2017/2/21 0021 整理更优雅的写法  还有scrollToPosition(0)是否必要？
      */
     private void scrollToRightPositionWhenItemChanged(RecyclerView recyclerView, View itemView, int itemPos) {
         final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
@@ -292,10 +283,12 @@ public class ItemDragHelper {
         if (view instanceof RecyclerView) {
             return (RecyclerView) view;
         } else if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                // TODO: 2017/2/20 0020 这个地方是为了找出RecyclerView被包在其他view的情况。写法需要考虑
-                if (((ViewGroup) view).getChildAt(i) instanceof RecyclerView) {
-                    return (RecyclerView) ((ViewGroup) view).getChildAt(i);
+            ViewGroup viewGroup = (ViewGroup) view;
+            RecyclerView recyclerView;
+            for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
+                recyclerView = findRecyclerView(viewGroup.getChildAt(i));
+                if (recyclerView != null) {
+                    return recyclerView;
                 }
             }
         }

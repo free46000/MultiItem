@@ -1,6 +1,5 @@
 package com.freelib.multiitem.listener;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,9 +8,7 @@ import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.helper.ViewScaleHelper;
 import com.freelib.multiitem.item.ItemData;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import com.freelib.multiitem.item.ItemDrag;
 
 /**
  * 拖动监听
@@ -22,29 +19,27 @@ import java.lang.annotation.RetentionPolicy;
  * Created by free46000 on 2017/4/1.
  */
 public abstract class OnItemDragListener {
-    protected ItemData currItemData;
+    protected ItemData dragItemData;
+    protected int originalRecyclerPosition;
+    protected int originalItemPosition;
 
     protected int horizontalScrollMaxSpeed = 15;
     protected int verticalScrollMaxSpeed = 10;
     protected float horizontalLimit = 100;
     protected float verticalLimit = 200;
 
-    /**
-     * 拖拽结束时回调
-     * todo 是否考虑此处参数中返回开始和结束对应的所有数据，
-     * todo 并且考虑是否把参数抽成参数对象，其他方法也存在此问题
-     */
-    public abstract void onDragFinish(RecyclerView recyclerView, int itemPos, int itemHorizontalPos, Object itemData);
 
     /**
      * 拖拽结束时回调
-     * todo 是否考虑此处参数中返回开始和结束对应的所有数据，
-     * todo 并且考虑是否把参数抽成参数对象，其他方法也存在此问题
+     * todo 考虑是否把参数抽成参数对象，其他方法也存在此问题
+     *
+     * @param recyclerView 所在RecyclerView
+     * @param recyclerPos  RecyclerView所在position
+     * @param itemPos      item所在position
      */
-    public void onDragFinish(RecyclerView recyclerView, int itemRecyclerPos, int itemPos) {
-        currItemData.setVisibility(View.VISIBLE);
+    public void onDragFinish(RecyclerView recyclerView, int recyclerPos, int itemPos) {
+        dragItemData.setVisibility(View.VISIBLE);
         recyclerView.findViewHolderForAdapterPosition(itemPos).itemView.setVisibility(View.VISIBLE);
-        onDragFinish(recyclerView, itemPos, itemRecyclerPos, currItemData);
     }
 
     /**
@@ -61,9 +56,7 @@ public abstract class OnItemDragListener {
     public void setItemViewHolder(@NonNull BaseViewHolder viewHolder) {
         Object itemData = viewHolder.getItemData();
         if (itemData instanceof ItemData) {
-            this.currItemData = (ItemData) itemData;
-            currItemData.setVisibility(View.INVISIBLE);
-            viewHolder.itemView.setVisibility(View.INVISIBLE);
+            this.dragItemData = (ItemData) itemData;
         } else {
             //用到了Visibility相关方法控制被拖动item的隐藏和展现
             // 可以在继承的时候重写此方法去除此限制，但是必须自己实现被拖动item的隐藏和展现
@@ -80,6 +73,7 @@ public abstract class OnItemDragListener {
      * @return 是否允许RecyclerView切换，目前返回值无效
      */
     public boolean onRecyclerSelected(RecyclerView selectedView, int selectedPos) {
+        originalRecyclerPosition = selectedPos;
         return true;
     }
 
@@ -96,10 +90,19 @@ public abstract class OnItemDragListener {
      */
     public boolean onRecyclerChanged(RecyclerView fromView, RecyclerView toView, int itemFromPos, int itemToPos,
                                      int recyclerViewFromPos, int recyclerViewToPos) {
-        BaseItemAdapter adapter = (BaseItemAdapter) fromView.getAdapter();
+        if (!isItemCanChangeRecycler(dragItemData)) {
+            return false;
+        }
+        BaseItemAdapter adapter = (BaseItemAdapter) toView.getAdapter();
+        Object itemData = adapter.getItem(itemToPos);
+        //如果追加到另一个Recycler的末尾则itemData为null，此情况是可以move的
+        if (itemData != null && !isItemCanMove(itemData)) {
+            return false;
+        }
+        adapter.addDataItem(itemToPos, dragItemData);
+
+        adapter = (BaseItemAdapter) fromView.getAdapter();
         adapter.removeDataItem(itemFromPos);
-        adapter = (BaseItemAdapter) toView.getAdapter();
-        adapter.addDataItem(itemToPos, currItemData);
         return true;
     }
 
@@ -111,7 +114,13 @@ public abstract class OnItemDragListener {
      * @return 是否允许Item选中拖动，如果false，则此次开启拖动无效
      */
     public boolean onItemSelected(View selectedView, int selectedPos) {
-        return true;
+        boolean isItemCanDrag = isItemCanDrag(dragItemData);
+        if (isItemCanDrag) {
+            originalItemPosition = selectedPos;
+            dragItemData.setVisibility(View.INVISIBLE);
+            selectedView.setVisibility(View.INVISIBLE);
+        }
+        return isItemCanDrag(dragItemData);
     }
 
     /**
@@ -125,8 +134,35 @@ public abstract class OnItemDragListener {
      */
     public boolean onItemChanged(RecyclerView recyclerView, int fromPos, int toPos, int recyclerViewPos) {
         BaseItemAdapter adapter = (BaseItemAdapter) recyclerView.getAdapter();
+
+        if (!isItemCanMove(adapter.getItem(toPos))) {
+            return false;
+        }
+
         adapter.moveDataItem(fromPos, toPos);
         return true;
+    }
+
+    private boolean isItemCanChangeRecycler(Object itemData) {
+        ItemDrag itemDrag = getItemDrag(itemData);
+        return itemDrag == null || itemDrag.isCanChangeRecycler();
+    }
+
+    private boolean isItemCanMove(Object itemData) {
+        ItemDrag itemDrag = getItemDrag(itemData);
+        return itemDrag == null || itemDrag.isCanMove();
+    }
+
+    private boolean isItemCanDrag(Object itemData) {
+        ItemDrag itemDrag = getItemDrag(itemData);
+        return itemDrag == null || itemDrag.isCanDrag();
+    }
+
+    private ItemDrag getItemDrag(Object itemData) {
+        if (itemData instanceof ItemDrag) {
+            return (ItemDrag) itemData;
+        }
+        return null;
     }
 
     /**
@@ -214,7 +250,7 @@ public abstract class OnItemDragListener {
     /**
      * 计算垂直水平距离
      * <p>
-     * todo 可参考ItemTouchHelper改造成加速器形式
+     * todo 可参考ItemTouchHelper改造成加速器形式 还有calcVerticalScrollDistance
      *
      * @return 水平滚动距离
      */
@@ -233,8 +269,6 @@ public abstract class OnItemDragListener {
 
     /**
      * 计算垂直滚动距离
-     * <p>
-     * todo 可参考ItemTouchHelper改造成加速器形式
      *
      * @return 垂直滚动距离
      */

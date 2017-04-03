@@ -5,9 +5,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
-                android:padding="10dp"
                 android:background="@android:color/darker_gray"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
 
     <TextView
@@ -20,12 +20,17 @@
         android:textSize="16dp"
         tools:text="测试标题"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/item_group_recycler"
+    <RelativeLayout android:layout_below="@+id/item_group_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/item_group_name"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/item_group_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+    </RelativeLayout>
 
 </RelativeLayout>

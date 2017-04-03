@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.demo.R;
-import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.bean.TextDragBean;
 
 /**

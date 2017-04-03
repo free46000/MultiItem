@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.freelib.multiitem.item.ItemData;
-import com.freelib.multiitem.listener.OnItemClickListener;
-import com.freelib.multiitem.listener.OnItemLongClickListener;
 
 /**
  * ViewHolder的管理类
@@ -72,10 +70,10 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     }
 
     /**
-     * 通过资源id生成item view
+     * 通过资源id生成item itemView
      *
      * @param parent onCreateViewHolder中的参数
-     * @return 返回item view
+     * @return 返回item itemView
      */
     protected View getItemView(ViewGroup parent) {
         return LayoutInflater.from(parent.getContext()).inflate(getItemLayoutId(), parent, false);
@@ -94,7 +92,7 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      *
      * @param view 外层view
      * @param id   需要获取view的控件id
-     * @return view
+     * @return itemView
      */
     protected <T extends View> T getView(View view, int id) {
         return (T) view.findViewById(id);
@@ -103,7 +101,7 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     /**
      * 在指定viewHolder中获取控件为id的view
      *
-     * @return view
+     * @return itemView
      */
     protected <T extends View> T getView(ViewHolder viewHolder, int id) {
         return getView(viewHolder.itemView, id);

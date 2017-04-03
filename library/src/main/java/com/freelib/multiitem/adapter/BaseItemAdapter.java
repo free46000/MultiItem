@@ -39,6 +39,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private LoadMoreManager loadMoreManager;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
+    private ViewHolderParams params = new ViewHolderParams();
 
 
     public BaseItemAdapter() {
@@ -170,7 +171,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * {@link ViewHolderManager#isFullSpan()}
      * {@link ViewHolderManager#getSpanSize(int)}
      *
-     * @param footView foot view
+     * @param footView foot itemView
      * @see HeadFootHolderManager
      * @see UniqueItemManager
      */
@@ -196,7 +197,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * {@link ViewHolderManager#isFullSpan()}
      * {@link ViewHolderManager#getSpanSize(int)}
      *
-     * @param headView head view
+     * @param headView head itemView
      * @see HeadFootHolderManager
      * @see UniqueItemManager
      */
@@ -271,7 +272,11 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         position -= dataItems.size();
-        return footItems.get(position);
+        if (position<footItems.size()){
+            return footItems.get(position);
+        }
+
+        return null;
     }
 
     /**
@@ -303,8 +308,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         Object item = getItem(position);
         ViewHolderManager manager = holder.viewHolderManager;
-        ViewHolderParams params = new ViewHolderParams()
-                .setItemCount(getItemCount()).setClickListener(onItemClickListener)
+        params.setItemCount(getItemCount()).setClickListener(onItemClickListener)
                 .setLongClickListener(onItemLongClickListener);
         manager.onBindViewHolder(holder, item, params);
         //赋值 方便以后使用
@@ -316,7 +320,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public int getItemViewType(int position) {
         int type = itemTypeManager.getItemType(getItem(position));
         if (type < 0)
-            throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item view provider，是否注册了？");
+            throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item itemView provider，是否注册了？");
         return type;
     }
 
