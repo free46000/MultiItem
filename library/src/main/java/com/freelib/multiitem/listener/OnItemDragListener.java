@@ -219,14 +219,14 @@ public abstract class OnItemDragListener {
      * @return 最大水平滚动速度
      */
     public int getHorizontalScrollMaxSpeed() {
-        return (int) (horizontalScrollMaxSpeed * getScale());
+        return (int) (horizontalScrollMaxSpeed / getScale());
     }
 
     /**
      * @return 最大垂直滚动速度
      */
     public int getVerticalScrollMaxSpeed() {
-        return (int) (verticalScrollMaxSpeed * getScale());
+        return (int) (verticalScrollMaxSpeed / getScale());
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class OnItemDragListener {
      * @return 水平滚动临界范围
      */
     public float getHorizontalLimit() {
-        return horizontalLimit * getScale();
+        return horizontalLimit / getScale();
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class OnItemDragListener {
      * @return 垂直滚动临界范围
      */
     public float getVerticalLimit() {
-        return verticalLimit * getScale();
+        return verticalLimit / getScale();
     }
 
     /**
@@ -339,6 +339,12 @@ public abstract class OnItemDragListener {
         floatView.setAlpha(0.8f);
     }
 
+    /**
+     * 当touch位置在目标视图高度的边界值时对两个Item进行move的处理
+     * 默认0.5即超过一半高度时允许两个Item move
+     *
+     * @return 两个Item是否进行move边界值
+     */
     public float getMoveLimit() {
         return 0.5f;
     }

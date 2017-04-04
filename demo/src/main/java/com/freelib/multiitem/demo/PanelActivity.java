@@ -49,10 +49,12 @@ public class PanelActivity extends AppCompatActivity {
 
     @AfterViews
     protected void initView() {
+        setTitle(R.string.panel_title);
+
         horizontalRecycler = (RecyclerView) findViewById(R.id.recyclerView);
 
         adapter = new BaseItemAdapter();
-        //此处不能复用，所以使用ItemUnique保证唯一，Item可以动态匹配ViewHolderManager所以不用注册
+        //此处为了简单所以使用不可复用的模式，正式业务视具体情况而定！！！
         adapter.addDataItems(Arrays.asList(new UniqueItemManager(new RecyclerViewManager(15)),
                 new UniqueItemManager(new RecyclerViewManager(1)), new UniqueItemManager(new RecyclerViewManager(25)),
                 new UniqueItemManager(new RecyclerViewManager(15)), new UniqueItemManager(new RecyclerViewManager(5))));
@@ -60,9 +62,14 @@ public class PanelActivity extends AppCompatActivity {
         horizontalRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalRecycler.setAdapter(adapter);
 
+        //ItemDragHelper，需要传入外层的横向滚动的RecyclerView
         dragHelper = new ItemDragHelper(horizontalRecycler);
+        dragHelper.setOnItemDragListener(new OnBaseDragListener());
+
         scaleHelper = new ViewScaleHelper();
+        //设置最外层的Content视图
         scaleHelper.setContentView(contentView);
+        //设置横向的Recycler列表视图
         scaleHelper.setHorizontalView(horizontalRecycler);
 
         //监听横向滚动RecyclerView双击事件，并开启关闭缩放模式
@@ -122,7 +129,7 @@ public class PanelActivity extends AppCompatActivity {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
             final BaseItemAdapter baseItemAdapter = new BaseItemAdapter();
-            //为XXBean数据源注册Xager管理类
+            //为XXBean数据源注册XXHolderManager管理类 数据源必须实现ItemData接口
             baseItemAdapter.register(TextDragBean.class, new TextViewDragManager());
             baseItemAdapter.register(ImageTextBean.class, new ImageAndTextManager());
             baseItemAdapter.setDataItems(getItemList(length));
@@ -131,11 +138,8 @@ public class PanelActivity extends AppCompatActivity {
             baseItemAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 protected void onItemLongClick(BaseViewHolder viewHolder) {
-                    dragHelper.setOnItemDragListener(new OnBaseDragListener());
                     dragHelper.startDrag(viewHolder);
                 }
-
-
             });
         }
 
@@ -166,7 +170,7 @@ public class PanelActivity extends AppCompatActivity {
         }
 
         private String getText(int index, int length) {
-            String text = "事项：\n不可被切换Recycler" + index;
+            String text = "事项：\n不可被切换RecyclerView==" + index;
             if (!isCanDragMove(index, length)) {
                 text += "\n不可以被拖动\n不可以被移动";
             }
@@ -177,17 +181,6 @@ public class PanelActivity extends AppCompatActivity {
         private boolean isCanDragMove(int index, int length) {
             return index != 0 || length < 10;
         }
-//        private List<Object> getItemList(int length) {
-//            List<Object> list = new ArrayList<>();
-//            for (int i = 0; i < length; i++) {
-//                if (i == 1) {
-//                    list.add(new TextDragBean(i + "标题\n内容A\n内容B\n内容C" + i));
-//                }
-//                String content = String.format("事项：%s\n事项内容：%s%s", i, i, i > 9 ? "\n更多内容" : "");
-//                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, content) : new TextDragBean(content));
-//            }
-//            return list;
-//        }
 
     }
 }

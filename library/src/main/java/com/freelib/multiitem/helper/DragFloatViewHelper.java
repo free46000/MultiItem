@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 /**
  * 拖动时浮动Item视图辅助类
+ * 浮动视图采用WindowManager + ImageView展示被拖动Item视图生成的Bitmap
  * Created by free46000 on 2017/4/1.
  */
 public class DragFloatViewHelper {

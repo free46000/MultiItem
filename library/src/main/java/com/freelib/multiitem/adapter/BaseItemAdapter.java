@@ -320,7 +320,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public int getItemViewType(int position) {
         int type = itemTypeManager.getItemType(getItem(position));
         if (type < 0)
-            throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item itemView provider，是否注册了？");
+            throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item itemView manager，是否注册了？");
         return type;
     }
 

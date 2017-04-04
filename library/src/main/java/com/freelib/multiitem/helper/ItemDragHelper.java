@@ -1,5 +1,6 @@
 package com.freelib.multiitem.helper;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -17,13 +18,25 @@ import com.freelib.multiitem.listener.OnItemDragListener;
  * Created by free46000 on 2016/8/19.
  * 面板拖动辅助类 -跨RecyclerView拖动
  * <p>
- * todo 注释要详细  完整流程的解读，各项数据计算最好带上 在readme中添加uml流程图（plantuml）
+ * <b>计算横向和竖向的RecyclerView滚动</b>{@link #scrollIfNecessary(RecyclerView, int, int)}<br>
+ * 大量参考了`ItemTouchHelper`的源码，根据用户触摸位置计算是否需要滚动，和滚动的方向与距离 详见ItemDragListener的calcXXXScrollDistance() calcScrollXXXDirect()；
+ * 采用定时Runnable形式，保证持续的滚动；
+ * 滚动时调用Item位置计算方法，使得在滚动过程中也可以更换Item位置
+ * <p>
+ * <b>Item位置更换计算</b>{@link #moveIfNecessary(float, float)}<br>
+ * 触摸位置都为相对屏幕位置，方便后续计算
+ * 根据触摸位置horizontalRecycler.findChildViewUnder(x, y)找到垂直recyclerView的位置，若找到位置继续<br>
+ * 根据上一次垂直recyclerView所在的位置，判断是否为第一次选中或者是切换recyclerView的操作，此处可通过itemDragListener回调拦截此次操作的结果<br>
+ * 如果需要切换recyclerView的位置，此时需要对被拖动的Item进行remove，并在新的recyclerView中add进去<br>
+ * 根据触摸位置recyclerView.findChildViewUnder(itemX, itemY)找到itemView的位置<br>
+ * 根据上一次itemView所在的位置，判断是否需要移动itemView位置的操作，此处可通过itemDragListener回调拦截此次操作的结果<br>
+ * 如果需要移动动itemView位置则需要把recyclerView滚动到合适的位置，防recyclerView乱跳<br>
  */
 public class ItemDragHelper {
     public static final int NONE = -1;
 
+    private OnItemDragListener dragListener = new EmptyDragListener();
     private RecyclerView horizontalRecycler;
-    private OnItemDragListener dragListener;
     private DragFloatViewHelper floatViewHelper;
     private boolean isDrag;
 
@@ -38,7 +51,7 @@ public class ItemDragHelper {
      *
      * @param horizontalRecycler
      */
-    public ItemDragHelper(RecyclerView horizontalRecycler) {
+    public ItemDragHelper(@NonNull RecyclerView horizontalRecycler) {
         this.horizontalRecycler = horizontalRecycler;
         floatViewHelper = new DragFloatViewHelper();
     }
@@ -48,7 +61,7 @@ public class ItemDragHelper {
      *
      * @param viewHolder 选中的Item的ViewHolder
      */
-    public void startDrag(BaseViewHolder viewHolder) {
+    public void startDrag(@NonNull BaseViewHolder viewHolder) {
         View itemView = viewHolder.itemView;
         int itemPosition = viewHolder.getItemPosition();
         dragListener.setItemViewHolder(viewHolder);
@@ -79,7 +92,7 @@ public class ItemDragHelper {
      *
      * @param onItemDragListener 回调Listener
      */
-    public void setOnItemDragListener(OnItemDragListener onItemDragListener) {
+    public void setOnItemDragListener(@NonNull OnItemDragListener onItemDragListener) {
         this.dragListener = onItemDragListener;
     }
 
@@ -93,7 +106,7 @@ public class ItemDragHelper {
      * @param event touch的event
      * @return true表示消耗掉事件
      */
-    public boolean onTouch(MotionEvent event) {
+    public boolean onTouch(@NonNull MotionEvent event) {
         lastTouchRawX = event.getRawX();
         lastTouchRawY = event.getRawY();
 
@@ -118,8 +131,8 @@ public class ItemDragHelper {
 
     private void scrollRunnableStart() {
         if (lastRecyclerView != null) {
-            lastRecyclerView.removeCallbacks(mScrollRunnable);
-            mScrollRunnable.run();
+            lastRecyclerView.removeCallbacks(scrollRunnable);
+            scrollRunnable.run();
             lastRecyclerView.invalidate();
         }
     }
@@ -150,7 +163,7 @@ public class ItemDragHelper {
 //        System.out.println("find_parent_out:lastRecyclerPos:" + lastRecyclerPos + "-recyclerPos:" + recyclerPos + "==location[0]:" + location[0] + "==location[1]:" + location[1]);
         RecyclerView recyclerView = findRecyclerView(view);
 
-        //没有找到所属位置或者目标RecyclerView，则不移动
+        //没有找到所属位置或者目标RecyclerView，则不继续
         if (recyclerPos == NONE || recyclerView == null) {
             return false;
         }
@@ -299,7 +312,7 @@ public class ItemDragHelper {
     /**
      * 滚动Runnable，为了可持续滚动
      */
-    private final Runnable mScrollRunnable = new Runnable() {
+    private final Runnable scrollRunnable = new Runnable() {
 
         @Override
         public void run() {
@@ -310,7 +323,7 @@ public class ItemDragHelper {
             if (isDrag && (isHorizontalScroll || isVerticalScroll)) {
                 //it might be lost during scrolling
                 moveIfNecessary(lastTouchRawX, lastTouchRawY);
-                lastRecyclerView.removeCallbacks(mScrollRunnable);
+                lastRecyclerView.removeCallbacks(scrollRunnable);
                 ViewCompat.postOnAnimation(lastRecyclerView, this);
             }
         }
@@ -428,5 +441,9 @@ public class ItemDragHelper {
      */
     private boolean isSelectedChildView(int lastChildPos, int currChildPos) {
         return lastChildPos == NONE && currChildPos != NONE;
+    }
+
+    static class EmptyDragListener extends OnItemDragListener {
+
     }
 }

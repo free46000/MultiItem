@@ -3,12 +3,18 @@
 `MutliItem`主要就是解决这些问题，在正常使用中做到了`Adapter`零编码，解放了复杂的`Adapter`类，本库提供了多类型和`ViewHolder`创建绑定的管理器，这样`Adapter`通过依赖倒置与列表中的多类型解耦，还提高了扩展性。在本库中不同实体类可以直接当成数据源绑定到`adapter`中，你不用去担心`item type`的计算，并且对每种类型的`ViewHolder`也做到了隔离。
 本库的定位并不是大而全，但是会尽量做到简单易用。
 
-## 效果截图
-![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png )![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)
+## 系列文章
+- 用法与详解(详见下文)
+
+![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png )
+![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)
+- [MultiItem进阶 实现Head Foot和加载更多](https://juejin.im/post/58da77ed1b69e6006bc7fffa)
+
+![headfoot](https://user-gold-cdn.xitu.io/2017/3/29/1846a3cd1a81b9b0bb516402d1cee6aa.png )
+![fullspan](https://user-gold-cdn.xitu.io/2017/3/29/59b465977da7c11b455a9998143e5e2a.png )
+![loadmore](https://user-gold-cdn.xitu.io/2017/3/29/7b50786340f253d2f8e5f7966cfd7fc1.png )
 
 ## 下一步要做什么
-- 任务面板 跨`RecyclerView`的`Item`拖动 支持双击缩小后拖动（仿协同办公软件）
-- 增加`header footer line`等一些可复用视图
 - DataBinding特性支持
 - 录入界面的复用和封装的demo代码（录入业务较多同学可以多多关注）
 - 思考动画分割线等一些功能封装
@@ -29,7 +35,7 @@ allprojects {
 在`Module`中添加：
 ```
 dependencies {
-    compile 'com.github.free46000:MultiItem:0.9.1'
+    compile 'com.github.free46000:MultiItem:0.9.3'
 }
 ```
 

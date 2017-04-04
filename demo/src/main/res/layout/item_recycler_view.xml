@@ -20,17 +20,11 @@
         android:textSize="16dp"
         tools:text="测试标题"/>
 
-    <RelativeLayout android:layout_below="@+id/item_group_name"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_group_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/item_group_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"/>
-    </RelativeLayout>
-
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 </RelativeLayout>
