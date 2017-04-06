@@ -12,6 +12,10 @@ public interface ItemManager {
     @NonNull
     String getItemTypeName();
 
-    @NonNull
+    /**
+     * 返回自定义的ViewHolderManager，若为null则从根据本class查找注册的ViewHolderManager
+     *
+     * @return 返回自定义的ViewHolderManager
+     */
     ViewHolderManager getViewHolderManager();
 }

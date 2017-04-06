@@ -60,31 +60,43 @@ public class ItemTypeManager {
         }
     }
 
+
     /**
      * @param itemData data item
      * @return -1 如果没找到；
      */
     public int getItemType(@NonNull Object itemData) {
-        String typeName;
         //如果是自定义Item类型，则直接从item中获取
         if (itemData instanceof ItemManager) {
-            typeName = ((ItemManager) itemData).getItemTypeName();
-            int itemType = itemTypeNames.indexOf(typeName);
-            if (itemType < 0) {
-                //自定义Item类型，事先不需要注册，若未查到对应关系，注册即可
-                register(typeName, ((ItemManager) itemData).getViewHolderManager());
-                itemType = itemTypeNames.size() - 1;
+            int type = getItemTypeFromItemManager((ItemManager) itemData);
+            if (type >= 0) { //若正确查到type则返回，否则执行默认查找方法
+                return type;
             }
-            return itemType;
         }
 
-        typeName = getTypeName(itemData.getClass());
+        String typeName = getTypeName(itemData.getClass());
+
         //如果含有证明此className注册了组合的对应关系，需要取出实际的className
         if (itemTypeNameGroupMap.containsKey(typeName)) {
             ViewHolderManager manager = itemTypeNameGroupMap.get(typeName).getViewHolderManager(itemData);
             typeName = getClassNameFromGroup(itemData.getClass(), itemTypeNameGroupMap.get(typeName), manager);
         }
+
         return itemTypeNames.indexOf(typeName);
+    }
+
+    private int getItemTypeFromItemManager(ItemManager itemManager) {
+        String typeName = itemManager.getItemTypeName();
+        int itemType = itemTypeNames.indexOf(typeName);
+        if (itemType < 0) {
+            ViewHolderManager holderManager = itemManager.getViewHolderManager();
+            if (holderManager != null) {
+                //自定义Item类型，事先不需要注册，若未查到对应关系，注册即可
+                register(typeName, holderManager);
+                itemType = itemTypeNames.size() - 1;
+            }
+        }
+        return itemType;
     }
 
     /**

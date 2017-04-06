@@ -22,6 +22,7 @@
         <activity android:name=".FullSpanGridActivity_"/>
         <activity android:name=".LoadMoreActivity_"/>
         <activity android:name=".PanelActivity_"/>
+        <activity android:name=".DataBindActivity_"/>
     </application>
 
 </manifest>
