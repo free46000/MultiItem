@@ -50,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-        List<Object> list = new ArrayList<>();
+        List<MessageBean> list = new ArrayList<>();
         list.add(new MessageBean("在吗？", other));
         list.add(new MessageBean("在啊啊啊啊啊啊啊！", uid));
         list.add(new MessageBean("目前展示的是聊天界面中一个消息对应两种布局的情况，看看效果如何？", other));

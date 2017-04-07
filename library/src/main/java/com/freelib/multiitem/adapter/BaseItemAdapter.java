@@ -92,10 +92,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     /**
      * 设置Item list
-     * todo 使用List<? extends Object>替换List<Object>
      */
-    public void setDataItems(@NonNull List<Object> dataItems) {
-        this.dataItems = dataItems;
+    public void setDataItems(@NonNull List<? extends Object> dataItems) {
+        this.dataItems = (List<Object>) dataItems;
         notifyDataSetChanged();
     }
 
@@ -116,15 +115,14 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * 添加ItemList
      */
-    public void addDataItems(@NonNull List<Object> items) {
+    public void addDataItems(@NonNull List<? extends Object> items) {
         addDataItems(dataItems.size(), items);
     }
 
     /**
      * 在指定位置添加ItemList
-     * todo 使用List<? extends Object>替换List<Object>
      */
-    public void addDataItems(int position, @NonNull List<Object> items) {
+    public void addDataItems(int position, @NonNull List<? extends Object > items) {
         dataItems.addAll(position, items);
         notifyItemRangeInserted(position + getHeadCount(), items.size());
     }
