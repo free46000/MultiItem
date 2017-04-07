@@ -1,22 +1,26 @@
 package com.freelib.multiitem.demo.viewholder;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.databinding.ViewDataBinding;
 import android.widget.ImageView;
 
-import com.freelib.multiitem.demo.BR;
-
 /**
+ * 数据绑定工具类
  * Created by free46000 on 2017/4/6.
  */
 public class DataBindUtil {
-    @BindingAdapter({"android:src"})
-    public static void setImageViewResource(ImageView imageView, int resource) {
-        imageView.setImageResource(resource);
-    }
 
-    public static void bindViewHolder(ViewDataBinding dataBinding, Object data) {
-        dataBinding.setVariable(BR.itemData, data);
+    /**
+     * 通过android:imageUrl可以在xml布局中直接为ImageView设置url地址，这样方便业务中使用第三方库加载网络图片
+     *
+     * @param imageView xml中ImageView实例
+     * @param imgUrl    网络图片地址
+     */
+    @BindingAdapter({"android:imageUrl"})
+    public static void setImageViewResource(ImageView imageView, String imgUrl) {
+        Context context = imageView.getContext();
+        //此处通过imgUrl字符串获取资源ID,具体使用根据业务需要
+        int resID = context.getResources().getIdentifier(imgUrl, "drawable", context.getPackageName());
+        imageView.setImageResource(resID);
     }
-
 }

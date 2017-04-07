@@ -4,7 +4,7 @@
 本库的定位并不是大而全，但是会尽量做到简单易用。
 
 ## 系列文章
-- 用法与详解(详见下文)
+### 用法与详解(详见下文)
 
 ![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png )
 ![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)

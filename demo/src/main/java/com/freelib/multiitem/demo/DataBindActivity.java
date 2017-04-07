@@ -1,16 +1,15 @@
 package com.freelib.multiitem.demo;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.demo.bean.ImageBean;
+import com.freelib.multiitem.adapter.holder.DataBindViewHolderManager;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
-import com.freelib.multiitem.demo.viewholder.DataBindViewHolderManager;
-import com.freelib.multiitem.demo.viewholder.DataBindUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -19,9 +18,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 2017/4/6 DataBindViewHolderManager移到lib中，测试lib中gradle加上databind true使用时不用databind是否可以
-// TODO: 2017/4/6 思考写一个BaseDataBindManager构造函数只要layoutid（这个地方注释需要写清楚些）
-// TODO: 2017/4/6 DataBindUtil增加一个通过字符串展示图片的适配方法
 @EActivity(R.layout.layout_recycler)
 public class DataBindActivity extends AppCompatActivity {
     @ViewById(R.id.recyclerView)
@@ -38,20 +34,24 @@ public class DataBindActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //初始化adapter
         BaseItemAdapter adapter = new BaseItemAdapter();
-        //为XXBean数据源注册XXManager管理类
-        adapter.register(TextBean.class, new DataBindViewHolderManager<>(
-                R.layout.item_text_data_bind,
-                DataBindUtil::bindViewHolder));
+        //绑定写法一(简单)：直接传入BR.itemData(VariableId)
+        adapter.register(TextBean.class, new DataBindViewHolderManager<>(R.layout.item_text_data_bind, BR.itemData));
+        //绑定写法二(自由)：传入ItemBindView接口实例，可以定制绑定业务逻辑
         adapter.register(ImageTextBean.class, new DataBindViewHolderManager<>(
-                R.layout.item_image_text_data_bind,
-                DataBindUtil::bindViewHolder));
+                R.layout.item_image_text_data_bind, this::onBindViewHolder));
         recyclerView.setAdapter(adapter);
         List<Object> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add(new TextBean("AAA" + i));
-            list.add(new ImageTextBean(R.drawable.img2, "BBB" + i));
+            list.add(new ImageTextBean("img2", "BBB" + i));
         }
 
         adapter.setDataItems(list);
+    }
+
+    //将数据绑定的视图中，具体代码由DataBinding库自动生成
+    private void onBindViewHolder(ViewDataBinding dataBinding, Object data) {
+        //还可以写一些其他的绑定业务逻辑......
+        dataBinding.setVariable(BR.itemData, data);
     }
 }
