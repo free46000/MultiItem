@@ -19,7 +19,6 @@
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
 ## 下一步要做什么
-- DataBinding特性支持
 - 录入界面的复用和封装的demo代码（录入业务较多同学可以多多关注）
 - 思考动画分割线等一些功能封装
 
