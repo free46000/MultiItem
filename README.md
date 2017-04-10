@@ -68,7 +68,7 @@ adapter.setDataItems(list);
 recyclerView.setAdapter(adapter);
 
 ```
-`ViewHolder`管理类的子类`TextViewManager`类，其他类相似，下面贴出本类全部代码，是不是非常清晰：
+`ViewHolder`管理类的子类`ImageViewManager`类，其他管理类相似，下面贴出本类全部代码，是不是非常清晰：
 ``` java
 public class ImageViewManager extends BaseViewHolderManager<ImageBean> {
 
