@@ -94,8 +94,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * 设置Item list
      */
     public void setDataItems(@NonNull List<? extends Object> dataItems) {
-        this.dataItems = (List<Object>) dataItems;
-        notifyDataSetChanged();
+        setItem(dataItems);
     }
 
     /**
@@ -122,9 +121,24 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * 在指定位置添加ItemList
      */
-    public void addDataItems(int position, @NonNull List<? extends Object > items) {
+    public void addDataItems(int position, @NonNull List<? extends Object> items) {
+        addItem(position, items);
+    }
+
+    /**
+     * add item的最后调用处
+     */
+    protected void addItem(int position, @NonNull List<? extends Object> items) {
         dataItems.addAll(position, items);
         notifyItemRangeInserted(position + getHeadCount(), items.size());
+    }
+
+    /**
+     * 设置item的最后调用处
+     */
+    protected void setItem(@NonNull List<? extends Object> dataItems) {
+        this.dataItems = (List<Object>) dataItems;
+        notifyDataSetChanged();
     }
 
     /**
@@ -270,7 +284,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
 
         position -= dataItems.size();
-        if (position<footItems.size()){
+        if (position < footItems.size()) {
             return footItems.get(position);
         }
 
@@ -281,7 +295,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * 清空数据
      */
     public void clearAllData() {
-        dataItems.clear();
+        clearData();
         headItems.clear();
         footItems.clear();
     }

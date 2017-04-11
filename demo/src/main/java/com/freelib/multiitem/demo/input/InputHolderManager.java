@@ -16,8 +16,20 @@ import static android.R.attr.key;
 public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHolderManager<T> {
     protected BaseViewHolder holder;
     protected T itemData;
+    protected Object originalValue;
 
     protected abstract void onBindViewHolder();
+
+    public abstract String getKey();
+
+    @NonNull
+    public abstract Object getValue();
+
+    @Override
+    protected void onCreateViewHolder(@NonNull BaseViewHolder holder) {
+        super.onCreateViewHolder(holder);
+        originalValue = getValue();
+    }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T itemData) {
@@ -26,13 +38,22 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
         onBindViewHolder();
     }
 
+
     @NonNull
     public Map<String, Object> getValueMap() {
         return Collections.singletonMap(getKey(), getValue());
     }
 
-    public abstract String getKey();
+    public boolean isValueChange() {
+        return getOriginalValue() != null && !(getOriginalValue().equals(getValue()));
+    }
 
-    @NonNull
-    public abstract Object getValue();
+    protected Object getOriginalValue() {
+        return originalValue;
+    }
+
+    @Override
+    public boolean isClickable() {
+        return false;
+    }
 }
