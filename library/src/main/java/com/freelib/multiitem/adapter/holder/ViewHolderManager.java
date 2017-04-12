@@ -34,7 +34,7 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      *
      * @param t 数据源
      */
-    public abstract void onBindViewHolder(@NonNull V holder, @NonNull T t);
+    public abstract void onBindViewHolder(V holder, T t);
 
     /**
      * 为ViewHolder绑定数据，并根据params做出相应设置

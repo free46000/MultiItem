@@ -1,13 +1,18 @@
-package com.freelib.multiitem.demo.input;
+package com.freelib.multiitem.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.InputHolderManager;
+import com.freelib.multiitem.item.ItemInput;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by free46000 on 2017/4/11.
@@ -20,19 +25,25 @@ public class InputItemAdapter extends BaseItemAdapter {
 
 //    public boolean isValueValidate()
 
-//    public Map<String, Object> getInputValueMap() {
-//        Map<String, Object> map = new HashMap<>();
-//        for (ItemViewHolder iiv : itemInputViewMap.values()) {
-//            Map<String, Object> valueMap = iiv.getValueMap();
-//            if (!TextUtils.isEmpty(iiv.getKey()) && valueMap != null) {
-//                map.putAll(valueMap);
-//            }
-//        }
+    public JSONObject getInputJson() {
+        return new JSONObject(getInputValueMap());
+    }
+
+    public Map<String, Object> getInputValueMap() {
+        Map<String, Object> valueMap = new HashMap<>();
+        Map<String, Object> itemValueMap;
+        for (InputHolderManager inputHolderManager : inputHolderManagers) {
+            itemValueMap = inputHolderManager.getValueMap();
+            if (itemValueMap != null) {
+                valueMap.putAll(itemValueMap);
+            }
+        }
+
 //        for (ItemViewHolder iiv : itemHiddenInputViewList) {
 //            map.putAll(iiv.getValueMap());
 //        }
-//        return map;
-//    }
+        return valueMap;
+    }
 
 
     @Override

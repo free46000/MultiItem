@@ -53,7 +53,7 @@ public class DataBindViewHolderManager<T> extends ViewHolderManager<T, BaseViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T data) {
+    public void onBindViewHolder(BaseViewHolder holder, T data) {
         ViewDataBinding dataBinding = DataBindingUtil.getBinding(holder.itemView);
         onBindViewHolder(dataBinding, data);
 //        dataBinding.executePendingBindings();

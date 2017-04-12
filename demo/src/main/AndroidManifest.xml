@@ -23,6 +23,7 @@
         <activity android:name=".LoadMoreActivity_"/>
         <activity android:name=".PanelActivity_"/>
         <activity android:name=".DataBindActivity_"/>
+        <activity android:name=".InputActivity_"/>
     </application>
 
 </manifest>

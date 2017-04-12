@@ -10,6 +10,7 @@
     <string name="load_more_title">下拉刷新加载更多界面演示</string>
     <string name="panel_title">跨Recycler拖动面板界面演示</string>
     <string name="data_bind_title">DataBinding使用演示</string>
+    <string name="input_title">录入表单演示</string>
 
 
     <string name="loading_more">加载中...</string>

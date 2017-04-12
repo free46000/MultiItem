@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.demo.bean.MainBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 import com.freelib.multiitem.listener.OnItemClickListener;
@@ -27,48 +28,34 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         BaseItemAdapter adapter = new BaseItemAdapter();
         //为TextBean数据源注册TextViewManager管理类
-        adapter.register(TextBean.class, new TextViewManager());
+        adapter.register(MainBean.class, new TextViewManager());
         recyclerView.setAdapter(adapter);
-        adapter.addDataItem(new TextBean(getString(R.string.item_click_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.multi_item_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.chat_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.head_foot_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.head_foot_grid_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.load_more_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.panel_title)));
-        adapter.addDataItem(new TextBean(getString(R.string.data_bind_title)));
+        adapter.addDataItem(new MainBean(getString(R.string.item_click_title),
+                () -> ItemClickActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.multi_item_title),
+                () -> MultiItemActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.chat_title),
+                () -> ChatActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.head_foot_title),
+                () -> HeadFootActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.head_foot_grid_title),
+                () -> FullSpanGridActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.load_more_title),
+                () -> LoadMoreActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.panel_title),
+                () -> PanelActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.data_bind_title),
+                () -> DataBindActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.input_title),
+                () -> InputActivity.startActivity(this)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder viewHolder) {
                 //通过viewHolder获取需要的数据
-                switch (viewHolder.getAdapterPosition()) {
-                    case 0:
-                        ItemClickActivity.startActivity(MainActivity.this);
-                        break;
-                    case 1:
-                        MultiItemActivity.startActivity(MainActivity.this);
-                        break;
-                    case 2:
-                        ChatActivity.startActivity(MainActivity.this);
-                        break;
-                    case 3:
-                        HeadFootActivity.startActivity(MainActivity.this);
-                        break;
-                    case 4:
-                        FullSpanGridActivity.startActivity(MainActivity.this);
-                        break;
-                    case 5:
-                        LoadMoreActivity.startActivity(MainActivity.this);
-                        break;
-                    case 6:
-                        PanelActivity.startActivity(MainActivity.this);
-                        break;
-                    case 7:
-                        DataBindActivity.startActivity(MainActivity.this);
-                        break;
+                if (viewHolder.getItemData() instanceof MainBean) {
+                    ((MainBean) viewHolder.getItemData()).onItemClick();
                 }
-
             }
         });
 

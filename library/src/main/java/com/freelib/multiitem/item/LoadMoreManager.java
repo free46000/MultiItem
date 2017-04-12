@@ -58,7 +58,7 @@ public abstract class LoadMoreManager extends HeadFootHolderManager implements I
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull Object o) {
+    public void onBindViewHolder(BaseViewHolder holder, Object o) {
         if (isNeeLoadMore(holder)) {
             if (isAutoLoadMore()) {
                 //当可以加载更多数据并开启自动加载后调用

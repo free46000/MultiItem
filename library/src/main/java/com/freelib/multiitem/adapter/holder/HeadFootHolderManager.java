@@ -37,7 +37,7 @@ public class HeadFootHolderManager<T> extends ViewHolderManager<T, BaseViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T t) {
+    public void onBindViewHolder(BaseViewHolder holder, T t) {
 
     }
 

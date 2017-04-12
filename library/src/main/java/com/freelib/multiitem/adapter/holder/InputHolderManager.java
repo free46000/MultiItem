@@ -1,24 +1,18 @@
-package com.freelib.multiitem.demo.input;
+package com.freelib.multiitem.adapter.holder;
 
 import android.support.annotation.NonNull;
 
-import com.freelib.multiitem.adapter.holder.BaseViewHolder;
-import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
+import com.freelib.multiitem.item.ItemInput;
 
 import java.util.Collections;
 import java.util.Map;
-
-import static android.R.attr.key;
 
 /**
  * Created by free46000 on 2017/4/10.
  */
 public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHolderManager<T> {
-    protected BaseViewHolder holder;
-    protected T itemData;
     protected Object originalValue;
-
-    protected abstract void onBindViewHolder();
+    protected BaseViewHolder viewHolder;
 
     public abstract String getKey();
 
@@ -28,16 +22,23 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
     @Override
     protected void onCreateViewHolder(@NonNull BaseViewHolder holder) {
         super.onCreateViewHolder(holder);
+        initInputView(holder);
         originalValue = getValue();
+        viewHolder = holder;
     }
 
+    protected abstract void initInputView(BaseViewHolder holder);
+
+    @Deprecated
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T itemData) {
-        this.holder = holder;
-        this.itemData = itemData;
-        onBindViewHolder();
+    public void onBindViewHolder(BaseViewHolder holder, T t) {
     }
 
+    @Deprecated
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T t, @NonNull ViewHolderParams params) {
+        super.onBindViewHolder(holder, t, params);
+    }
 
     @NonNull
     public Map<String, Object> getValueMap() {

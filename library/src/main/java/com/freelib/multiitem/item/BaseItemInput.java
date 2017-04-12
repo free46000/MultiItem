@@ -1,16 +1,14 @@
-package com.freelib.multiitem.demo.input;
+package com.freelib.multiitem.item;
 
 import android.support.annotation.NonNull;
 
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
+import com.freelib.multiitem.adapter.holder.InputHolderManager;
 
 /**
- *
- * todo 是否增加验证Rule，怎样增加更灵活
- * todo 测试输入法与输入框之间覆盖问题
  * Created by free46000 on 2017/4/10.
  */
-public abstract class BaseItemInput extends InputHolderManager implements ItemInput {
+public abstract class BaseItemInput<T extends BaseItemInput> extends InputHolderManager<T> implements ItemInput {
     protected String key;
 
     /**

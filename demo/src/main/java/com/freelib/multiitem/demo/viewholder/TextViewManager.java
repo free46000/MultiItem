@@ -8,15 +8,17 @@ import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.demo.bean.TextBean;
 
+import static android.R.attr.data;
+
 /**
  * @author free46000  2017/03/17
  * @version v1.0
  */
-public class TextViewManager extends BaseViewHolderManager<TextBean> {
+public class TextViewManager<T extends TextBean> extends BaseViewHolderManager<T> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull TextBean data) {
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T data) {
         TextView textView = getView(holder, R.id.text);
         textView.setText(data.getText());
     }

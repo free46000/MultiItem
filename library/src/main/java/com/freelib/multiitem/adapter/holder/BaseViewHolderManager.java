@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  */
 public abstract class BaseViewHolderManager<T> extends ViewHolderManager<T, BaseViewHolder> {
     @Override
-    public abstract void onBindViewHolder(@NonNull BaseViewHolder holder, @NonNull T t);
+    public abstract void onBindViewHolder(BaseViewHolder holder, T t);
 
     @Override
     protected abstract int getItemLayoutId();
