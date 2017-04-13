@@ -1,7 +1,9 @@
 package com.freelib.multiitem.demo.input;
 
 import android.support.annotation.NonNull;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,7 +21,7 @@ import static android.R.id.edit;
 public class ItemEdit extends BaseItemInput<ItemEdit> {
     private EditText editText;
     public String name;
-    public String value;
+    public String defValue;
     private String hint;
 
 
@@ -30,11 +32,26 @@ public class ItemEdit extends BaseItemInput<ItemEdit> {
         super(key);
     }
 
+    public ItemEdit setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ItemEdit setHint(String hint) {
+        this.hint = hint;
+        return this;
+    }
+
+    public ItemEdit setDefValue(String defValue) {
+        this.defValue = defValue;
+        return this;
+    }
 
     @NonNull
     @Override
     public String getValue() {
-        return editText.getText().toString();
+        String value = editText == null ? defValue : editText.getText().toString();
+        return TextUtils.isEmpty(value) ? null : value;
     }
 
     @Override
@@ -44,9 +61,8 @@ public class ItemEdit extends BaseItemInput<ItemEdit> {
 
         editText = getView(holder.itemView, R.id.editText);
         editText.setHint(hint);
-        editText.setText(value);
+        editText.setText(defValue);
     }
-
 
     @Override
     protected int getItemLayoutId() {

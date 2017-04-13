@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">MultiItem</string>
+    <string name="submit">提交</string>
+    <string name="confirm">确定</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="name">名字</string>
 
     <string name="main_title">MultiItem演示</string>
     <string name="multi_item_title">多类型演示</string>
@@ -11,7 +16,6 @@
     <string name="panel_title">跨Recycler拖动面板界面演示</string>
     <string name="data_bind_title">DataBinding使用演示</string>
     <string name="input_title">录入表单演示</string>
-
 
     <string name="loading_more">加载中...</string>
     <string name="load_all">加载完成</string>

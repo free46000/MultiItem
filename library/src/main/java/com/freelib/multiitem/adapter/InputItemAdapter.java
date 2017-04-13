@@ -5,11 +5,13 @@ import android.view.ViewGroup;
 
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.InputHolderManager;
+import com.freelib.multiitem.item.HiddenItemInput;
 import com.freelib.multiitem.item.ItemInput;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +21,14 @@ import java.util.Map;
  */
 public class InputItemAdapter extends BaseItemAdapter {
     protected List<InputHolderManager> inputHolderManagers = new ArrayList<>();
-//    protected List<ItemViewHolder> itemHiddenInputViewList
+    protected List<HiddenItemInput> hiddenItemInputs = new ArrayList<>();
 
-    //public void addHiddenItem(ItemHidden... itemHiddens)
+    public void addHiddenItem(@NonNull HiddenItemInput... hiddenItems) {
+        if (hiddenItems.length == 0) {
+            return;
+        }
+        hiddenItemInputs.addAll(Arrays.asList(hiddenItems));
+    }
 
 //    public boolean isValueValidate()
 
@@ -39,9 +46,10 @@ public class InputItemAdapter extends BaseItemAdapter {
             }
         }
 
-//        for (ItemViewHolder iiv : itemHiddenInputViewList) {
-//            map.putAll(iiv.getValueMap());
-//        }
+        for (HiddenItemInput hiddenItem : hiddenItemInputs) {
+            valueMap.putAll(hiddenItem.getValueMap());
+        }
+
         return valueMap;
     }
 

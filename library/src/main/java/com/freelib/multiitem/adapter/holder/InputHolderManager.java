@@ -7,6 +7,8 @@ import com.freelib.multiitem.item.ItemInput;
 import java.util.Collections;
 import java.util.Map;
 
+import static android.R.attr.value;
+
 /**
  * Created by free46000 on 2017/4/10.
  */
@@ -14,9 +16,20 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
     protected Object originalValue;
     protected BaseViewHolder viewHolder;
 
+    /**
+     * 录入的key，和{@link #getValue()}一起组装为Map  如果为null则不组装 <br>
+     * 如果是复杂的录入可以直接覆写{@link #getValueMap()}自己组装key-value Map
+     *
+     * @return 录入key
+     */
     public abstract String getKey();
 
-    @NonNull
+    /**
+     * 录入的值，和{@link #getKey()}一起组装为Map  如果为null则不组装 <br>
+     * 如果是复杂的录入可以直接覆写{@link #getValueMap()}自己组装key-value Map
+     *
+     * @return 录入值
+     */
     public abstract Object getValue();
 
     @Override
@@ -40,9 +53,18 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
         super.onBindViewHolder(holder, t, params);
     }
 
-    @NonNull
+    /**
+     * 复杂业务可以覆写本方法，自定义返回多组key-value
+     *
+     * @return 录入的key-value Map
+     */
     public Map<String, Object> getValueMap() {
-        return Collections.singletonMap(getKey(), getValue());
+        String key = getKey();
+        Object value = getValue();
+        if (key == null || value == null) {
+            return null;
+        }
+        return Collections.singletonMap(key, value);
     }
 
     public boolean isValueChange() {

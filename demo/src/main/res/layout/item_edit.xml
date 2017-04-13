@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_medium"
-        tools:text="名字："
+        tools:text="测试："
         />
 
     <EditText
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_medium"
-        tools:hint="请输入名字"
+        tools:hint="请输入"
         />
 </LinearLayout>
 
