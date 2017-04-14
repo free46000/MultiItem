@@ -24,15 +24,14 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * todo 是否增加验证Rule，怎样增加更灵活
- * todo 测试输入法与输入框之间覆盖问题
  * todo 考虑支持DataBinding
- * todo checkbox 一行对应多个key特殊用法
  */
 @EActivity(R.layout.activity_input)
 public class InputActivity extends AppCompatActivity {
@@ -56,18 +55,28 @@ public class InputActivity extends AppCompatActivity {
         List<Object> list = new ArrayList<>();
         //姓名和性别录入Item，一个录入item对应多个提交的{"name":"","sex":""}
         list.add(new ItemNameAndSex());
-        for (int i = 0; i < 20; i++) {
-            list.add(new ItemEdit("key" + i).setName("Name:" + i).setDefValue(i == 9 ? "默认值" : null));
-        }
+        //正常的EditText录入Item
+        list.add(new ItemEdit("height").setName("身高:"));
+        list.add(new ItemEdit("weight").setName("体重:"));
+        list.add(new ItemEdit("age").setName("年龄:"));
+        list.add(new ItemEdit("default").setName("国家:").setDefValue("中国"));
         adapter.addHiddenItem(new HiddenItemInput("hidden", "隐藏域的值"));
+        adapter.addHiddenItem("userID", "IdHidden");
         adapter.setDataItems(list);
     }
 
     @Click(R.id.submit_btn)
     public void submit() {
-        String changeTxt = "表单内容" + (adapter.isValueChange() ? "已改变\n" : "未变动\n");
-        String valueTxt = adapter.getInputJson().toString();
-        new AlertDialog.Builder(this).setTitle("自动组装表单内容").setMessage(changeTxt + valueTxt)
+        String tipTxt = "表单内容" + (adapter.isValueChange() ? "　已经　" : "　没有　") +
+                "被用户改变！\n表单　　" + (adapter.isValueValid() ? "　已经　" : "　没有　") +
+                "通过验证！\n自动组装的表单内容为：\n";
+        String valueTxt = null;
+        try {
+            valueTxt = adapter.getInputJson().toString(4);
+        } catch (JSONException e) {
+            //do nothing
+        }
+        new AlertDialog.Builder(this).setTitle("提交").setMessage(tipTxt + valueTxt)
                 .setPositiveButton(R.string.confirm, null).show();
     }
 

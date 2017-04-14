@@ -75,6 +75,11 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
         return originalValue;
     }
 
+    public boolean isValueValid() {
+        return true;
+    }
+
+
     @Override
     public boolean isClickable() {
         return false;

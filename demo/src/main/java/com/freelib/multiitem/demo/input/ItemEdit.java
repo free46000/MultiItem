@@ -47,11 +47,15 @@ public class ItemEdit extends BaseItemInput<ItemEdit> {
         return this;
     }
 
-    @NonNull
     @Override
     public String getValue() {
         String value = editText == null ? defValue : editText.getText().toString();
         return TextUtils.isEmpty(value) ? null : value;
+    }
+
+    @Override
+    public boolean isValueValid() {
+        return !TextUtils.isEmpty(getValue());
     }
 
     @Override

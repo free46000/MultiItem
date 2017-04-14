@@ -23,6 +23,10 @@ public class InputItemAdapter extends BaseItemAdapter {
     protected List<InputHolderManager> inputHolderManagers = new ArrayList<>();
     protected List<HiddenItemInput> hiddenItemInputs = new ArrayList<>();
 
+    public void addHiddenItem(@NonNull String key, Object value) {
+        addHiddenItem(new HiddenItemInput(key, value));
+    }
+
     public void addHiddenItem(@NonNull HiddenItemInput... hiddenItems) {
         if (hiddenItems.length == 0) {
             return;
@@ -100,5 +104,13 @@ public class InputItemAdapter extends BaseItemAdapter {
         return false;
     }
 
+    public boolean isValueValid() {
+        for (InputHolderManager inputHolderManager : inputHolderManagers) {
+            if (!inputHolderManager.isValueValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
