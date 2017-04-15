@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemData"
+            type="com.freelib.multiitem.demo.input.ItemInfo"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#ddd">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemData.name}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            tools:text="介绍："
+            />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="3"
+            android:text="@={itemData.info}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            tools:hint="请输入"
+            />
+    </LinearLayout>
+
+</layout>

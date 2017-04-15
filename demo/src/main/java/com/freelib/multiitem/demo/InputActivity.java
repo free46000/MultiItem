@@ -14,6 +14,7 @@ import com.freelib.multiitem.demo.bean.ImageBean;
 import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.input.ItemEdit;
+import com.freelib.multiitem.demo.input.ItemInfo;
 import com.freelib.multiitem.demo.input.ItemNameAndSex;
 import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
 import com.freelib.multiitem.demo.viewholder.ImageViewManager;
@@ -30,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * todo 是否增加验证Rule，怎样增加更灵活
- * todo 考虑支持DataBinding
+ * todo 增加验证Rule，怎样增加更灵活
+ * todo ItemInfo利用Data bind增加数字统计，可以查看之前写文章的例子
  */
 @EActivity(R.layout.activity_input)
 public class InputActivity extends AppCompatActivity {
@@ -60,8 +61,8 @@ public class InputActivity extends AppCompatActivity {
         list.add(new ItemEdit("weight").setName("体重:"));
         list.add(new ItemEdit("age").setName("年龄:"));
         list.add(new ItemEdit("default").setName("国家:").setDefValue("中国"));
-        adapter.addHiddenItem(new HiddenItemInput("hidden", "隐藏域的值"));
-        adapter.addHiddenItem("userID", "IdHidden");
+        list.add(new ItemInfo("info").setName("介绍:"));
+        adapter.addHiddenItem("id", "隐藏域中携带id");
         adapter.setDataItems(list);
     }
 

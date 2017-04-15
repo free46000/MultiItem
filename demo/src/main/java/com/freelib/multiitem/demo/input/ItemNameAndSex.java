@@ -1,5 +1,6 @@
 package com.freelib.multiitem.demo.input;
 
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
@@ -31,7 +32,15 @@ public class ItemNameAndSex extends BaseItemInput<ItemNameAndSex> {
     public Object getValue() {
         //在getValue中返回两个值的组合，用以判断表单的值是否被改变
         //也可以直接覆写isValueChange()方法达到定制化
+        if (nameEdit == null) {
+            return null;
+        }
         return nameEdit.getText().toString() + sexRadio.getCheckedRadioButtonId();
+    }
+
+    @Override
+    public boolean isValueValid() {
+        return nameEdit != null && !TextUtils.isEmpty(nameEdit.getText().toString());
     }
 
     @Override

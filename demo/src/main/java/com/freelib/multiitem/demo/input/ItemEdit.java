@@ -12,6 +12,7 @@ import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.item.BaseItemInput;
 
+import static android.R.attr.value;
 import static android.R.id.edit;
 
 /**
@@ -20,8 +21,8 @@ import static android.R.id.edit;
  */
 public class ItemEdit extends BaseItemInput<ItemEdit> {
     private EditText editText;
-    public String name;
-    public String defValue;
+    private String name;
+    private String defValue;
     private String hint;
 
 
@@ -49,8 +50,7 @@ public class ItemEdit extends BaseItemInput<ItemEdit> {
 
     @Override
     public String getValue() {
-        String value = editText == null ? defValue : editText.getText().toString();
-        return TextUtils.isEmpty(value) ? null : value;
+        return editText == null ? defValue : editText.getText().toString();
     }
 
     @Override

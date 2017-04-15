@@ -14,9 +14,6 @@ public abstract class BaseViewHolderManager<T> extends ViewHolderManager<T, Base
     @Override
     public abstract void onBindViewHolder(BaseViewHolder holder, T t);
 
-    @Override
-    protected abstract int getItemLayoutId();
-
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent) {

@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 
@@ -12,10 +13,22 @@ import android.view.ViewGroup;
  * 数据绑定ViewHolderManager
  * Created by free46000 on 2017/4/6.
  */
-public class DataBindViewHolderManager<T> extends ViewHolderManager<T, BaseViewHolder> {
+public class DataBindViewHolderManager<T> extends BaseViewHolderManager<T> {
     @LayoutRes
     private int itemLayoutId;
     private ItemBindView<T> itemBindView;
+
+    {
+        enableDataBind();
+    }
+
+    /**
+     * @param itemLayoutId   item 布局文件资源id
+     * @param bindVariableId 需要绑定一个VariableId时使用本构造函数
+     */
+    public DataBindViewHolderManager(@LayoutRes int itemLayoutId, int bindVariableId) {
+        this(itemLayoutId, (dataBinding, data) -> dataBinding.setVariable(bindVariableId, data));
+    }
 
     /**
      * @param itemLayoutId item 布局文件资源id
@@ -24,32 +37,6 @@ public class DataBindViewHolderManager<T> extends ViewHolderManager<T, BaseViewH
     public DataBindViewHolderManager(@LayoutRes int itemLayoutId, @NonNull ItemBindView<T> itemBindView) {
         this.itemLayoutId = itemLayoutId;
         this.itemBindView = itemBindView;
-    }
-
-    /**
-     * @param itemLayoutId   item 布局文件资源id
-     * @param bindVariableId 需要绑定一个VariableId时使用本构造函数
-     */
-    public DataBindViewHolderManager(@LayoutRes int itemLayoutId, int bindVariableId) {
-        this.itemLayoutId = itemLayoutId;
-        this.itemBindView = (dataBinding, data) -> dataBinding.setVariable(bindVariableId, data);
-    }
-
-    @NonNull
-    @Override
-    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent) {
-        return new BaseViewHolder(getItemViewBinding(parent).getRoot());
-    }
-
-    /**
-     * 生成ViewDataBinding
-     *
-     * @param viewGroup ViewGroup
-     * @return ViewDataBinding
-     */
-    protected ViewDataBinding getItemViewBinding(ViewGroup viewGroup) {
-        return DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                getItemLayoutId(), viewGroup, false);
     }
 
     @Override

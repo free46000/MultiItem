@@ -1,5 +1,6 @@
 package com.freelib.multiitem.adapter.holder;
 
+import android.databinding.DataBindingUtil;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +21,8 @@ import com.freelib.multiitem.item.ItemData;
 public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     private boolean fullSpan;
     private int spanSize;
+
+    protected ViewModel viewModel = new BaseViewModel();
 
     /**
      * 创建ViewHolder
@@ -76,7 +79,7 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
      * @return 返回item itemView
      */
     protected View getItemView(ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(getItemLayoutId(), parent, false);
+        return viewModel.getItemView(parent, getItemLayoutId());
     }
 
     /**
@@ -146,4 +149,35 @@ public abstract class ViewHolderManager<T, V extends BaseViewHolder> {
     public boolean isClickable() {
         return true;
     }
+
+
+    /**
+     * 开启Data bind
+     *
+     * @see ViewModel
+     */
+    protected void enableDataBind() {
+        viewModel = new DataBindViewModel();
+    }
+
+    interface ViewModel {
+        View getItemView(ViewGroup parent, @LayoutRes int layoutId);
+    }
+
+    static class BaseViewModel implements ViewModel {
+
+        @Override
+        public View getItemView(ViewGroup parent, @LayoutRes int layoutId) {
+            return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+        }
+    }
+
+    static class DataBindViewModel implements ViewModel {
+
+        @Override
+        public View getItemView(ViewGroup parent, @LayoutRes int layoutId) {
+            return DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutId, parent, false).getRoot();
+        }
+    }
+
 }
