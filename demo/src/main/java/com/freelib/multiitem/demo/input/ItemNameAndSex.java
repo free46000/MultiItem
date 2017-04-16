@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 姓名和性别录入Item，一个录入item对应多个提交的值{"name":"","sex":""}
  * Created by free46000 on 2017/4/13.
  */
 public class ItemNameAndSex extends BaseItemInput<ItemNameAndSex> {
@@ -27,10 +28,10 @@ public class ItemNameAndSex extends BaseItemInput<ItemNameAndSex> {
         return R.layout.item_name_sex;
     }
 
-    //本例中需要返回两组key-value所以去覆写
+    //本例中需要返回两组key-value所以去覆写getValueMap()
     @Override
     public Object getValue() {
-        //在getValue中返回两个值的组合，用以判断表单的值是否被改变
+        //在本方法中返回两个值的组合，作用是为判断表单的值是否被改变提供依据
         //也可以直接覆写isValueChange()方法达到定制化
         if (nameEdit == null) {
             return null;
@@ -40,6 +41,7 @@ public class ItemNameAndSex extends BaseItemInput<ItemNameAndSex> {
 
     @Override
     public boolean isValueValid() {
+        //如果名字输入框录入的值不为空则有效；其它无效
         return nameEdit != null && !TextUtils.isEmpty(nameEdit.getText().toString());
     }
 
@@ -49,6 +51,7 @@ public class ItemNameAndSex extends BaseItemInput<ItemNameAndSex> {
             return null;
         }
 
+        //此处自己组装Map{name:name,sex:sex}并返回，这样可以达到一个Item返回两组值的效果
         Map<String, Object> valueMap = new HashMap<>(2);
         valueMap.put("name", nameEdit.getText().toString());
         int sexStrResId = sexRadio.getCheckedRadioButtonId() == R.id.man ? R.string.man : R.string.woman;

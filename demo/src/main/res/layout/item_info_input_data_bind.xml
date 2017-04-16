@@ -6,7 +6,7 @@
 
         <variable
             name="itemData"
-            type="com.freelib.multiitem.demo.input.ItemInfo"/>
+            type="com.freelib.multiitem.demo.input.ItemInfoDataBind"/>
     </data>
 
     <LinearLayout
@@ -26,7 +26,6 @@
             />
 
         <EditText
-            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="3"

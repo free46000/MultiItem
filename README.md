@@ -4,7 +4,7 @@
 - 直接使用业务中的实体类为`RecyclerView Adapter`设置数据源，不需要做任何封装
 - `RecyclerView Adapter`零编码，解放了复杂的`Adapter`类
 - 支持`DataBinding`，让你清爽的编写列表代码
-- 表单录入，懒加载，可复用，支持`DataBinding`、隐藏域、录入值是否改变
+- 支持Form表单录入，懒加载易复用，支持`DataBinding`、隐藏域、输入内容验证及是否变化
 
 ## 系列文章
 ### 用法与详解(详见下文)
@@ -22,7 +22,6 @@
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
 ## 下一步要做什么
-- 录入界面的复用和封装的demo代码（录入业务较多同学可以多多关注）
 - 思考动画分割线等一些功能封装
 
 ## 用法
@@ -41,7 +40,7 @@ allprojects {
 在`Module`中添加：
 ```
 dependencies {
-    compile 'com.github.free46000:MultiItem:0.9.4'
+    compile 'com.github.free46000:MultiItem:0.9.5'
 }
 ```
 

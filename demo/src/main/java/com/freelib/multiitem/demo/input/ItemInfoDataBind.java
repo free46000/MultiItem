@@ -8,18 +8,20 @@ import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.item.DataBindItemInput;
 
 /**
+ * 利用DataBinding实现的多行录入Item
  * Created by free46000 on 2017/4/16.
  */
-public class ItemInfo extends DataBindItemInput<ItemInfo> {
+public class ItemInfoDataBind extends DataBindItemInput<ItemInfoDataBind> {
     private String name;
     private String info;
 
-    public ItemInfo(String key) {
+    public ItemInfoDataBind(String key) {
         super(key);
     }
 
     @Override
     protected void initInputView(ViewDataBinding dataBinding) {
+        //把自身实例对象通过ViewDataBinding绑定到视图中
         dataBinding.setVariable(BR.itemData, this);
     }
 
@@ -38,7 +40,11 @@ public class ItemInfo extends DataBindItemInput<ItemInfo> {
         return !TextUtils.isEmpty(info);
     }
 
-    public ItemInfo setName(String name) {
+    /**
+     * 设置展示列名
+     * @param name 展示列名
+     */
+    public ItemInfoDataBind setName(String name) {
         this.name = name;
         return this;
     }

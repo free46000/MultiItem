@@ -10,6 +10,7 @@ import java.util.Map;
 import static android.R.attr.value;
 
 /**
+ * 录入的的ViewHolderManager
  * Created by free46000 on 2017/4/10.
  */
 public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHolderManager<T> {
@@ -40,6 +41,11 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
         viewHolder = holder;
     }
 
+    /**
+     * 初始化Input视图，由于Input视图不可以复用，所以直接在初始化视图时设置好相关内容即可
+     *
+     * @param holder BaseViewHolder
+     */
     protected abstract void initInputView(BaseViewHolder holder);
 
     @Deprecated
@@ -67,11 +73,22 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
         return Collections.singletonMap(key, value);
     }
 
+    /**
+     * 是否在初始化后发生改变，如用户手动更改<br>
+     * 在{@link #initInputView(BaseViewHolder)}的时候会记录当时的value，然后调用本方法时去做对比
+     *
+     * @return true:已改变；false:未改变
+     */
     public boolean isValueChange() {
         Object value = getValue();
         return value == null ? value != originalValue : !value.equals(originalValue);
     }
 
+    /**
+     * 是否验证有效，如Item不能为空
+     *
+     * @return true:有效；false:无效  默认true
+     */
     public boolean isValueValid() {
         return true;
     }
