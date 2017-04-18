@@ -7,17 +7,17 @@
 - 支持Form表单录入，懒加载易复用，支持`DataBinding`、隐藏域、输入内容验证及是否变化
 
 ## 系列文章
-### 用法与详解(详见下文)
+- **用法与详解(详见下文)**
+- **[MultiItem进阶 实现Head Foot和加载更多](https://juejin.im/post/58da77ed1b69e6006bc7fffa)**
+- **[MultiItem进阶  使用DataBinding让RecyclerView代码更简洁清爽](https://juejin.im/post/58ea5e88b123db1ad0636295)**
+- **[MultiItem进阶 用RecyclerView实现Form表单](https://juejin.im/post/58ea5e88b123db1ad0636295)**
+- **[仿任务面板 跨RecyclerView的Item拖动 支持缩小后拖动](https://juejin.im/post/58e37dae0ce46300583b4ab0)**
 
-![multi_item](https://github.com/free46000/cloud/raw/master/multiitem/multi_item.png )
 ![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)
-### [MultiItem进阶 实现Head Foot和加载更多](https://juejin.im/post/58da77ed1b69e6006bc7fffa)
-
 ![headfoot](https://user-gold-cdn.xitu.io/2017/3/29/1846a3cd1a81b9b0bb516402d1cee6aa.png )
 ![fullspan](https://user-gold-cdn.xitu.io/2017/3/29/59b465977da7c11b455a9998143e5e2a.png )
 ![loadmore](https://user-gold-cdn.xitu.io/2017/3/29/7b50786340f253d2f8e5f7966cfd7fc1.png )
-###  [仿任务面板 跨RecyclerView的Item拖动 支持缩小后拖动](https://juejin.im/post/58e37dae0ce46300583b4ab0)
-
+![数据绑定效果](https://user-gold-cdn.xitu.io/2017/4/8/909aaf58179acc6abb55d79ae188f09e.png)
 ![跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag.gif )
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
