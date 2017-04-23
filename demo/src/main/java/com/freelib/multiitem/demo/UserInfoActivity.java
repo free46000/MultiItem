@@ -48,6 +48,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 R.layout.item_info, BR.itemData));
         recyclerView.setAdapter(adapter);
 
+        //构建用户信息需要展示的ItemInfo的集合，每个ItemInfo代表页面中的一行
         List<ItemInfo> list = new ArrayList<>(5);
         list.add(new ItemInfo("名字", userBean.getName()));
         list.add(new ItemInfo("性别", userBean.getSex()));
@@ -57,7 +58,11 @@ public class UserInfoActivity extends AppCompatActivity {
         adapter.setDataItems(list);
     }
 
-
+    /**
+     * 获取用户信息
+     *
+     * @return UserBean
+     */
     private UserBean getUserBean() {
         UserBean userBean = new UserBean();
         userBean.setName("张三");

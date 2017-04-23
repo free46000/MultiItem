@@ -7,6 +7,7 @@ import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.item.BaseItemState;
 
 /**
+ * 空白 错误页Item
  * Created by free46000 on 2017/4/23.
  */
 public class ItemEmptyAndError extends BaseItemState<ItemEmptyAndError> {

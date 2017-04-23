@@ -54,13 +54,30 @@ public class EmptyAndErrorActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.addDataItem(new TextBean("展示空白页"));
         adapter.addDataItem(new TextBean("展示错误页"));
-
+        //设置点击监听，再点击Item的时候展示空白或者错误页面
         setOnItemClickListener(adapter);
-
-        initEmptyHelper();
-        initErrorHelper();
+        //初始化空白页辅助类
+        emptyViewHelper = newStateViewHelper("列表数据为空");
+        //初始化错误页辅助类
+        errorViewHelper = newStateViewHelper("数据加载错误");
     }
 
+    /**
+     * 创建新的状态页辅助类
+     *
+     * @param message 状态页展示的信息
+     * @return StateViewHelper
+     */
+    private StateViewHelper newStateViewHelper(String message) {
+        BaseItemState stateItem = new ItemEmptyAndError(message);
+        StateViewHelper stateViewHelper = new StateViewHelper(recyclerView, stateItem);
+        stateItem.setOnStateClickListener(() -> errorViewHelper.hide());
+        return stateViewHelper;
+    }
+
+    /**
+     * 设置点击监听，再点击Item的时候展示空白或者错误页面
+     */
     private void setOnItemClickListener(BaseItemAdapter adapter) {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -75,18 +92,6 @@ public class EmptyAndErrorActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void initEmptyHelper() {
-        BaseItemState emptyItem = new ItemEmptyAndError("列表数据为空");
-        emptyViewHelper = new StateViewHelper(recyclerView, emptyItem);
-        emptyItem.setOnStateClickListener(() -> emptyViewHelper.hide());
-    }
-
-    private void initErrorHelper() {
-        BaseItemState emptyItem = new ItemEmptyAndError("数据加载错误");
-        errorViewHelper = new StateViewHelper(recyclerView, emptyItem);
-        emptyItem.setOnStateClickListener(() -> emptyViewHelper.hide());
     }
 
 }
