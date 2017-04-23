@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.adapter.holder.BaseItemState;
+import com.freelib.multiitem.item.BaseItemState;
 
 /**
  * Created by free46000 on 2017/4/23.

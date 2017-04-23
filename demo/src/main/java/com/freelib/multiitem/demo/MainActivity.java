@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 () -> InputActivity.startActivity(this)));
         adapter.addDataItem(new MainBean(getString(R.string.user_info_title),
                 () -> UserInfoActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.empty_error_title),
+                () -> EmptyAndErrorActivity.startActivity(this)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

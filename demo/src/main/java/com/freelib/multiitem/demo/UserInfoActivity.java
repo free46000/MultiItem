@@ -45,7 +45,7 @@ public class UserInfoActivity extends AppCompatActivity {
         BaseItemAdapter adapter = new BaseItemAdapter();
         //为UserBean数据源注册数据绑定View Holder Manager管理类
         adapter.register(ItemInfo.class, new DataBindViewHolderManager<>(
-                R.layout.item_image_text_data_bind, BR.itemData));
+                R.layout.item_info, BR.itemData));
         recyclerView.setAdapter(adapter);
 
         List<ItemInfo> list = new ArrayList<>(5);
