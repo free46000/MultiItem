@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemData"
+            type="com.freelib.multiitem.demo.bean.ItemInfo"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/content_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
+
+
+        <TextView
+            android:id="@+id/name_txt"
+            app:layout_constraintLeft_toLeftOf="@id/content_lay"
+            app:layout_constraintTop_toTopOf="@id/content_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemData.name}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            tools:text="name"
+            />
+
+        <TextView
+            android:id="@+id/value_txt"
+            app:layout_constraintLeft_toRightOf="@id/name_txt"
+            app:layout_constraintRight_toRightOf="@id/content_lay"
+            app:layout_constraintTop_toTopOf="@id/name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemData.value}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            tools:text="value"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

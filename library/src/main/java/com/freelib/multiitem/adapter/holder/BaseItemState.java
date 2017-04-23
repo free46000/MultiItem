@@ -1,21 +1,16 @@
 package com.freelib.multiitem.adapter.holder;
 
-import android.view.ViewGroup;
-
-import com.freelib.multiitem.adapter.holder.BaseViewHolder;
-import com.freelib.multiitem.adapter.holder.ViewHolderManager;
-
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * ViewHolder鐨勭®＄悊绫伙紝榛樿®ら噰鐢▄@link BaseViewHolder}鐨勫疄鐜°
+ * ViewHolder的管理类，默认采用{@link BaseViewHolder}的实现
  * <p>
  * Created by free46000 on 2017/3/16.
  */
-public abstract class BaseViewHolderManager<T> extends ViewHolderManager<T, BaseViewHolder> {
+public abstract class BaseItemState<T extends BaseItemState> extends ViewHolderManager<T, BaseViewHolder> {
     @Override
     public abstract void onBindViewHolder(BaseViewHolder holder, T t);
 

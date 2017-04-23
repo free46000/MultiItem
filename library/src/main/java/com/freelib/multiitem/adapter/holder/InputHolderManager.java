@@ -7,8 +7,6 @@ import com.freelib.multiitem.item.ItemInput;
 import java.util.Collections;
 import java.util.Map;
 
-import static android.R.attr.value;
-
 /**
  * 录入的的ViewHolderManager
  * Created by free46000 on 2017/4/10.

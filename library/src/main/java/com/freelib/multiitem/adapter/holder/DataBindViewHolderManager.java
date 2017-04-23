@@ -13,14 +13,10 @@ import android.view.ViewGroup;
  * 数据绑定ViewHolderManager
  * Created by free46000 on 2017/4/6.
  */
-public class DataBindViewHolderManager<T> extends BaseViewHolderManager<T> {
+public class DataBindViewHolderManager<T> extends BindViewHolderManager<T> {
     @LayoutRes
     private int itemLayoutId;
     private ItemBindView<T> itemBindView;
-
-    {
-        enableDataBind();
-    }
 
     /**
      * @param itemLayoutId   item 布局文件资源id
@@ -39,19 +35,13 @@ public class DataBindViewHolderManager<T> extends BaseViewHolderManager<T> {
         this.itemBindView = itemBindView;
     }
 
-    @Override
-    public void onBindViewHolder(BaseViewHolder holder, T data) {
-        ViewDataBinding dataBinding = DataBindingUtil.getBinding(holder.itemView);
-        onBindViewHolder(dataBinding, data);
-//        dataBinding.executePendingBindings();
-    }
-
     /**
      * 绑定数据到视图 {@link ItemBindView}
      *
      * @param dataBinding item视图对应dataBinding类
      * @param data        数据源
      */
+    @Override
     protected void onBindViewHolder(ViewDataBinding dataBinding, T data) {
         itemBindView.onBindViewHolder(dataBinding, data);
     }

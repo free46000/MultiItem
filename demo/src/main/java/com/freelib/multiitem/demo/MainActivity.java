@@ -1,5 +1,6 @@
 package com.freelib.multiitem.demo;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 () -> DataBindActivity.startActivity(this)));
         adapter.addDataItem(new MainBean(getString(R.string.input_title),
                 () -> InputActivity.startActivity(this)));
+        adapter.addDataItem(new MainBean(getString(R.string.user_info_title),
+                () -> UserInfoActivity.startActivity(this)));
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

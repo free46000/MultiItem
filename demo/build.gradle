@@ -35,7 +35,7 @@ dependencies {
     compile project(':library')
     compile 'org.androidannotations:androidannotations-api:4.2.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'org.androidannotations:androidannotations:4.2.0'
 }

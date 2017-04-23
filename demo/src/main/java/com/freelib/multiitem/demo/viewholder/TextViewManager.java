@@ -8,8 +8,6 @@ import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.demo.bean.TextBean;
 
-import static android.R.attr.data;
-
 /**
  * @author free46000  2017/03/17
  * @version v1.0

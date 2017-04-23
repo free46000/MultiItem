@@ -1,19 +1,12 @@
 package com.freelib.multiitem.demo.input;
 
-import android.support.annotation.NonNull;
-import android.support.v4.text.TextUtilsCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.demo.R;
 import com.freelib.multiitem.item.BaseItemInput;
-
-import static android.R.attr.value;
-import static android.R.id.edit;
 
 /**
  * ItemEdit
