@@ -69,8 +69,11 @@ public class EmptyAndErrorActivity extends AppCompatActivity {
      * @return StateViewHelper
      */
     private StateViewHelper newStateViewHelper(String message) {
+        //初始化状态Item
         BaseItemState stateItem = new ItemEmptyAndError(message);
+        //初始化辅助类，需要一个BaseItemState
         StateViewHelper stateViewHelper = new StateViewHelper(recyclerView, stateItem);
+        //设置状态页按钮的点击事件监听，处理状态页隐藏
         stateItem.setOnStateClickListener(() -> errorViewHelper.hide());
         return stateViewHelper;
     }
@@ -84,9 +87,11 @@ public class EmptyAndErrorActivity extends AppCompatActivity {
             public void onItemClick(BaseViewHolder viewHolder) {
                 switch (viewHolder.getItemPosition()) {
                     case 0:
+                        //展示空白页
                         emptyViewHelper.show();
                         break;
                     case 1:
+                        //展示错误页
                         errorViewHelper.show();
                         break;
                 }

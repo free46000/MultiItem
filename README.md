@@ -5,12 +5,15 @@
 - `RecyclerView Adapter`零编码，解放了复杂的`Adapter`类
 - 支持`DataBinding`，让你清爽的编写列表代码
 - 支持Form表单录入，懒加载易复用，支持`DataBinding`、隐藏域、输入内容验证及是否变化
+- 支持业务详情页展示
+- 支持空白、错误等状态页的展示
 
 ## 系列文章
 - **用法与详解(详见下文)**
 - **[MultiItem进阶 实现Head Foot和加载更多](https://juejin.im/post/58da77ed1b69e6006bc7fffa)**
 - **[MultiItem进阶  使用DataBinding让RecyclerView代码更简洁清爽](https://juejin.im/post/58ea5e88b123db1ad0636295)**
 - **[MultiItem进阶 用RecyclerView实现Form表单](https://juejin.im/post/58ea5e88b123db1ad0636295)**
+- **[MultiItem进阶 用RecyclerView实现错误和空白状态页 附加详情实践](https://juejin.im/post/58fe298d8d6d810058a0f2a5)**
 - **[仿任务面板 跨RecyclerView的Item拖动 支持缩小后拖动](https://juejin.im/post/58e37dae0ce46300583b4ab0)**
 
 ![chat](https://github.com/free46000/cloud/raw/master/multiitem/chat.png)
@@ -18,6 +21,8 @@
 ![fullspan](https://user-gold-cdn.xitu.io/2017/3/29/59b465977da7c11b455a9998143e5e2a.png )
 ![loadmore](https://user-gold-cdn.xitu.io/2017/3/29/7b50786340f253d2f8e5f7966cfd7fc1.png )
 ![数据绑定效果](https://user-gold-cdn.xitu.io/2017/4/8/909aaf58179acc6abb55d79ae188f09e.png)
+![详情页效果](https://github.com/free46000/cloud/raw/master/multiitem/user_info.png)
+![空白错误页](https://github.com/free46000/cloud/raw/master/multiitem/empty_error.gif)
 ![跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag.gif )
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
@@ -40,7 +45,7 @@ allprojects {
 在`Module`中添加：
 ```
 dependencies {
-    compile 'com.github.free46000:MultiItem:0.9.5'
+    compile 'com.github.free46000:MultiItem:0.9.6'
 }
 ```
 
