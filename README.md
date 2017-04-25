@@ -21,9 +21,10 @@
 ![fullspan](https://user-gold-cdn.xitu.io/2017/3/29/59b465977da7c11b455a9998143e5e2a.png )
 ![loadmore](https://user-gold-cdn.xitu.io/2017/3/29/7b50786340f253d2f8e5f7966cfd7fc1.png )
 ![数据绑定效果](https://user-gold-cdn.xitu.io/2017/4/8/909aaf58179acc6abb55d79ae188f09e.png)
+![Form表单效果](https://github.com/free46000/cloud/raw/master/multiitem/form.png)
+![Form表单提交](https://github.com/free46000/cloud/raw/master/multiitem/form_submit.png)
 ![详情页效果](https://github.com/free46000/cloud/raw/master/multiitem/user_info.png)
 ![空白错误页](https://github.com/free46000/cloud/raw/master/multiitem/empty_error.gif)
-![跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag.gif )
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
 ## 下一步要做什么
