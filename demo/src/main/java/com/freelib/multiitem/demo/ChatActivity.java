@@ -7,10 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
-import com.freelib.multiitem.demo.bean.ImageBean;
-import com.freelib.multiitem.demo.bean.ImageTextBean;
 import com.freelib.multiitem.demo.bean.MessageBean;
-import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.viewholder.ReceiveMessageManager;
 import com.freelib.multiitem.demo.viewholder.SendMessageManager;
 
@@ -21,12 +18,10 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.list;
-
 @EActivity(R.layout.layout_recycler)
 public class ChatActivity extends AppCompatActivity {
-    public static final String uid = "1";
-    public static final String other = "2";
+    public static final String UID = "1";
+    public static final String OTHER = "2";
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
 
@@ -46,15 +41,15 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public int getViewHolderManagerIndex(MessageBean itemData) {
                 //根据message判断是否本人发送并返回对应ViewHolderManager的index值
-                return itemData.getSender().equals(uid) ? 0 : 1;
+                return itemData.getSender().equals(UID) ? 0 : 1;
             }
         });
         recyclerView.setAdapter(adapter);
         List<MessageBean> list = new ArrayList<>();
-        list.add(new MessageBean("在吗？", other));
-        list.add(new MessageBean("在啊啊啊啊啊啊啊！", uid));
-        list.add(new MessageBean("目前展示的是聊天界面中一个消息对应两种布局的情况，看看效果如何？", other));
-        list.add(new MessageBean("不错！", uid));
+        list.add(new MessageBean("在吗？", OTHER));
+        list.add(new MessageBean("在啊啊啊啊啊啊啊！", UID));
+        list.add(new MessageBean("目前展示的是聊天界面中一个消息对应两种布局的情况，看看效果如何？", OTHER));
+        list.add(new MessageBean("不错！", UID));
 
         adapter.setDataItems(list);
     }

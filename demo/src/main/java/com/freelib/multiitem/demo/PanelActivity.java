@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.R.attr.x;
+
 @EActivity(R.layout.activity_panel)
 public class PanelActivity extends AppCompatActivity {
     @ViewById(R.id.panel_content)
@@ -113,7 +115,7 @@ public class PanelActivity extends AppCompatActivity {
     class RecyclerViewManager extends BaseViewHolderManager<UniqueItemManager> {
         private int length = 25;
 
-        public RecyclerViewManager(int length) {
+        RecyclerViewManager(int length) {
             this.length = length;
         }
 
@@ -163,7 +165,7 @@ public class PanelActivity extends AppCompatActivity {
                 }
 
                 //长度大于10的列表的第0个位置不可以被拖动和移动，其他TextDragBean和ImageTextBean的只被禁止不能切换recyclerView
-                list.add(i % 2 == 1 ? new ImageTextBean(R.drawable.img2, "事项：\n无限制自由拖动\n更多内容" + i)
+                list.add(i % 2 != 0 ? new ImageTextBean(R.drawable.img2, "事项：\n无限制自由拖动\n更多内容" + i)
                         : new TextDragBean(getText(i, length), isCanDragMove(i, length), false, isCanDragMove(i, length)));
             }
             return list;

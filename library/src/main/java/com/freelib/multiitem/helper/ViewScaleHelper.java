@@ -1,13 +1,9 @@
 package com.freelib.multiitem.helper;
 
-import android.app.Activity;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.height;
-import static android.R.attr.width;
 
 
 /**

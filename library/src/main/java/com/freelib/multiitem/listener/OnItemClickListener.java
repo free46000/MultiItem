@@ -15,7 +15,9 @@ public abstract class OnItemClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         BaseViewHolder viewHolder = ListenerUtil.getViewHolderByItemView(v);
-        if (viewHolder == null) return;
+        if (viewHolder == null) {
+            return;
+        }
 
         onItemClick(viewHolder);
     }

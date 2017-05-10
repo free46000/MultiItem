@@ -79,7 +79,7 @@ public abstract class InputHolderManager<T extends ItemInput> extends BaseViewHo
      */
     public boolean isValueChange() {
         Object value = getValue();
-        return value == null ? value != originalValue : !value.equals(originalValue);
+        return value == null ? null != originalValue : !value.equals(originalValue);
     }
 
     /**

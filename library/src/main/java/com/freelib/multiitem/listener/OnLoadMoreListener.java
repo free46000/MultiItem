@@ -1,7 +1,5 @@
 package com.freelib.multiitem.listener;
 
-import android.view.View;
-
 /**
  * 加载更多回调Listener
  * Created by free46000 on 2016/7/6 0006.

@@ -106,8 +106,9 @@ public class ItemTypeManager {
      * @return
      */
     public ViewHolderManager getViewHolderManager(int type) {
-        if (type < 0 || type > viewHolderManagers.size() - 1)
+        if (type < 0 || type > viewHolderManagers.size() - 1) {
             return null;
+        }
 
         return viewHolderManagers.get(type);
     }

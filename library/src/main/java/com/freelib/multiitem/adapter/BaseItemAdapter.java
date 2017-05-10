@@ -247,8 +247,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @see LoadMoreManager#loadCompleted(boolean)
      */
     public void setLoadCompleted(boolean isLoadAll) {
-        if (loadMoreManager != null)
+        if (loadMoreManager != null) {
             loadMoreManager.loadCompleted(isLoadAll);
+        }
     }
 
     /**
@@ -257,8 +258,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @see LoadMoreManager#loadFailed()
      */
     public void setLoadFailed() {
-        if (loadMoreManager != null)
+        if (loadMoreManager != null) {
             loadMoreManager.loadFailed();
+        }
     }
 
     /**
@@ -331,8 +333,9 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemViewType(int position) {
         int type = itemTypeManager.getItemType(getItem(position));
-        if (type < 0)
+        if (type < 0) {
             throw new RuntimeException("没有为" + getItem(position).getClass() + "找到对应的item itemView manager，是否注册了？");
+        }
         return type;
     }
 

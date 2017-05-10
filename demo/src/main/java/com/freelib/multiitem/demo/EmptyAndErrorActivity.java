@@ -1,36 +1,22 @@
 package com.freelib.multiitem.demo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
-import com.freelib.multiitem.demo.bean.ImageBean;
-import com.freelib.multiitem.demo.bean.ImageTextBean;
-import com.freelib.multiitem.demo.bean.MainBean;
 import com.freelib.multiitem.demo.bean.TextBean;
 import com.freelib.multiitem.demo.state.ItemEmptyAndError;
-import com.freelib.multiitem.demo.viewholder.ImageAndTextManager;
-import com.freelib.multiitem.demo.viewholder.ImageViewManager;
 import com.freelib.multiitem.demo.viewholder.TextViewManager;
 import com.freelib.multiitem.helper.StateViewHelper;
 import com.freelib.multiitem.item.BaseItemState;
 import com.freelib.multiitem.listener.OnItemClickListener;
-import com.freelib.multiitem.listener.OnStateClickListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.R.id.empty;
-import static com.freelib.multiitem.demo.R.id.recyclerView;
 
 @EActivity(R.layout.layout_recycler)
 public class EmptyAndErrorActivity extends AppCompatActivity {
@@ -93,6 +79,8 @@ public class EmptyAndErrorActivity extends AppCompatActivity {
                     case 1:
                         //展示错误页
                         errorViewHelper.show();
+                        break;
+                    default:
                         break;
                 }
             }

@@ -16,6 +16,7 @@ public class ImageTextBean extends BaseItemData {
         this.img = img;
         this.text = text;
     }
+
     public ImageTextBean(String imgUrl, String text) {
         this.imgUrl = imgUrl;
         this.text = text;

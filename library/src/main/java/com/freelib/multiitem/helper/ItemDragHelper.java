@@ -43,7 +43,8 @@ public class ItemDragHelper {
     private int lastRecyclerPos = NONE;
     private RecyclerView lastRecyclerView;
     private int lastItemPos = NONE;
-    private float lastTouchRawX, lastTouchRawY;
+    private float lastTouchRawX;
+    private float lastTouchRawY;
     private int itemViewHeight;
 
     /**
@@ -160,7 +161,7 @@ public class ItemDragHelper {
         float[] location = getInsideLocation(horizontalRecycler, touchRawX, touchRawY);
         View view = horizontalRecycler.findChildViewUnder(location[0], location[1]);
         int recyclerPos = getPositionByChildView(view);
-//        System.out.println("find_parent_out:lastRecyclerPos:" + lastRecyclerPos + "-recyclerPos:" + recyclerPos + "==location[0]:" + location[0] + "==location[1]:" + location[1]);
+//        System.out.println("find_parent_out:lastRecPos:" + lastRecyclerPos + "-recPos:" + recyclerPos + "=loc0:" + location[0] + "=loc1:" + location[1]);
         RecyclerView recyclerView = findRecyclerView(view);
 
         //没有找到所属位置或者目标RecyclerView，则不继续

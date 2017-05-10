@@ -15,7 +15,9 @@ public abstract class OnItemLongClickListener implements View.OnLongClickListene
     @Override
     public boolean onLongClick(View v) {
         BaseViewHolder viewHolder = ListenerUtil.getViewHolderByItemView(v);
-        if (viewHolder == null) return false;
+        if (viewHolder == null) {
+            return false;
+        }
 
         onItemLongClick(viewHolder);
         return true;

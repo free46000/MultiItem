@@ -16,9 +16,10 @@ import android.widget.ImageView;
  */
 public class DragFloatViewHelper {
     private View currTouchedView;
-    private WindowManager wManager;
-    private WindowManager.LayoutParams mParams;
-    private int offsetX, offsetY;
+    private WindowManager manager;
+    private WindowManager.LayoutParams params;
+    private int offsetX;
+    private int offsetY;
 
     /**
      * 创建浮层view
@@ -29,15 +30,15 @@ public class DragFloatViewHelper {
     public void createView(View coverView, float touchRawX, float touchRawY, float scale) {
         currTouchedView = createFloatView(coverView);
 
-        wManager = (WindowManager) currTouchedView.getContext().getSystemService(
+        manager = (WindowManager) currTouchedView.getContext().getSystemService(
                 Context.WINDOW_SERVICE);
-        mParams = initParams(currTouchedView);
-        mParams.width = (int) (coverView.getWidth() * scale);//窗口的宽和高
-        mParams.height = (int) (coverView.getHeight() * scale);
+        params = initParams(currTouchedView);
+        params.width = (int) (coverView.getWidth() * scale);//窗口的宽和高
+        params.height = (int) (coverView.getHeight() * scale);
         int[] location = getLocation(coverView);
-        mParams.x = location[0];//窗口位置的偏移量
-        mParams.y = location[1];
-        wManager.addView(currTouchedView, mParams);
+        params.x = location[0];//窗口位置的偏移量
+        params.y = location[1];
+        manager.addView(currTouchedView, params);
 
         offsetX = (int) (touchRawX - location[0]);
         offsetY = (int) (touchRawY - location[1]);
@@ -76,14 +77,15 @@ public class DragFloatViewHelper {
 
 
     private WindowManager.LayoutParams initParams(View floatView) {
-        WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
-        mParams.token = floatView.getWindowToken();
-        mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;// 程序提示window
-        mParams.format = PixelFormat.TRANSLUCENT;// 支持透明
-        //mParams.format = PixelFormat.RGBA_8888;
-        mParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-        mParams.gravity = Gravity.LEFT | Gravity.TOP;
-        return mParams;
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.token = floatView.getWindowToken();
+        layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;// 程序提示window
+        layoutParams.format = PixelFormat.TRANSLUCENT;// 支持透明
+        //params.format = PixelFormat.RGBA_8888;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        return layoutParams;
     }
 
     /**
@@ -94,9 +96,9 @@ public class DragFloatViewHelper {
      */
     public void updateView(int x, int y) {
         if (currTouchedView != null) {
-            mParams.x = x - offsetX;
-            mParams.y = y - offsetY;
-            wManager.updateViewLayout(currTouchedView, mParams);
+            params.x = x - offsetX;
+            params.y = y - offsetY;
+            manager.updateViewLayout(currTouchedView, params);
         }
     }
 
@@ -104,8 +106,8 @@ public class DragFloatViewHelper {
      * 移除浮层view
      */
     public void removeView() {
-        if (currTouchedView != null && wManager != null) {
-            wManager.removeView(currTouchedView);
+        if (currTouchedView != null && manager != null) {
+            manager.removeView(currTouchedView);
         }
     }
 }

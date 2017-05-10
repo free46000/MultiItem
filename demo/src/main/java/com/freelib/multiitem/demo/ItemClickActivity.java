@@ -51,16 +51,14 @@ public class ItemClickActivity extends AppCompatActivity {
             @Override
             public void onItemClick(BaseViewHolder viewHolder) {
                 //通过viewHolder获取需要的数据
-                toastUser(String.format("你点击了第%s位置的数据：%s", viewHolder.getItemPosition()
-                        , viewHolder.getItemData()));
+                toastUser(String.format("你点击了第%s位置的数据：%s", viewHolder.getItemPosition(), viewHolder.getItemData()));
             }
         });
         adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(BaseViewHolder viewHolder) {
                 //通过viewHolder获取需要的数据
-                toastUser(String.format("你长按了第%s位置的数据：%s", viewHolder.getItemPosition()
-                        , viewHolder.getItemData()));
+                toastUser(String.format("你长按了第%s位置的数据：%s", viewHolder.getItemPosition(), viewHolder.getItemData()));
             }
         });
 

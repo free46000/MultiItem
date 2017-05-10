@@ -57,7 +57,7 @@ public class FullSpanGridActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         List<Object> list = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            if (i==1){
+            if (i == 1) {
                 list.add(new TextBean("FullSpanTextViewManager充满宽度Item"));
             }
             list.add(new ImageBean(R.drawable.img1));

@@ -1,13 +1,6 @@
 package com.freelib.multiitem.adapter.holder;
 
-import android.view.ViewGroup;
-
-import com.freelib.multiitem.adapter.holder.BaseViewHolder;
-import com.freelib.multiitem.adapter.holder.ViewHolderManager;
-
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.view.ViewGroup;
 
 /**

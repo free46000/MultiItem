@@ -20,7 +20,7 @@ public class DataBindUtil {
     public static void setImageViewResource(ImageView imageView, String imgUrl) {
         Context context = imageView.getContext();
         //此处通过imgUrl字符串获取资源ID,具体使用根据业务需要
-        int resID = context.getResources().getIdentifier(imgUrl, "drawable", context.getPackageName());
-        imageView.setImageResource(resID);
+        int resId = context.getResources().getIdentifier(imgUrl, "drawable", context.getPackageName());
+        imageView.setImageResource(resId);
     }
 }

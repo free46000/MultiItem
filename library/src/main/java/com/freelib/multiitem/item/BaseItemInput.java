@@ -2,11 +2,9 @@ package com.freelib.multiitem.item;
 
 import android.support.annotation.NonNull;
 
-import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.InputHolderManager;
 
 /**
- * 基础的录入Input
  * Created by free46000 on 2017/4/10.
  */
 public abstract class BaseItemInput<T extends BaseItemInput> extends InputHolderManager<T> implements ItemInput {

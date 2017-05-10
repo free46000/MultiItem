@@ -1,8 +1,5 @@
 package com.freelib.multiitem.adapter.holder;
 
-import android.support.annotation.NonNull;
-import android.view.ViewGroup;
-
 /**
  * 多个ViewHolder的管理类的组合
  * 主要为相同数据源根据内部属性的值会对应多个ViewHolderManager设计，常见的如聊天界面的消息
