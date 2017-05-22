@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.R.attr.x;
-
 @EActivity(R.layout.activity_panel)
 public class PanelActivity extends AppCompatActivity {
     @ViewById(R.id.panel_content)

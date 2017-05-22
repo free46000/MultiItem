@@ -13,6 +13,8 @@ import com.freelib.multiitem.adapter.holder.ViewHolderManager;
 import com.freelib.multiitem.adapter.holder.ViewHolderManagerGroup;
 import com.freelib.multiitem.adapter.holder.ViewHolderParams;
 import com.freelib.multiitem.adapter.type.ItemTypeManager;
+import com.freelib.multiitem.animation.AnimationLoader;
+import com.freelib.multiitem.animation.BaseAnimation;
 import com.freelib.multiitem.common.Const;
 import com.freelib.multiitem.item.LoadMoreManager;
 import com.freelib.multiitem.item.UniqueItemManager;
@@ -40,6 +42,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
     private ViewHolderParams params = new ViewHolderParams();
+    protected AnimationLoader animationLoader = new AnimationLoader();
 
 
     public BaseItemAdapter() {
@@ -264,6 +267,25 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     /**
+     * 启动加载动画
+     *
+     * @param animation BaseAnimation
+     */
+    public void enableAnimation(BaseAnimation animation) {
+        animationLoader.enableLoadAnimation(animation, true);
+    }
+
+    /**
+     * 启动加载动画
+     *
+     * @param animation               BaseAnimation
+     * @param isShowAnimWhenFirstLoad boolean 是否只有在第一次展示的时候才使用动画
+     */
+    public void enableAnimation(BaseAnimation animation, boolean isShowAnimWhenFirstLoad) {
+        animationLoader.enableLoadAnimation(animation, isShowAnimWhenFirstLoad);
+    }
+
+    /**
      * @return 获取当前数据源List，不包含head和foot
      */
     public List<Object> getDataList() {
@@ -307,6 +329,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      */
     public void clearData() {
         dataItems.clear();
+        animationLoader.clear();
     }
 
 
@@ -353,6 +376,7 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             params.setFullSpan(true);
         }
+        animationLoader.startAnimation(holder);
     }
 
     @Override
