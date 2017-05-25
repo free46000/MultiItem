@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#eeeeee"
+              android:orientation="vertical">
+
+    <RadioGroup android:id="@+id/animationGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/scaleCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="scale"
+            />
+
+        <RadioButton
+            android:id="@+id/alphaCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="alpha"
+            />
+
+        <RadioButton
+            android:id="@+id/bottomCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bottom"
+            />
+
+        <RadioButton
+            android:id="@+id/leftCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="left"
+            />
+
+        <RadioButton
+            android:id="@+id/rightCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="right"
+            />
+
+    </RadioGroup>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="8dp"/>
+</LinearLayout>

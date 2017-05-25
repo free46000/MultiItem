@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 
 import com.freelib.multiitem.adapter.holder.BaseViewHolder;
 import com.freelib.multiitem.adapter.holder.HeadFootHolderManager;
@@ -283,6 +284,14 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      */
     public void enableAnimation(BaseAnimation animation, boolean isShowAnimWhenFirstLoad) {
         animationLoader.enableLoadAnimation(animation, isShowAnimWhenFirstLoad);
+    }
+
+    public void setInterpolator(@NonNull Interpolator interpolator) {
+        animationLoader.setInterpolator(interpolator);
+    }
+
+    public void setAnimDuration(long animDuration) {
+        animationLoader.setAnimDuration(animDuration);
     }
 
     /**

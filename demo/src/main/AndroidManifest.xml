@@ -25,8 +25,8 @@
         <activity android:name=".DataBindActivity_"/>
         <activity android:name=".InputActivity_"/>
         <activity android:name=".UserInfoActivity_"/>
-        <activity android:name=".EmptyAndErrorActivity_">
-        </activity>
+        <activity android:name=".EmptyAndErrorActivity_"/>
+        <activity android:name=".AnimationActivity_"/>
     </application>
 
 </manifest>

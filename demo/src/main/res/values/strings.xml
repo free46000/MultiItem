@@ -18,6 +18,7 @@
     <string name="input_title">录入表单演示</string>
     <string name="user_info_title">用户详情演示</string>
     <string name="empty_error_title">空白错误页演示</string>
+    <string name="animation_title">动画页演示</string>
 
     <string name="loading_more">加载中...</string>
     <string name="load_all">加载完成</string>
