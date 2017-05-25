@@ -25,6 +25,7 @@
 ![Form表单提交](https://github.com/free46000/cloud/raw/master/multiitem/form_submit.png)
 ![详情页效果](https://github.com/free46000/cloud/raw/master/multiitem/user_info.png)
 ![空白错误页](https://github.com/free46000/cloud/raw/master/multiitem/empty_error.gif)
+![动画效果](https://github.com/free46000/cloud/raw/master/multiitem/anim.gif)
 ![缩放后跨Recycler拖动](https://github.com/free46000/cloud/raw/master/multiitem/panel_drag_scale.gif)
 
 ## 下一步要做什么
@@ -46,7 +47,7 @@ allprojects {
 在`Module`中添加：
 ```
 dependencies {
-    compile 'com.github.free46000:MultiItem:0.9.6'
+    compile 'com.github.free46000:MultiItem:0.9.7'
 }
 ```
 
@@ -136,6 +137,35 @@ adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
     }
 });
 ```
+
+#### 开启滑动动画
+``` java
+//开启动画，并取消动画只在第一次加载时展示
+adapter.enableAnimation(baseAnimation, false);
+```
+下面写下动画相关方法，库中已经默认实现了部分`BaseAnimation`，可以通过Demo看到具体效果
+``` java
+ /**
+ * 启动加载动画
+ *
+ * @param animation    BaseAnimation
+ * @param isShowAnimWhenFirstLoad boolean 是否只有在第一次展示的时候才使用动画
+ */
+public void enableAnimation(BaseAnimation animation, boolean isShowAnimWhenFirstLoad)
+
+/**
+ * 设置动画时长 默认400L
+ */
+public void setAnimDuration(long animDuration)
+
+/**
+ * 设置动画加速器 默认{@link LinearInterpolator}
+ */
+public void setInterpolator(@NonNull Interpolator interpolator)
+
+```
+
+
 
 至此本库的多种类型列表用法已经完成，并没有修改或继承`RecyclerView Adapter`类，完全使用默认实现`BaseItemAdapter`即可。
 

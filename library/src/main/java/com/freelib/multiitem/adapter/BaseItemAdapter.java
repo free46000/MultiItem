@@ -286,10 +286,16 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         animationLoader.enableLoadAnimation(animation, isShowAnimWhenFirstLoad);
     }
 
+    /**
+     * @see AnimationLoader#setInterpolator(Interpolator)
+     */
     public void setInterpolator(@NonNull Interpolator interpolator) {
         animationLoader.setInterpolator(interpolator);
     }
 
+    /**
+     * @see AnimationLoader#setAnimDuration(long)
+     */
     public void setAnimDuration(long animDuration) {
         animationLoader.setAnimDuration(animDuration);
     }

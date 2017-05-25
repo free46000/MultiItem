@@ -68,6 +68,23 @@ public class AnimationLoader {
         anim.setInterpolator(interpolator);
     }
 
+    /**
+     * 设置动画时长 默认400L
+     *
+     * @param animDuration long
+     */
+    public void setAnimDuration(long animDuration) {
+        this.animDuration = animDuration;
+    }
+
+    /**
+     * 设置动画加速器 默认{@link LinearInterpolator}
+     *
+     * @param interpolator Interpolator
+     */
+    public void setInterpolator(@NonNull Interpolator interpolator) {
+        this.interpolator = interpolator;
+    }
 
     public boolean isAnimEnable() {
         return isAnimEnable;
@@ -97,15 +114,10 @@ public class AnimationLoader {
         return animDuration;
     }
 
-    public void setAnimDuration(long animDuration) {
-        this.animDuration = animDuration;
-    }
 
     public Interpolator getInterpolator() {
         return interpolator;
     }
 
-    public void setInterpolator(@NonNull Interpolator interpolator) {
-        this.interpolator = interpolator;
-    }
+
 }
