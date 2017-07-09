@@ -347,3 +347,8 @@ public void register(Class<?> cls, ViewHolderManagerGroup group) {
     itemClassNameGroupMap.put(getClassName(cls), group);
 }
 ```
+
+## 感谢   
+在编写中感谢以下开源项目提供了很多思路   
+- https://github.com/wasabeef/recyclerview-animators
+- https://github.com/drakeet/MultiType
