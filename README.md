@@ -5,7 +5,8 @@
 - `RecyclerView Adapter`零编码，解放了复杂的`Adapter`类
 - 支持`DataBinding`，让你清爽的编写列表代码
 - 支持Form表单录入，懒加载易复用，支持`DataBinding`、隐藏域、输入内容验证及是否变化
-- 支持业务详情页展示
+- 支持`Header` `Footer` 和 下拉刷新 加载更多
+- 支持`Item`滑动动画
 - 支持空白、错误等状态页的展示
 
 ## 系列文章
@@ -126,6 +127,7 @@ adapter.setOnItemClickListener(new OnItemClickListener() {
     }
 });
 ```
+
 长按监听：
 ``` java
 adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -136,6 +138,94 @@ adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
                 , viewHolder.getItemData()));
     }
 });
+```
+
+#### 为列表添加header和footer
+添加`header footer`提供两种方式，直接`addView`或者`addItem`方式：
+``` java
+//为XXBean数据源注册XXManager管理类
+adapter.register(TextBean.class, new TextViewManager());
+
+//添加header
+TextView headView = new TextView(this);
+headView.setText("通过addHeadView增加的head1");
+//方式一：方便实际业务使用
+adapter.addHeadView(headView);
+//方式二：这种方式和直接addDataItem添加数据源原理一样
+adapter.addHeadItem(new TextBean("通过addHeadItem增加的head2"));
+
+//添加footer，方式同添加header
+TextView footView = new TextView(this);
+footView.setText("通过addFootView增加的foot1");
+adapter.addFootView(footView);
+adapter.addFootItem(new TextBean("通过addFootItem增加的foot2"));
+```
+
+#### 为表格添加充满宽度的Item(含header和footer)
+充满宽度详见`ViewHolderManager#isFullSpan`返回`true`即可，适用于`head foot`或任意数据源`Item`
+``` java
+//此处为TextBean数据源注册FullSpanTextViewManager管理类
+adapter.register(TextBean.class, new FullSpanTextViewManager());
+
+//添加header或者footer
+TextView headView = new TextView(this);
+headView.setText("通过addHeadView增加的head1");
+//使用HeadFootHolderManager已经实现isFullSpan方法，默认充满宽度
+adapter.addHeadView(headView);
+
+//添加普通Item,详见FullSpanTextViewManager，默认充满宽度
+adapter.addDataItem(new TextBean("FullSpanTextViewManager充满宽度Item"));
+```
+
+#### 下拉刷新加载更多功能的用法
+下拉刷新采用`SwipeRefreshLayout`这里就不在过多介绍，开启和处理加载更多功能比较简单，但是需要注意加载更多本质上是一个`footer`，并且对添加顺序敏感，所以需要先去`addFoot`后在调用开启方法：
+``` java
+//开启加载更多视图
+adapter.enableLoadMore(new LoadMoreHolderManager(this::loadData));
+
+//加载完成 isLoadAll:是否全部数据
+adapter.setLoadCompleted(boolean isLoadAll);
+
+//加载失败
+adapter.setLoadFailed();
+```
+通过开启方法我们可以看出依赖于`LoadMoreHolderManager`,主要是处理不同状态下加载更多界面的变化，下面贴出代码，更多实现细节请参阅`LoadMoreManager`：
+``` java
+/**
+ * 加载更多视图管理类
+ */
+public class LoadMoreHolderManager extends LoadMoreManager {
+
+    public LoadMoreHolderManager(OnLoadMoreListener onLoadMoreListener, boolean isAutoLoadMore) {
+        super(onLoadMoreListener, isAutoLoadMore);
+    }
+
+    @Override
+    protected int getItemLayoutId() {
+        return R.layout.item_load_more;
+    }
+
+    @Override
+    protected void updateLoadInitView() {
+        ((TextView) getView(loadMoreView, R.id.text)).setText("");
+    }
+
+    @Override
+    protected void updateLoadingMoreView() {
+        ((TextView) getView(loadMoreView, R.id.text)).setText(R.string.loading_more);
+    }
+
+    @Override
+    protected void updateLoadCompletedView(boolean isLoadAll) {
+        ((TextView) getView(loadMoreView, R.id.text))
+                .setText(isLoadAll ? R.string.load_all : R.string.load_has_more);
+    }
+
+    @Override
+    protected void updateLoadFailedView() {
+        ((TextView) getView(loadMoreView, R.id.text)).setText(R.string.load_failed);
+    }
+}
 ```
 
 #### 开启滑动动画
@@ -164,8 +254,6 @@ public void setAnimDuration(long animDuration)
 public void setInterpolator(@NonNull Interpolator interpolator)
 
 ```
-
-
 
 至此本库的多种类型列表用法已经完成，并没有修改或继承`RecyclerView Adapter`类，完全使用默认实现`BaseItemAdapter`即可。
 
